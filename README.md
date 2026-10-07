@@ -1,6 +1,8 @@
 # Meteroid Python SDK
 
-Meteroid API client
+The official Python SDK for [Meteroid](https://meteroid.com), the open-source billing and pricing platform. Meteroid manages subscriptions, usage-based billing and metering, invoicing and revenue analytics; this library calls its REST API and verifies its webhooks, against Meteroid Cloud (`https://api.meteroid.com`) or a self-hosted instance.
+
+[Website](https://meteroid.com) · [Documentation](https://docs.meteroid.com) · [API reference](https://docs.meteroid.com/api-reference) · [Meteroid on GitHub](https://github.com/meteroid-oss/meteroid)
 
 ## Installation
 
@@ -16,7 +18,7 @@ is listed in [api.md](api.md).
 ```python
 from meteroid import Meteroid
 
-client = Meteroid(api_key="your-api-key", base_url="https://api.example.com")
+client = Meteroid(api_key="your-api-key", base_url="https://api.meteroid.com")
 
 add_on = client.add_ons.retrieve("addon_id")
 print(add_on)
@@ -113,7 +115,7 @@ and requests with an `Idempotency-Key` header, which every POST gets. Requests t
 60 seconds.
 
 ```python
-client = Meteroid(base_url="https://api.example.com", max_retries=5, timeout=20.0)
+client = Meteroid(base_url="https://api.meteroid.com", max_retries=5, timeout=20.0)
 client.with_options(max_retries=0).add_ons.retrieve("addon_id")
 client.add_ons.retrieve("addon_id", timeout=5.0, max_retries=0)  # for one call
 ```
