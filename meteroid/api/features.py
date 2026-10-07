@@ -18,6 +18,15 @@ from ..models import (
     UpdateFeatureRequest,
 )
 from ..serialization import UNSET, Unset, to_json_value
+from ._pages import (
+    AsyncFeaturesListPage,
+    FeaturesListPage,
+)
+from ._pagination import (
+    AsyncPaginator,
+    PagePaging,
+    step,
+)
 from ._response import async_to_raw_response_wrapper, to_raw_response_wrapper
 from .common import (
     ApiBaseAsync,
@@ -37,7 +46,7 @@ class AsyncFeatures(ApiBaseAsync):
         """These methods, returning an :class:`APIResponse` with the status and headers."""
         return AsyncFeaturesWithRawResponse(self)
 
-    async def list(
+    def list(
         self,
         *,
         statuses: builtins.list[FeatureStatus] | None = None,
@@ -50,7 +59,7 @@ class AsyncFeatures(ApiBaseAsync):
         extra_body: t.Mapping[str, object] | None = None,
         timeout: Timeout | Unset = UNSET,
         max_retries: int | None = None,
-    ) -> FeatureListResponse:
+    ) -> AsyncPaginator[Feature, AsyncFeaturesListPage]:
         """List features
 
         :param statuses: Filter by feature status. Repeat the param to select multiple, omit to return all.
@@ -58,30 +67,41 @@ class AsyncFeatures(ApiBaseAsync):
         :param search: Search by feature name.
         :param page: Page number (0-indexed)
         :param per_page: Number of items per page"""
-        response = await self._request(
-            ApiRequest(
-                method="get",
-                path="/api/v1/features",
-                query_params=serialize_query_params(
-                    {
-                        "statuses": statuses,
-                        "product_id": product_id,
-                        "search": search,
-                        "page": page,
-                        "per_page": per_page,
+
+        async def fetch(page_param: int | None) -> FeatureListResponse:
+            response = await self._request(
+                ApiRequest(
+                    method="get",
+                    path="/api/v1/features",
+                    query_params=serialize_query_params(
+                        {
+                            "statuses": statuses,
+                            "product_id": product_id,
+                            "search": search,
+                            "page": page_param,
+                            "per_page": per_page,
+                        },
+                    ),
+                    error_types={
+                        "default": _models.RestErrorResponse,
                     },
-                ),
-                error_types={
-                    "default": _models.RestErrorResponse,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                max_retries=max_retries,
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                    max_retries=max_retries,
+                )
             )
+            return decode_response(response, FeatureListResponse)
+
+        paging = PagePaging[FeatureListResponse, Feature](
+            items=lambda body: body.data,
+            total_pages=lambda body: step(
+                body.pagination_meta, lambda v: v.total_pages
+            ),
+            first_page=0,
         )
-        return decode_response(response, FeatureListResponse)
+        return AsyncPaginator(lambda: AsyncFeaturesListPage._first(fetch, page, paging))
 
     async def create(
         self,
@@ -296,7 +316,7 @@ class Features(ApiBaseSync):
         extra_body: t.Mapping[str, object] | None = None,
         timeout: Timeout | Unset = UNSET,
         max_retries: int | None = None,
-    ) -> FeatureListResponse:
+    ) -> FeaturesListPage:
         """List features
 
         :param statuses: Filter by feature status. Repeat the param to select multiple, omit to return all.
@@ -304,30 +324,41 @@ class Features(ApiBaseSync):
         :param search: Search by feature name.
         :param page: Page number (0-indexed)
         :param per_page: Number of items per page"""
-        response = self._request(
-            ApiRequest(
-                method="get",
-                path="/api/v1/features",
-                query_params=serialize_query_params(
-                    {
-                        "statuses": statuses,
-                        "product_id": product_id,
-                        "search": search,
-                        "page": page,
-                        "per_page": per_page,
+
+        def fetch(page_param: int | None) -> FeatureListResponse:
+            response = self._request(
+                ApiRequest(
+                    method="get",
+                    path="/api/v1/features",
+                    query_params=serialize_query_params(
+                        {
+                            "statuses": statuses,
+                            "product_id": product_id,
+                            "search": search,
+                            "page": page_param,
+                            "per_page": per_page,
+                        },
+                    ),
+                    error_types={
+                        "default": _models.RestErrorResponse,
                     },
-                ),
-                error_types={
-                    "default": _models.RestErrorResponse,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                max_retries=max_retries,
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                    max_retries=max_retries,
+                )
             )
+            return decode_response(response, FeatureListResponse)
+
+        paging = PagePaging[FeatureListResponse, Feature](
+            items=lambda body: body.data,
+            total_pages=lambda body: step(
+                body.pagination_meta, lambda v: v.total_pages
+            ),
+            first_page=0,
         )
-        return decode_response(response, FeatureListResponse)
+        return FeaturesListPage._first(fetch, page, paging)
 
     def create(
         self,

@@ -25,6 +25,7 @@ from ..models import (
     PlanTypeEnum,
     PlanTypeEnumLiteral,
     PlanVersionListResponse,
+    PlanVersionSummary,
     PriceComponentInput,
     ProductFamilyId,
     ReplacePlanRequest,
@@ -32,6 +33,17 @@ from ..models import (
     TrialConfig,
 )
 from ..serialization import UNSET, Unset, to_json_value
+from ._pages import (
+    AsyncPlansListPage,
+    AsyncPlansListVersionsPage,
+    PlansListPage,
+    PlansListVersionsPage,
+)
+from ._pagination import (
+    AsyncPaginator,
+    PagePaging,
+    step,
+)
 from ._response import async_to_raw_response_wrapper, to_raw_response_wrapper
 from .common import (
     ApiBaseAsync,
@@ -120,7 +132,7 @@ class AsyncPlans(ApiBaseAsync):
         )
         return decode_response(response, EntitlementListResponse)
 
-    async def list(
+    def list(
         self,
         *,
         product_family_id: ProductFamilyId | None = None,
@@ -135,7 +147,7 @@ class AsyncPlans(ApiBaseAsync):
         extra_body: t.Mapping[str, object] | None = None,
         timeout: Timeout | Unset = UNSET,
         max_retries: int | None = None,
-    ) -> PlanListResponse:
+    ) -> AsyncPaginator[Plan, AsyncPlansListPage]:
         """List plans
 
         :param search: Search by plan name
@@ -144,32 +156,43 @@ class AsyncPlans(ApiBaseAsync):
         :param order_by: Sort order. Format: `column.direction`. Allowed columns: `name`, `status`, `plan_type`, `created_at`. Direction: `asc` or `desc`. Default: `created_at.desc`.
         :param page: Page number (0-indexed)
         :param per_page: Number of items per page"""
-        response = await self._request(
-            ApiRequest(
-                method="get",
-                path="/api/v1/plans",
-                query_params=serialize_query_params(
-                    {
-                        "product_family_id": product_family_id,
-                        "search": search,
-                        "status": status,
-                        "plan_type": plan_type,
-                        "order_by": order_by,
-                        "page": page,
-                        "per_page": per_page,
+
+        async def fetch(page_param: int | None) -> PlanListResponse:
+            response = await self._request(
+                ApiRequest(
+                    method="get",
+                    path="/api/v1/plans",
+                    query_params=serialize_query_params(
+                        {
+                            "product_family_id": product_family_id,
+                            "search": search,
+                            "status": status,
+                            "plan_type": plan_type,
+                            "order_by": order_by,
+                            "page": page_param,
+                            "per_page": per_page,
+                        },
+                    ),
+                    error_types={
+                        "default": _models.RestErrorResponse,
                     },
-                ),
-                error_types={
-                    "default": _models.RestErrorResponse,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                max_retries=max_retries,
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                    max_retries=max_retries,
+                )
             )
+            return decode_response(response, PlanListResponse)
+
+        paging = PagePaging[PlanListResponse, Plan](
+            items=lambda body: body.data,
+            total_pages=lambda body: step(
+                body.pagination_meta, lambda v: v.total_pages
+            ),
+            first_page=0,
         )
-        return decode_response(response, PlanListResponse)
+        return AsyncPaginator(lambda: AsyncPlansListPage._first(fetch, page, paging))
 
     async def create(
         self,
@@ -543,7 +566,7 @@ class AsyncPlans(ApiBaseAsync):
             )
         )
 
-    async def list_versions(
+    def list_versions(
         self,
         plan_id: str,
         *,
@@ -554,35 +577,48 @@ class AsyncPlans(ApiBaseAsync):
         extra_body: t.Mapping[str, object] | None = None,
         timeout: Timeout | Unset = UNSET,
         max_retries: int | None = None,
-    ) -> PlanVersionListResponse:
+    ) -> AsyncPaginator[PlanVersionSummary, AsyncPlansListVersionsPage]:
         """List plan versions
 
         :param page: Page number (0-indexed)
         :param per_page: Number of items per page"""
-        response = await self._request(
-            ApiRequest(
-                method="get",
-                path="/api/v1/plans/{plan_id}/versions",
-                path_params={
-                    "plan_id": plan_id,
-                },
-                query_params=serialize_query_params(
-                    {
-                        "page": page,
-                        "per_page": per_page,
+
+        async def fetch(page_param: int | None) -> PlanVersionListResponse:
+            response = await self._request(
+                ApiRequest(
+                    method="get",
+                    path="/api/v1/plans/{plan_id}/versions",
+                    path_params={
+                        "plan_id": plan_id,
                     },
-                ),
-                error_types={
-                    "default": _models.RestErrorResponse,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                max_retries=max_retries,
+                    query_params=serialize_query_params(
+                        {
+                            "page": page_param,
+                            "per_page": per_page,
+                        },
+                    ),
+                    error_types={
+                        "default": _models.RestErrorResponse,
+                    },
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                    max_retries=max_retries,
+                )
             )
+            return decode_response(response, PlanVersionListResponse)
+
+        paging = PagePaging[PlanVersionListResponse, PlanVersionSummary](
+            items=lambda body: body.data,
+            total_pages=lambda body: step(
+                body.pagination_meta, lambda v: v.total_pages
+            ),
+            first_page=0,
         )
-        return decode_response(response, PlanVersionListResponse)
+        return AsyncPaginator(
+            lambda: AsyncPlansListVersionsPage._first(fetch, page, paging)
+        )
 
 
 class AsyncPlansWithRawResponse:
@@ -704,7 +740,7 @@ class Plans(ApiBaseSync):
         extra_body: t.Mapping[str, object] | None = None,
         timeout: Timeout | Unset = UNSET,
         max_retries: int | None = None,
-    ) -> PlanListResponse:
+    ) -> PlansListPage:
         """List plans
 
         :param search: Search by plan name
@@ -713,32 +749,43 @@ class Plans(ApiBaseSync):
         :param order_by: Sort order. Format: `column.direction`. Allowed columns: `name`, `status`, `plan_type`, `created_at`. Direction: `asc` or `desc`. Default: `created_at.desc`.
         :param page: Page number (0-indexed)
         :param per_page: Number of items per page"""
-        response = self._request(
-            ApiRequest(
-                method="get",
-                path="/api/v1/plans",
-                query_params=serialize_query_params(
-                    {
-                        "product_family_id": product_family_id,
-                        "search": search,
-                        "status": status,
-                        "plan_type": plan_type,
-                        "order_by": order_by,
-                        "page": page,
-                        "per_page": per_page,
+
+        def fetch(page_param: int | None) -> PlanListResponse:
+            response = self._request(
+                ApiRequest(
+                    method="get",
+                    path="/api/v1/plans",
+                    query_params=serialize_query_params(
+                        {
+                            "product_family_id": product_family_id,
+                            "search": search,
+                            "status": status,
+                            "plan_type": plan_type,
+                            "order_by": order_by,
+                            "page": page_param,
+                            "per_page": per_page,
+                        },
+                    ),
+                    error_types={
+                        "default": _models.RestErrorResponse,
                     },
-                ),
-                error_types={
-                    "default": _models.RestErrorResponse,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                max_retries=max_retries,
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                    max_retries=max_retries,
+                )
             )
+            return decode_response(response, PlanListResponse)
+
+        paging = PagePaging[PlanListResponse, Plan](
+            items=lambda body: body.data,
+            total_pages=lambda body: step(
+                body.pagination_meta, lambda v: v.total_pages
+            ),
+            first_page=0,
         )
-        return decode_response(response, PlanListResponse)
+        return PlansListPage._first(fetch, page, paging)
 
     def create(
         self,
@@ -1123,35 +1170,46 @@ class Plans(ApiBaseSync):
         extra_body: t.Mapping[str, object] | None = None,
         timeout: Timeout | Unset = UNSET,
         max_retries: int | None = None,
-    ) -> PlanVersionListResponse:
+    ) -> PlansListVersionsPage:
         """List plan versions
 
         :param page: Page number (0-indexed)
         :param per_page: Number of items per page"""
-        response = self._request(
-            ApiRequest(
-                method="get",
-                path="/api/v1/plans/{plan_id}/versions",
-                path_params={
-                    "plan_id": plan_id,
-                },
-                query_params=serialize_query_params(
-                    {
-                        "page": page,
-                        "per_page": per_page,
+
+        def fetch(page_param: int | None) -> PlanVersionListResponse:
+            response = self._request(
+                ApiRequest(
+                    method="get",
+                    path="/api/v1/plans/{plan_id}/versions",
+                    path_params={
+                        "plan_id": plan_id,
                     },
-                ),
-                error_types={
-                    "default": _models.RestErrorResponse,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                max_retries=max_retries,
+                    query_params=serialize_query_params(
+                        {
+                            "page": page_param,
+                            "per_page": per_page,
+                        },
+                    ),
+                    error_types={
+                        "default": _models.RestErrorResponse,
+                    },
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                    max_retries=max_retries,
+                )
             )
+            return decode_response(response, PlanVersionListResponse)
+
+        paging = PagePaging[PlanVersionListResponse, PlanVersionSummary](
+            items=lambda body: body.data,
+            total_pages=lambda body: step(
+                body.pagination_meta, lambda v: v.total_pages
+            ),
+            first_page=0,
         )
-        return decode_response(response, PlanVersionListResponse)
+        return PlansListVersionsPage._first(fetch, page, paging)
 
 
 class PlansWithRawResponse:

@@ -16,6 +16,15 @@ from ..models import (
     SubscriptionId,
 )
 from ..serialization import UNSET, Unset, to_json_value
+from ._pages import (
+    AsyncInvoicesListPage,
+    InvoicesListPage,
+)
+from ._pagination import (
+    AsyncPaginator,
+    PagePaging,
+    step,
+)
 from ._response import async_to_raw_response_wrapper, to_raw_response_wrapper
 from .common import (
     ApiBaseAsync,
@@ -35,7 +44,7 @@ class AsyncInvoices(ApiBaseAsync):
         """These methods, returning an :class:`APIResponse` with the status and headers."""
         return AsyncInvoicesWithRawResponse(self)
 
-    async def list(
+    def list(
         self,
         *,
         customer_id: str | None = None,
@@ -50,7 +59,7 @@ class AsyncInvoices(ApiBaseAsync):
         extra_body: t.Mapping[str, object] | None = None,
         timeout: Timeout | Unset = UNSET,
         max_retries: int | None = None,
-    ) -> InvoiceListResponse:
+    ) -> AsyncPaginator[Invoice, AsyncInvoicesListPage]:
         """List invoices with optional filtering by customer, subscription, or status.
 
         :param customer_id: Filter by customer ID or alias
@@ -58,32 +67,43 @@ class AsyncInvoices(ApiBaseAsync):
         :param order_by: Sort order. Format: `column.direction`. Allowed columns: `invoice_number`, `customer_name`, `amount`, `invoice_date`, `status`, `payment_status`. Direction: `asc` or `desc`. Default: `invoice_date.desc`.
         :param page: Page number (0-indexed)
         :param per_page: Number of items per page"""
-        response = await self._request(
-            ApiRequest(
-                method="get",
-                path="/api/v1/invoices",
-                query_params=serialize_query_params(
-                    {
-                        "customer_id": customer_id,
-                        "subscription_id": subscription_id,
-                        "statuses": statuses,
-                        "einvoicing_status": einvoicing_status,
-                        "order_by": order_by,
-                        "page": page,
-                        "per_page": per_page,
+
+        async def fetch(page_param: int | None) -> InvoiceListResponse:
+            response = await self._request(
+                ApiRequest(
+                    method="get",
+                    path="/api/v1/invoices",
+                    query_params=serialize_query_params(
+                        {
+                            "customer_id": customer_id,
+                            "subscription_id": subscription_id,
+                            "statuses": statuses,
+                            "einvoicing_status": einvoicing_status,
+                            "order_by": order_by,
+                            "page": page_param,
+                            "per_page": per_page,
+                        },
+                    ),
+                    error_types={
+                        "default": _models.RestErrorResponse,
                     },
-                ),
-                error_types={
-                    "default": _models.RestErrorResponse,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                max_retries=max_retries,
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                    max_retries=max_retries,
+                )
             )
+            return decode_response(response, InvoiceListResponse)
+
+        paging = PagePaging[InvoiceListResponse, Invoice](
+            items=lambda body: body.data,
+            total_pages=lambda body: step(
+                body.pagination_meta, lambda v: v.total_pages
+            ),
+            first_page=0,
         )
-        return decode_response(response, InvoiceListResponse)
+        return AsyncPaginator(lambda: AsyncInvoicesListPage._first(fetch, page, paging))
 
     async def retrieve(
         self,
@@ -297,7 +317,7 @@ class Invoices(ApiBaseSync):
         extra_body: t.Mapping[str, object] | None = None,
         timeout: Timeout | Unset = UNSET,
         max_retries: int | None = None,
-    ) -> InvoiceListResponse:
+    ) -> InvoicesListPage:
         """List invoices with optional filtering by customer, subscription, or status.
 
         :param customer_id: Filter by customer ID or alias
@@ -305,32 +325,43 @@ class Invoices(ApiBaseSync):
         :param order_by: Sort order. Format: `column.direction`. Allowed columns: `invoice_number`, `customer_name`, `amount`, `invoice_date`, `status`, `payment_status`. Direction: `asc` or `desc`. Default: `invoice_date.desc`.
         :param page: Page number (0-indexed)
         :param per_page: Number of items per page"""
-        response = self._request(
-            ApiRequest(
-                method="get",
-                path="/api/v1/invoices",
-                query_params=serialize_query_params(
-                    {
-                        "customer_id": customer_id,
-                        "subscription_id": subscription_id,
-                        "statuses": statuses,
-                        "einvoicing_status": einvoicing_status,
-                        "order_by": order_by,
-                        "page": page,
-                        "per_page": per_page,
+
+        def fetch(page_param: int | None) -> InvoiceListResponse:
+            response = self._request(
+                ApiRequest(
+                    method="get",
+                    path="/api/v1/invoices",
+                    query_params=serialize_query_params(
+                        {
+                            "customer_id": customer_id,
+                            "subscription_id": subscription_id,
+                            "statuses": statuses,
+                            "einvoicing_status": einvoicing_status,
+                            "order_by": order_by,
+                            "page": page_param,
+                            "per_page": per_page,
+                        },
+                    ),
+                    error_types={
+                        "default": _models.RestErrorResponse,
                     },
-                ),
-                error_types={
-                    "default": _models.RestErrorResponse,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                max_retries=max_retries,
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                    max_retries=max_retries,
+                )
             )
+            return decode_response(response, InvoiceListResponse)
+
+        paging = PagePaging[InvoiceListResponse, Invoice](
+            items=lambda body: body.data,
+            total_pages=lambda body: step(
+                body.pagination_meta, lambda v: v.total_pages
+            ),
+            first_page=0,
         )
-        return decode_response(response, InvoiceListResponse)
+        return InvoicesListPage._first(fetch, page, paging)
 
     def retrieve(
         self,

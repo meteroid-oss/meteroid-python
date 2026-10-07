@@ -20,6 +20,15 @@ from ..models import (
     UpdateProductRequest,
 )
 from ..serialization import UNSET, Unset, to_json_value
+from ._pages import (
+    AsyncProductsListPage,
+    ProductsListPage,
+)
+from ._pagination import (
+    AsyncPaginator,
+    PagePaging,
+    step,
+)
 from ._response import async_to_raw_response_wrapper, to_raw_response_wrapper
 from .common import (
     ApiBaseAsync,
@@ -39,7 +48,7 @@ class AsyncProducts(ApiBaseAsync):
         """These methods, returning an :class:`APIResponse` with the status and headers."""
         return AsyncProductsWithRawResponse(self)
 
-    async def list(
+    def list(
         self,
         *,
         product_family_id: ProductFamilyId | None = None,
@@ -52,36 +61,47 @@ class AsyncProducts(ApiBaseAsync):
         extra_body: t.Mapping[str, object] | None = None,
         timeout: Timeout | Unset = UNSET,
         max_retries: int | None = None,
-    ) -> ProductListResponse:
+    ) -> AsyncPaginator[Product, AsyncProductsListPage]:
         """List products
 
         :param order_by: Sort order. Format: `column.direction`. Allowed columns: `name`, `created_at`. Direction: `asc` or `desc`. Default: `name.asc`.
         :param page: Page number (0-indexed)
         :param per_page: Number of items per page"""
-        response = await self._request(
-            ApiRequest(
-                method="get",
-                path="/api/v1/products",
-                query_params=serialize_query_params(
-                    {
-                        "product_family_id": product_family_id,
-                        "search": search,
-                        "order_by": order_by,
-                        "page": page,
-                        "per_page": per_page,
+
+        async def fetch(page_param: int | None) -> ProductListResponse:
+            response = await self._request(
+                ApiRequest(
+                    method="get",
+                    path="/api/v1/products",
+                    query_params=serialize_query_params(
+                        {
+                            "product_family_id": product_family_id,
+                            "search": search,
+                            "order_by": order_by,
+                            "page": page_param,
+                            "per_page": per_page,
+                        },
+                    ),
+                    error_types={
+                        "default": _models.RestErrorResponse,
                     },
-                ),
-                error_types={
-                    "default": _models.RestErrorResponse,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                max_retries=max_retries,
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                    max_retries=max_retries,
+                )
             )
+            return decode_response(response, ProductListResponse)
+
+        paging = PagePaging[ProductListResponse, Product](
+            items=lambda body: body.data,
+            total_pages=lambda body: step(
+                body.pagination_meta, lambda v: v.total_pages
+            ),
+            first_page=0,
         )
-        return decode_response(response, ProductListResponse)
+        return AsyncPaginator(lambda: AsyncProductsListPage._first(fetch, page, paging))
 
     async def create(
         self,
@@ -370,36 +390,47 @@ class Products(ApiBaseSync):
         extra_body: t.Mapping[str, object] | None = None,
         timeout: Timeout | Unset = UNSET,
         max_retries: int | None = None,
-    ) -> ProductListResponse:
+    ) -> ProductsListPage:
         """List products
 
         :param order_by: Sort order. Format: `column.direction`. Allowed columns: `name`, `created_at`. Direction: `asc` or `desc`. Default: `name.asc`.
         :param page: Page number (0-indexed)
         :param per_page: Number of items per page"""
-        response = self._request(
-            ApiRequest(
-                method="get",
-                path="/api/v1/products",
-                query_params=serialize_query_params(
-                    {
-                        "product_family_id": product_family_id,
-                        "search": search,
-                        "order_by": order_by,
-                        "page": page,
-                        "per_page": per_page,
+
+        def fetch(page_param: int | None) -> ProductListResponse:
+            response = self._request(
+                ApiRequest(
+                    method="get",
+                    path="/api/v1/products",
+                    query_params=serialize_query_params(
+                        {
+                            "product_family_id": product_family_id,
+                            "search": search,
+                            "order_by": order_by,
+                            "page": page_param,
+                            "per_page": per_page,
+                        },
+                    ),
+                    error_types={
+                        "default": _models.RestErrorResponse,
                     },
-                ),
-                error_types={
-                    "default": _models.RestErrorResponse,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                max_retries=max_retries,
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                    max_retries=max_retries,
+                )
             )
+            return decode_response(response, ProductListResponse)
+
+        paging = PagePaging[ProductListResponse, Product](
+            items=lambda body: body.data,
+            total_pages=lambda body: step(
+                body.pagination_meta, lambda v: v.total_pages
+            ),
+            first_page=0,
         )
-        return decode_response(response, ProductListResponse)
+        return ProductsListPage._first(fetch, page, paging)
 
     def create(
         self,
