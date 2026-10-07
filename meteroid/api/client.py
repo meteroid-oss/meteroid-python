@@ -9,7 +9,7 @@ import typing as t
 
 import httpx
 
-from ..serialization import UNSET, MeteroidError, Unset
+from ..serialization import UNSET, Unset
 from ._auth import SecurityScheme, TokenProvider
 from .common import DEFAULT_MAX_RETRIES, DEFAULT_TIMEOUT, Configuration, Timeout
 from .middleware import AsyncMiddleware, SyncMiddleware
@@ -144,6 +144,8 @@ __all__ = [
     "MeteroidWithRawResponse",
 ]
 
+DEFAULT_BASE_URL = "https://api.meteroid.com"
+
 
 SECURITY_SCHEMES: dict[str, SecurityScheme] = {
     "bearer_auth": SecurityScheme("bearer"),
@@ -160,11 +162,7 @@ def _configuration(
     token_provider: TokenProvider | None,
 ) -> Configuration:
     """The configuration of a client: its arguments, else the environment."""
-    base_url = base_url or os.environ.get("METEROID_BASE_URL")
-    if not base_url:
-        raise MeteroidError(
-            "pass base_url to the client or set the METEROID_BASE_URL environment variable"
-        )
+    base_url = base_url or os.environ.get("METEROID_BASE_URL") or DEFAULT_BASE_URL
     return Configuration(
         base_path=str(base_url).rstrip("/"),
         bearer_access_token=api_key
@@ -214,7 +212,7 @@ class Meteroid:
         """Creates a client.
 
         :param api_key: The token of the API, read from ``METEROID_API_KEY`` when ``None``.
-        :param base_url: Defaults to ``METEROID_BASE_URL``; one of them is required.
+        :param base_url: Defaults to ``METEROID_BASE_URL``, else ``https://api.meteroid.com``.
         :param timeout: Of each attempt, in seconds (60 by default); ``None`` waits.
         :param max_retries: Retries of a failed idempotent request (2 by default).
         :param default_headers: Sent with every request.
@@ -608,7 +606,7 @@ class AsyncMeteroid:
         """Creates a client.
 
         :param api_key: The token of the API, read from ``METEROID_API_KEY`` when ``None``.
-        :param base_url: Defaults to ``METEROID_BASE_URL``; one of them is required.
+        :param base_url: Defaults to ``METEROID_BASE_URL``, else ``https://api.meteroid.com``.
         :param timeout: Of each attempt, in seconds (60 by default); ``None`` waits.
         :param max_retries: Retries of a failed idempotent request (2 by default).
         :param default_headers: Sent with every request.

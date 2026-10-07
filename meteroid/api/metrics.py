@@ -15,12 +15,22 @@ from ..models import (
     MetricFilter,
     MetricListResponse,
     MetricSegmentationMatrix,
+    MetricSummary,
     ProductFamilyId,
     ProductId,
     UnitConversion,
     UpdateMetricRequest,
 )
 from ..serialization import UNSET, Unset, to_json_value
+from ._pages import (
+    AsyncMetricsListPage,
+    MetricsListPage,
+)
+from ._pagination import (
+    AsyncPaginator,
+    PagePaging,
+    step,
+)
 from ._response import async_to_raw_response_wrapper, to_raw_response_wrapper
 from .common import (
     ApiBaseAsync,
@@ -40,7 +50,7 @@ class AsyncMetrics(ApiBaseAsync):
         """These methods, returning an :class:`APIResponse` with the status and headers."""
         return AsyncMetricsWithRawResponse(self)
 
-    async def list(
+    def list(
         self,
         *,
         product_family_id: ProductFamilyId | None = None,
@@ -53,37 +63,48 @@ class AsyncMetrics(ApiBaseAsync):
         extra_body: t.Mapping[str, object] | None = None,
         timeout: Timeout | Unset = UNSET,
         max_retries: int | None = None,
-    ) -> MetricListResponse:
+    ) -> AsyncPaginator[MetricSummary, AsyncMetricsListPage]:
         """List billable metrics
 
         :param search: Search by metric name or code
         :param order_by: Sort order. Format: `column.direction`. Allowed columns: `name`, `code`, `created_at`. Direction: `asc` or `desc`. Default: `name.asc`.
         :param page: Page number (0-indexed)
         :param per_page: Number of items per page"""
-        response = await self._request(
-            ApiRequest(
-                method="get",
-                path="/api/v1/metrics",
-                query_params=serialize_query_params(
-                    {
-                        "product_family_id": product_family_id,
-                        "search": search,
-                        "order_by": order_by,
-                        "page": page,
-                        "per_page": per_page,
+
+        async def fetch(page_param: int | None) -> MetricListResponse:
+            response = await self._request(
+                ApiRequest(
+                    method="get",
+                    path="/api/v1/metrics",
+                    query_params=serialize_query_params(
+                        {
+                            "product_family_id": product_family_id,
+                            "search": search,
+                            "order_by": order_by,
+                            "page": page_param,
+                            "per_page": per_page,
+                        },
+                    ),
+                    error_types={
+                        "default": _models.RestErrorResponse,
                     },
-                ),
-                error_types={
-                    "default": _models.RestErrorResponse,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                max_retries=max_retries,
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                    max_retries=max_retries,
+                )
             )
+            return decode_response(response, MetricListResponse)
+
+        paging = PagePaging[MetricListResponse, MetricSummary](
+            items=lambda body: body.data,
+            total_pages=lambda body: step(
+                body.pagination_meta, lambda v: v.total_pages
+            ),
+            first_page=0,
         )
-        return decode_response(response, MetricListResponse)
+        return AsyncPaginator(lambda: AsyncMetricsListPage._first(fetch, page, paging))
 
     async def create(
         self,
@@ -314,37 +335,48 @@ class Metrics(ApiBaseSync):
         extra_body: t.Mapping[str, object] | None = None,
         timeout: Timeout | Unset = UNSET,
         max_retries: int | None = None,
-    ) -> MetricListResponse:
+    ) -> MetricsListPage:
         """List billable metrics
 
         :param search: Search by metric name or code
         :param order_by: Sort order. Format: `column.direction`. Allowed columns: `name`, `code`, `created_at`. Direction: `asc` or `desc`. Default: `name.asc`.
         :param page: Page number (0-indexed)
         :param per_page: Number of items per page"""
-        response = self._request(
-            ApiRequest(
-                method="get",
-                path="/api/v1/metrics",
-                query_params=serialize_query_params(
-                    {
-                        "product_family_id": product_family_id,
-                        "search": search,
-                        "order_by": order_by,
-                        "page": page,
-                        "per_page": per_page,
+
+        def fetch(page_param: int | None) -> MetricListResponse:
+            response = self._request(
+                ApiRequest(
+                    method="get",
+                    path="/api/v1/metrics",
+                    query_params=serialize_query_params(
+                        {
+                            "product_family_id": product_family_id,
+                            "search": search,
+                            "order_by": order_by,
+                            "page": page_param,
+                            "per_page": per_page,
+                        },
+                    ),
+                    error_types={
+                        "default": _models.RestErrorResponse,
                     },
-                ),
-                error_types={
-                    "default": _models.RestErrorResponse,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                max_retries=max_retries,
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                    max_retries=max_retries,
+                )
             )
+            return decode_response(response, MetricListResponse)
+
+        paging = PagePaging[MetricListResponse, MetricSummary](
+            items=lambda body: body.data,
+            total_pages=lambda body: step(
+                body.pagination_meta, lambda v: v.total_pages
+            ),
+            first_page=0,
         )
-        return decode_response(response, MetricListResponse)
+        return MetricsListPage._first(fetch, page, paging)
 
     def create(
         self,

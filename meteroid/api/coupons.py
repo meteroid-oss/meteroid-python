@@ -18,6 +18,15 @@ from ..models import (
     UpdateCouponRequest,
 )
 from ..serialization import UNSET, Unset, to_json_value
+from ._pages import (
+    AsyncCouponsListPage,
+    CouponsListPage,
+)
+from ._pagination import (
+    AsyncPaginator,
+    PagePaging,
+    step,
+)
 from ._response import async_to_raw_response_wrapper, to_raw_response_wrapper
 from .common import (
     ApiBaseAsync,
@@ -37,7 +46,7 @@ class AsyncCoupons(ApiBaseAsync):
         """These methods, returning an :class:`APIResponse` with the status and headers."""
         return AsyncCouponsWithRawResponse(self)
 
-    async def list(
+    def list(
         self,
         *,
         search: str | None = None,
@@ -50,36 +59,47 @@ class AsyncCoupons(ApiBaseAsync):
         extra_body: t.Mapping[str, object] | None = None,
         timeout: Timeout | Unset = UNSET,
         max_retries: int | None = None,
-    ) -> CouponListResponse:
+    ) -> AsyncPaginator[Coupon, AsyncCouponsListPage]:
         """List coupons
 
         :param order_by: Sort order. Format: `column.direction`. Allowed columns: `code`, `created_at`, `expires_at`. Direction: `asc` or `desc`. Default: `created_at.desc`.
         :param page: Page number (0-indexed)
         :param per_page: Number of items per page"""
-        response = await self._request(
-            ApiRequest(
-                method="get",
-                path="/api/v1/coupons",
-                query_params=serialize_query_params(
-                    {
-                        "search": search,
-                        "filter": filter,
-                        "order_by": order_by,
-                        "page": page,
-                        "per_page": per_page,
+
+        async def fetch(page_param: int | None) -> CouponListResponse:
+            response = await self._request(
+                ApiRequest(
+                    method="get",
+                    path="/api/v1/coupons",
+                    query_params=serialize_query_params(
+                        {
+                            "search": search,
+                            "filter": filter,
+                            "order_by": order_by,
+                            "page": page_param,
+                            "per_page": per_page,
+                        },
+                    ),
+                    error_types={
+                        "default": _models.RestErrorResponse,
                     },
-                ),
-                error_types={
-                    "default": _models.RestErrorResponse,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                max_retries=max_retries,
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                    max_retries=max_retries,
+                )
             )
+            return decode_response(response, CouponListResponse)
+
+        paging = PagePaging[CouponListResponse, Coupon](
+            items=lambda body: body.data,
+            total_pages=lambda body: step(
+                body.pagination_meta, lambda v: v.total_pages
+            ),
+            first_page=0,
         )
-        return decode_response(response, CouponListResponse)
+        return AsyncPaginator(lambda: AsyncCouponsListPage._first(fetch, page, paging))
 
     async def create(
         self,
@@ -351,36 +371,47 @@ class Coupons(ApiBaseSync):
         extra_body: t.Mapping[str, object] | None = None,
         timeout: Timeout | Unset = UNSET,
         max_retries: int | None = None,
-    ) -> CouponListResponse:
+    ) -> CouponsListPage:
         """List coupons
 
         :param order_by: Sort order. Format: `column.direction`. Allowed columns: `code`, `created_at`, `expires_at`. Direction: `asc` or `desc`. Default: `created_at.desc`.
         :param page: Page number (0-indexed)
         :param per_page: Number of items per page"""
-        response = self._request(
-            ApiRequest(
-                method="get",
-                path="/api/v1/coupons",
-                query_params=serialize_query_params(
-                    {
-                        "search": search,
-                        "filter": filter,
-                        "order_by": order_by,
-                        "page": page,
-                        "per_page": per_page,
+
+        def fetch(page_param: int | None) -> CouponListResponse:
+            response = self._request(
+                ApiRequest(
+                    method="get",
+                    path="/api/v1/coupons",
+                    query_params=serialize_query_params(
+                        {
+                            "search": search,
+                            "filter": filter,
+                            "order_by": order_by,
+                            "page": page_param,
+                            "per_page": per_page,
+                        },
+                    ),
+                    error_types={
+                        "default": _models.RestErrorResponse,
                     },
-                ),
-                error_types={
-                    "default": _models.RestErrorResponse,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                max_retries=max_retries,
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                    max_retries=max_retries,
+                )
             )
+            return decode_response(response, CouponListResponse)
+
+        paging = PagePaging[CouponListResponse, Coupon](
+            items=lambda body: body.data,
+            total_pages=lambda body: step(
+                body.pagination_meta, lambda v: v.total_pages
+            ),
+            first_page=0,
         )
-        return decode_response(response, CouponListResponse)
+        return CouponsListPage._first(fetch, page, paging)
 
     def create(
         self,

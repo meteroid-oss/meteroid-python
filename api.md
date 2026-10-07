@@ -6,6 +6,9 @@ resource; `AsyncMeteroid` has the same methods, to await, and `client.with_raw_r
 the same resources, returning the HTTP response. Every method also takes the keyword arguments
 `extra_headers`, `extra_query`, `extra_body`, `timeout` and `max_retries` for that call; `=...`
 marks optional keyword arguments. Models are in [`meteroid/models`](meteroid/models).
+A list method returns its first page, such as a `AddOnsListPage`: a subclass of the response
+model (`AddOnListResponse`) with the paging members `items`, `has_next_page()`, `get_next_page()`,
+`iter_pages()` and `body`, which iterates every item. The page classes are in `meteroid.api`.
 
 [Add ons](#add-ons) · [Batch jobs](#batch-jobs) · [Checkout sessions](#checkout-sessions) · [Connect](#connect) · [Coupons](#coupons) · [Credit notes](#credit-notes) · [Custom properties](#custom-properties) · [Customers](#customers) · [Entitlements](#entitlements) · [Events](#events) · [Features](#features) · [Invoices](#invoices) · [Metrics](#metrics) · [Oauth](#oauth) · [Oauth apps](#oauth-apps) · [Plans](#plans) · [Product families](#product-families) · [Products](#products) · [Subscriptions](#subscriptions) · [Usage](#usage)
 
@@ -15,7 +18,7 @@ marks optional keyword arguments. Models are in [`meteroid/models`](meteroid/mod
 
 | Method | Request | Returns |
 | --- | --- | --- |
-| `client.add_ons.list(*, search=..., currency=..., include_archived=..., order_by=..., page=..., per_page=...) -> AddOnListResponse` | `GET /api/v1/addons` | [`AddOnListResponse`](meteroid/models/add_on_list_response.py) |
+| `client.add_ons.list(*, search=..., currency=..., include_archived=..., order_by=..., page=..., per_page=...) -> AddOnsListPage` | `GET /api/v1/addons` | [`AddOnListResponse`](meteroid/models/add_on_list_response.py) pages of [`AddOn`](meteroid/models/add_on.py) |
 | `client.add_ons.create(*, name: str, price_id: PriceId, product_id: ProductId, description=..., max_instances_per_subscription=..., self_serviceable=...) -> AddOn` | `POST /api/v1/addons` | [`AddOn`](meteroid/models/add_on.py) |
 | `client.add_ons.retrieve(addon_id: str) -> AddOn` | `GET /api/v1/addons/{addon_id}` | [`AddOn`](meteroid/models/add_on.py) |
 | `client.add_ons.update(addon_id: str, *, description=..., max_instances_per_subscription=..., name=..., price_id=..., self_serviceable=...) -> AddOn` | `PATCH /api/v1/addons/{addon_id}` | [`AddOn`](meteroid/models/add_on.py) |
@@ -30,9 +33,9 @@ marks optional keyword arguments. Models are in [`meteroid/models`](meteroid/mod
 
 | Method | Request | Returns |
 | --- | --- | --- |
-| `client.batch_jobs.list(*, job_type=..., status=..., page=..., per_page=...) -> BatchJobListResponse` | `GET /api/v1/batch-jobs` | [`BatchJobListResponse`](meteroid/models/batch_job_list_response.py) |
+| `client.batch_jobs.list(*, job_type=..., status=..., page=..., per_page=...) -> BatchJobsListPage` | `GET /api/v1/batch-jobs` | [`BatchJobListResponse`](meteroid/models/batch_job_list_response.py) pages of [`BatchJobResponse`](meteroid/models/batch_job_response.py) |
 | `client.batch_jobs.retrieve(batch_job_id: str) -> BatchJobDetailResponse` | `GET /api/v1/batch-jobs/{batch_job_id}` | [`BatchJobDetailResponse`](meteroid/models/batch_job_detail_response.py) |
-| `client.batch_jobs.list_failures(batch_job_id: str, *, chunk_id=..., limit=..., offset=...) -> BatchJobFailuresResponse` | `GET /api/v1/batch-jobs/{batch_job_id}/failures` | [`BatchJobFailuresResponse`](meteroid/models/batch_job_failures_response.py) |
+| `client.batch_jobs.list_failures(batch_job_id: str, *, chunk_id=..., limit=..., offset=...) -> BatchJobsListFailuresPage` | `GET /api/v1/batch-jobs/{batch_job_id}/failures` | [`BatchJobFailuresResponse`](meteroid/models/batch_job_failures_response.py) pages of [`BatchJobItemFailureResponse`](meteroid/models/batch_job_item_failure_response.py) |
 
 ## Checkout sessions
 
@@ -63,7 +66,7 @@ marks optional keyword arguments. Models are in [`meteroid/models`](meteroid/mod
 
 | Method | Request | Returns |
 | --- | --- | --- |
-| `client.coupons.list(*, search=..., filter=..., order_by=..., page=..., per_page=...) -> CouponListResponse` | `GET /api/v1/coupons` | [`CouponListResponse`](meteroid/models/coupon_list_response.py) |
+| `client.coupons.list(*, search=..., filter=..., order_by=..., page=..., per_page=...) -> CouponsListPage` | `GET /api/v1/coupons` | [`CouponListResponse`](meteroid/models/coupon_list_response.py) pages of [`Coupon`](meteroid/models/coupon.py) |
 | `client.coupons.create(*, code: str, discount: CouponDiscount, description=..., expires_at=..., plan_ids=..., recurring_value=..., redemption_limit=..., reusable=...) -> Coupon` | `POST /api/v1/coupons` | [`Coupon`](meteroid/models/coupon.py) |
 | `client.coupons.retrieve(coupon_id: str) -> Coupon` | `GET /api/v1/coupons/{coupon_id}` | [`Coupon`](meteroid/models/coupon.py) |
 | `client.coupons.update(coupon_id: str, *, description=..., discount=..., plan_ids=...) -> Coupon` | `PATCH /api/v1/coupons/{coupon_id}` | [`Coupon`](meteroid/models/coupon.py) |
@@ -78,7 +81,7 @@ marks optional keyword arguments. Models are in [`meteroid/models`](meteroid/mod
 
 | Method | Request | Returns |
 | --- | --- | --- |
-| `client.credit_notes.list(*, customer_id=..., invoice_id=..., status=..., search=..., order_by=..., page=..., per_page=...) -> CreditNoteListResponse` | `GET /api/v1/credit-notes` | [`CreditNoteListResponse`](meteroid/models/credit_note_list_response.py) |
+| `client.credit_notes.list(*, customer_id=..., invoice_id=..., status=..., search=..., order_by=..., page=..., per_page=...) -> CreditNotesListPage` | `GET /api/v1/credit-notes` | [`CreditNoteListResponse`](meteroid/models/credit_note_list_response.py) pages of [`CreditNote`](meteroid/models/credit_note.py) |
 | `client.credit_notes.retrieve(credit_note_id: str) -> CreditNote` | `GET /api/v1/credit-notes/{credit_note_id}` | [`CreditNote`](meteroid/models/credit_note.py) |
 | `client.credit_notes.update_custom_properties(credit_note_id: str, *, custom_properties: t.Any) -> CreditNote` | `PATCH /api/v1/credit-notes/{credit_note_id}/custom-properties` | [`CreditNote`](meteroid/models/credit_note.py) |
 | `client.credit_notes.download(credit_note_id: str) -> bytes` | `GET /api/v1/credit-notes/{credit_note_id}/download` | bytes |
@@ -90,7 +93,7 @@ marks optional keyword arguments. Models are in [`meteroid/models`](meteroid/mod
 
 | Method | Request | Returns |
 | --- | --- | --- |
-| `client.custom_properties.list_custom_property_definitions(*, entity_type=..., include_archived=..., page=..., per_page=...) -> CustomPropertyDefinitionListResponse` | `GET /api/v1/custom-property-definitions` | [`CustomPropertyDefinitionListResponse`](meteroid/models/custom_property_definition_list_response.py) |
+| `client.custom_properties.list_custom_property_definitions(*, entity_type=..., include_archived=..., page=..., per_page=...) -> CustomPropertiesListCustomPropertyDefinitionsPage` | `GET /api/v1/custom-property-definitions` | [`CustomPropertyDefinitionListResponse`](meteroid/models/custom_property_definition_list_response.py) pages of [`CustomPropertyDefinition`](meteroid/models/custom_property_definition.py) |
 | `client.custom_properties.create_custom_property_definition(*, entity_type: CustomPropertyEntityType, key: str, name: str, property_type: CustomPropertyType, config=..., default_value=..., description=..., display_order=..., required=...) -> CustomPropertyDefinition` | `POST /api/v1/custom-property-definitions` | [`CustomPropertyDefinition`](meteroid/models/custom_property_definition.py) |
 | `client.custom_properties.retrieve_custom_property_definition(id: str) -> CustomPropertyDefinition` | `GET /api/v1/custom-property-definitions/{id}` | [`CustomPropertyDefinition`](meteroid/models/custom_property_definition.py) |
 | `client.custom_properties.update_custom_property_definition(id: str, *, config=..., default_value=..., description=..., display_order=..., name=..., required=...) -> CustomPropertyDefinition` | `PUT /api/v1/custom-property-definitions/{id}` | [`CustomPropertyDefinition`](meteroid/models/custom_property_definition.py) |
@@ -102,7 +105,7 @@ marks optional keyword arguments. Models are in [`meteroid/models`](meteroid/mod
 
 | Method | Request | Returns |
 | --- | --- | --- |
-| `client.customers.list(*, order_by=..., page=..., per_page=..., search=..., archived=...) -> CustomerListResponse` | `GET /api/v1/customers` | [`CustomerListResponse`](meteroid/models/customer_list_response.py) |
+| `client.customers.list(*, order_by=..., page=..., per_page=..., search=..., archived=...) -> CustomersListPage` | `GET /api/v1/customers` | [`CustomerListResponse`](meteroid/models/customer_list_response.py) pages of [`Customer`](meteroid/models/customer.py) |
 | `client.customers.create(*, currency: Currency, custom_taxes: list[CustomTaxRate], invoicing_emails: list[str], alias=..., billing_address=..., billing_email=..., buyer_reference=..., connected_account_id=..., custom_properties=..., customer_type=..., exemption_reason=..., first_name=..., invoicing_entity_id=..., invoicing_language=..., is_tax_exempt=..., last_name=..., legal_number=..., name=..., phone=..., preferred_locales=..., shipping_address=..., vat_number=...) -> Customer` | `POST /api/v1/customers` | [`Customer`](meteroid/models/customer.py) |
 | `client.customers.retrieve(id_or_alias: str) -> Customer` | `GET /api/v1/customers/{id_or_alias}` | [`Customer`](meteroid/models/customer.py) |
 | `client.customers.replace(id_or_alias: str, *, currency: Currency, custom_taxes: list[CustomTaxRate], invoicing_emails: list[str], invoicing_entity_id: InvoicingEntityId, alias=..., billing_address=..., billing_email=..., buyer_reference=..., custom_properties=..., customer_type=..., exemption_reason=..., first_name=..., invoicing_language=..., is_tax_exempt=..., last_name=..., legal_number=..., name=..., phone=..., preferred_locales=..., shipping_address=..., vat_number=...) -> Customer` | `PUT /api/v1/customers/{id_or_alias}` | [`Customer`](meteroid/models/customer.py) |
@@ -136,7 +139,7 @@ marks optional keyword arguments. Models are in [`meteroid/models`](meteroid/mod
 
 | Method | Request | Returns |
 | --- | --- | --- |
-| `client.features.list(*, statuses=..., product_id=..., search=..., page=..., per_page=...) -> FeatureListResponse` | `GET /api/v1/features` | [`FeatureListResponse`](meteroid/models/feature_list_response.py) |
+| `client.features.list(*, statuses=..., product_id=..., search=..., page=..., per_page=...) -> FeaturesListPage` | `GET /api/v1/features` | [`FeatureListResponse`](meteroid/models/feature_list_response.py) pages of [`Feature`](meteroid/models/feature.py) |
 | `client.features.create(*, code: str, feature_type: FeatureType, name: str, description=..., entitlement=..., product_id=...) -> Feature` | `POST /api/v1/features` | [`Feature`](meteroid/models/feature.py) |
 | `client.features.retrieve(id_or_code: str) -> Feature` | `GET /api/v1/features/{id_or_code}` | [`Feature`](meteroid/models/feature.py) |
 | `client.features.update(id_or_code: str, *, description=..., name=...) -> Feature` | `PATCH /api/v1/features/{id_or_code}` | [`Feature`](meteroid/models/feature.py) |
@@ -149,7 +152,7 @@ marks optional keyword arguments. Models are in [`meteroid/models`](meteroid/mod
 
 | Method | Request | Returns |
 | --- | --- | --- |
-| `client.invoices.list(*, customer_id=..., subscription_id=..., statuses=..., einvoicing_status=..., order_by=..., page=..., per_page=...) -> InvoiceListResponse` | `GET /api/v1/invoices` | [`InvoiceListResponse`](meteroid/models/invoice_list_response.py) |
+| `client.invoices.list(*, customer_id=..., subscription_id=..., statuses=..., einvoicing_status=..., order_by=..., page=..., per_page=...) -> InvoicesListPage` | `GET /api/v1/invoices` | [`InvoiceListResponse`](meteroid/models/invoice_list_response.py) pages of [`Invoice`](meteroid/models/invoice.py) |
 | `client.invoices.retrieve(invoice_id: str) -> Invoice` | `GET /api/v1/invoices/{invoice_id}` | [`Invoice`](meteroid/models/invoice.py) |
 | `client.invoices.update_custom_properties(invoice_id: str, *, custom_properties: t.Any) -> Invoice` | `PATCH /api/v1/invoices/{invoice_id}/custom-properties` | [`Invoice`](meteroid/models/invoice.py) |
 | `client.invoices.download(invoice_id: str) -> bytes` | `GET /api/v1/invoices/{invoice_id}/download` | bytes |
@@ -162,7 +165,7 @@ marks optional keyword arguments. Models are in [`meteroid/models`](meteroid/mod
 
 | Method | Request | Returns |
 | --- | --- | --- |
-| `client.metrics.list(*, product_family_id=..., search=..., order_by=..., page=..., per_page=...) -> MetricListResponse` | `GET /api/v1/metrics` | [`MetricListResponse`](meteroid/models/metric_list_response.py) |
+| `client.metrics.list(*, product_family_id=..., search=..., order_by=..., page=..., per_page=...) -> MetricsListPage` | `GET /api/v1/metrics` | [`MetricListResponse`](meteroid/models/metric_list_response.py) pages of [`MetricSummary`](meteroid/models/metric_summary.py) |
 | `client.metrics.create(*, aggregation_type: BillingMetricAggregateEnum, code: str, name: str, product_family_id: ProductFamilyId, aggregation_key=..., description=..., filters=..., product_id=..., segmentation_matrix=..., unit_conversion=..., usage_group_key=...) -> Metric` | `POST /api/v1/metrics` | [`Metric`](meteroid/models/metric.py) |
 | `client.metrics.retrieve(metric_id: str) -> Metric` | `GET /api/v1/metrics/{metric_id}` | [`Metric`](meteroid/models/metric.py) |
 | `client.metrics.update(metric_id: str, *, description=..., filters=..., name=..., segmentation_matrix=..., unit_conversion=...) -> Metric` | `PATCH /api/v1/metrics/{metric_id}` | [`Metric`](meteroid/models/metric.py) |
@@ -199,7 +202,7 @@ marks optional keyword arguments. Models are in [`meteroid/models`](meteroid/mod
 | --- | --- | --- |
 | `client.plans.list_plan_version_entitlements(plan_version_id: str) -> ResolvedEntitlementListResponse` | `GET /api/v1/plan-versions/{plan_version_id}/entitlements` | [`ResolvedEntitlementListResponse`](meteroid/models/resolved_entitlement_list_response.py) |
 | `client.plans.create_plan_version_entitlement(plan_version_id: str, *, entitlements: list[EntitlementSpecRequest]) -> EntitlementListResponse` | `POST /api/v1/plan-versions/{plan_version_id}/entitlements` | [`EntitlementListResponse`](meteroid/models/entitlement_list_response.py) |
-| `client.plans.list(*, product_family_id=..., search=..., status=..., plan_type=..., order_by=..., page=..., per_page=...) -> PlanListResponse` | `GET /api/v1/plans` | [`PlanListResponse`](meteroid/models/plan_list_response.py) |
+| `client.plans.list(*, product_family_id=..., search=..., status=..., plan_type=..., order_by=..., page=..., per_page=...) -> PlansListPage` | `GET /api/v1/plans` | [`PlanListResponse`](meteroid/models/plan_list_response.py) pages of [`Plan`](meteroid/models/plan.py) |
 | `client.plans.create(*, components: list[PriceComponentInput], currency: str, name: str, plan_type: PlanTypeEnum, product_family_id: ProductFamilyId, status: PlanStatusEnum, add_ons=..., billing=..., description=..., entitlements=..., self_service_rank=..., tax_inclusive=..., trial=...) -> Plan` | `POST /api/v1/plans` | [`Plan`](meteroid/models/plan.py) |
 | `client.plans.update_version_minimum(plan_version_id: str, *, amount: str, scope: MinimumCommitmentScope) -> MinimumCommitment` | `PUT /api/v1/plans/versions/{plan_version_id}/minimum` | [`MinimumCommitment`](meteroid/models/minimum_commitment.py) |
 | `client.plans.delete_version_minimum(plan_version_id: str) -> None` | `DELETE /api/v1/plans/versions/{plan_version_id}/minimum` | nothing |
@@ -209,7 +212,7 @@ marks optional keyword arguments. Models are in [`meteroid/models`](meteroid/mod
 | `client.plans.archive(plan_id: str) -> None` | `POST /api/v1/plans/{plan_id}/archive` | nothing |
 | `client.plans.publish(plan_id: str) -> Plan` | `POST /api/v1/plans/{plan_id}/publish` | [`Plan`](meteroid/models/plan.py) |
 | `client.plans.unarchive(plan_id: str) -> None` | `POST /api/v1/plans/{plan_id}/unarchive` | nothing |
-| `client.plans.list_versions(plan_id: str, *, page=..., per_page=...) -> PlanVersionListResponse` | `GET /api/v1/plans/{plan_id}/versions` | [`PlanVersionListResponse`](meteroid/models/plan_version_list_response.py) |
+| `client.plans.list_versions(plan_id: str, *, page=..., per_page=...) -> PlansListVersionsPage` | `GET /api/v1/plans/{plan_id}/versions` | [`PlanVersionListResponse`](meteroid/models/plan_version_list_response.py) pages of [`PlanVersionSummary`](meteroid/models/plan_version_summary.py) |
 
 ## Product families
 
@@ -217,7 +220,7 @@ marks optional keyword arguments. Models are in [`meteroid/models`](meteroid/mod
 
 | Method | Request | Returns |
 | --- | --- | --- |
-| `client.product_families.list(*, order_by=..., page=..., per_page=..., search=...) -> ProductFamilyListResponse` | `GET /api/v1/product_families` | [`ProductFamilyListResponse`](meteroid/models/product_family_list_response.py) |
+| `client.product_families.list(*, order_by=..., page=..., per_page=..., search=...) -> ProductFamiliesListPage` | `GET /api/v1/product_families` | [`ProductFamilyListResponse`](meteroid/models/product_family_list_response.py) pages of [`ProductFamily`](meteroid/models/product_family.py) |
 | `client.product_families.create(*, name: str) -> ProductFamily` | `POST /api/v1/product_families` | [`ProductFamily`](meteroid/models/product_family.py) |
 | `client.product_families.retrieve(id_or_alias: str) -> ProductFamily` | `GET /api/v1/product_families/{id_or_alias}` | [`ProductFamily`](meteroid/models/product_family.py) |
 
@@ -227,7 +230,7 @@ marks optional keyword arguments. Models are in [`meteroid/models`](meteroid/mod
 
 | Method | Request | Returns |
 | --- | --- | --- |
-| `client.products.list(*, product_family_id=..., search=..., order_by=..., page=..., per_page=...) -> ProductListResponse` | `GET /api/v1/products` | [`ProductListResponse`](meteroid/models/product_list_response.py) |
+| `client.products.list(*, product_family_id=..., search=..., order_by=..., page=..., per_page=...) -> ProductsListPage` | `GET /api/v1/products` | [`ProductListResponse`](meteroid/models/product_list_response.py) pages of [`Product`](meteroid/models/product.py) |
 | `client.products.create(*, fee_structure: ProductFeeStructure, name: str, product_family_id: ProductFamilyId, catalog=..., description=...) -> Product` | `POST /api/v1/products` | [`Product`](meteroid/models/product.py) |
 | `client.products.retrieve(product_id: str) -> Product` | `GET /api/v1/products/{product_id}` | [`Product`](meteroid/models/product.py) |
 | `client.products.update(product_id: str, *, description=..., fee_structure=..., name=...) -> Product` | `PATCH /api/v1/products/{product_id}` | [`Product`](meteroid/models/product.py) |
@@ -242,7 +245,7 @@ marks optional keyword arguments. Models are in [`meteroid/models`](meteroid/mod
 
 | Method | Request | Returns |
 | --- | --- | --- |
-| `client.subscriptions.list(*, customer_id=..., plan_id=..., statuses=..., order_by=..., page=..., per_page=...) -> SubscriptionListResponse` | `GET /api/v1/subscriptions` | [`SubscriptionListResponse`](meteroid/models/subscription_list_response.py) |
+| `client.subscriptions.list(*, customer_id=..., plan_id=..., statuses=..., order_by=..., page=..., per_page=...) -> SubscriptionsListPage` | `GET /api/v1/subscriptions` | [`SubscriptionListResponse`](meteroid/models/subscription_list_response.py) pages of [`Subscription`](meteroid/models/subscription.py) |
 | `client.subscriptions.create(*, activation_condition: SubscriptionActivationConditionEnum, customer_id_or_alias: str, plan_id: PlanId, start_date: date, add_ons=..., auto_advance_invoices=..., backdate_invoices=..., billing_day_anchor=..., charge_automatically=..., coupon_codes=..., custom_properties=..., end_date=..., invoice_memo=..., net_terms=..., payment_methods_config=..., price_components=..., purchase_order=..., skip_past_invoices=..., trial_days=..., version=...) -> SubscriptionDetails` | `POST /api/v1/subscriptions` | [`SubscriptionDetails`](meteroid/models/subscription_details.py) |
 | `client.subscriptions.retrieve(subscription_id: str) -> SubscriptionDetails` | `GET /api/v1/subscriptions/{subscription_id}` | [`SubscriptionDetails`](meteroid/models/subscription_details.py) |
 | `client.subscriptions.update(subscription_id: str, *, auto_advance_invoices=..., charge_automatically=..., custom_properties=..., invoice_memo=..., net_terms=..., payment_methods_config=..., purchase_order=...) -> SubscriptionUpdateResponse` | `PATCH /api/v1/subscriptions/{subscription_id}` | [`SubscriptionUpdateResponse`](meteroid/models/subscription_update_response.py) |

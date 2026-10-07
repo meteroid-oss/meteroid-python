@@ -11,11 +11,25 @@ from ..models import (
     BatchJobChunkId,
     BatchJobDetailResponse,
     BatchJobFailuresResponse,
+    BatchJobItemFailureResponse,
     BatchJobListResponse,
+    BatchJobResponse,
     BatchJobStatus,
     BatchJobType,
 )
 from ..serialization import UNSET, Unset
+from ._pages import (
+    AsyncBatchJobsListFailuresPage,
+    AsyncBatchJobsListPage,
+    BatchJobsListFailuresPage,
+    BatchJobsListPage,
+)
+from ._pagination import (
+    AsyncPaginator,
+    OffsetPaging,
+    PagePaging,
+    step,
+)
 from ._response import async_to_raw_response_wrapper, to_raw_response_wrapper
 from .common import (
     ApiBaseAsync,
@@ -35,7 +49,7 @@ class AsyncBatchJobs(ApiBaseAsync):
         """These methods, returning an :class:`APIResponse` with the status and headers."""
         return AsyncBatchJobsWithRawResponse(self)
 
-    async def list(
+    def list(
         self,
         *,
         job_type: BatchJobType | None = None,
@@ -47,34 +61,47 @@ class AsyncBatchJobs(ApiBaseAsync):
         extra_body: t.Mapping[str, object] | None = None,
         timeout: Timeout | Unset = UNSET,
         max_retries: int | None = None,
-    ) -> BatchJobListResponse:
+    ) -> AsyncPaginator[BatchJobResponse, AsyncBatchJobsListPage]:
         """List batch jobs with optional filtering by type and status.
 
         :param page: Page number (0-indexed)
         :param per_page: Number of items per page"""
-        response = await self._request(
-            ApiRequest(
-                method="get",
-                path="/api/v1/batch-jobs",
-                query_params=serialize_query_params(
-                    {
-                        "job_type": job_type,
-                        "status": status,
-                        "page": page,
-                        "per_page": per_page,
+
+        async def fetch(page_param: int | None) -> BatchJobListResponse:
+            response = await self._request(
+                ApiRequest(
+                    method="get",
+                    path="/api/v1/batch-jobs",
+                    query_params=serialize_query_params(
+                        {
+                            "job_type": job_type,
+                            "status": status,
+                            "page": page_param,
+                            "per_page": per_page,
+                        },
+                    ),
+                    error_types={
+                        "default": _models.RestErrorResponse,
                     },
-                ),
-                error_types={
-                    "default": _models.RestErrorResponse,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                max_retries=max_retries,
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                    max_retries=max_retries,
+                )
             )
+            return decode_response(response, BatchJobListResponse)
+
+        paging = PagePaging[BatchJobListResponse, BatchJobResponse](
+            items=lambda body: body.data,
+            total_pages=lambda body: step(
+                body.pagination_meta, lambda v: v.total_pages
+            ),
+            first_page=0,
         )
-        return decode_response(response, BatchJobListResponse)
+        return AsyncPaginator(
+            lambda: AsyncBatchJobsListPage._first(fetch, page, paging)
+        )
 
     async def retrieve(
         self,
@@ -108,7 +135,7 @@ class AsyncBatchJobs(ApiBaseAsync):
         )
         return decode_response(response, BatchJobDetailResponse)
 
-    async def list_failures(
+    def list_failures(
         self,
         batch_job_id: str,
         *,
@@ -120,35 +147,45 @@ class AsyncBatchJobs(ApiBaseAsync):
         extra_body: t.Mapping[str, object] | None = None,
         timeout: Timeout | Unset = UNSET,
         max_retries: int | None = None,
-    ) -> BatchJobFailuresResponse:
+    ) -> AsyncPaginator[BatchJobItemFailureResponse, AsyncBatchJobsListFailuresPage]:
         """List batch job failures
 
         Retrieve paginated failures for a batch job."""
-        response = await self._request(
-            ApiRequest(
-                method="get",
-                path="/api/v1/batch-jobs/{batch_job_id}/failures",
-                path_params={
-                    "batch_job_id": batch_job_id,
-                },
-                query_params=serialize_query_params(
-                    {
-                        "chunk_id": chunk_id,
-                        "limit": limit,
-                        "offset": offset,
+
+        async def fetch(page_param: int | None) -> BatchJobFailuresResponse:
+            response = await self._request(
+                ApiRequest(
+                    method="get",
+                    path="/api/v1/batch-jobs/{batch_job_id}/failures",
+                    path_params={
+                        "batch_job_id": batch_job_id,
                     },
-                ),
-                error_types={
-                    "default": _models.RestErrorResponse,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                max_retries=max_retries,
+                    query_params=serialize_query_params(
+                        {
+                            "chunk_id": chunk_id,
+                            "limit": limit,
+                            "offset": page_param,
+                        },
+                    ),
+                    error_types={
+                        "default": _models.RestErrorResponse,
+                    },
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                    max_retries=max_retries,
+                )
             )
+            return decode_response(response, BatchJobFailuresResponse)
+
+        paging = OffsetPaging[BatchJobFailuresResponse, BatchJobItemFailureResponse](
+            items=lambda body: body.data,
+            total=lambda body: body.total_count,
         )
-        return decode_response(response, BatchJobFailuresResponse)
+        return AsyncPaginator(
+            lambda: AsyncBatchJobsListFailuresPage._first(fetch, offset, paging)
+        )
 
 
 class AsyncBatchJobsWithRawResponse:
@@ -180,34 +217,45 @@ class BatchJobs(ApiBaseSync):
         extra_body: t.Mapping[str, object] | None = None,
         timeout: Timeout | Unset = UNSET,
         max_retries: int | None = None,
-    ) -> BatchJobListResponse:
+    ) -> BatchJobsListPage:
         """List batch jobs with optional filtering by type and status.
 
         :param page: Page number (0-indexed)
         :param per_page: Number of items per page"""
-        response = self._request(
-            ApiRequest(
-                method="get",
-                path="/api/v1/batch-jobs",
-                query_params=serialize_query_params(
-                    {
-                        "job_type": job_type,
-                        "status": status,
-                        "page": page,
-                        "per_page": per_page,
+
+        def fetch(page_param: int | None) -> BatchJobListResponse:
+            response = self._request(
+                ApiRequest(
+                    method="get",
+                    path="/api/v1/batch-jobs",
+                    query_params=serialize_query_params(
+                        {
+                            "job_type": job_type,
+                            "status": status,
+                            "page": page_param,
+                            "per_page": per_page,
+                        },
+                    ),
+                    error_types={
+                        "default": _models.RestErrorResponse,
                     },
-                ),
-                error_types={
-                    "default": _models.RestErrorResponse,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                max_retries=max_retries,
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                    max_retries=max_retries,
+                )
             )
+            return decode_response(response, BatchJobListResponse)
+
+        paging = PagePaging[BatchJobListResponse, BatchJobResponse](
+            items=lambda body: body.data,
+            total_pages=lambda body: step(
+                body.pagination_meta, lambda v: v.total_pages
+            ),
+            first_page=0,
         )
-        return decode_response(response, BatchJobListResponse)
+        return BatchJobsListPage._first(fetch, page, paging)
 
     def retrieve(
         self,
@@ -253,35 +301,43 @@ class BatchJobs(ApiBaseSync):
         extra_body: t.Mapping[str, object] | None = None,
         timeout: Timeout | Unset = UNSET,
         max_retries: int | None = None,
-    ) -> BatchJobFailuresResponse:
+    ) -> BatchJobsListFailuresPage:
         """List batch job failures
 
         Retrieve paginated failures for a batch job."""
-        response = self._request(
-            ApiRequest(
-                method="get",
-                path="/api/v1/batch-jobs/{batch_job_id}/failures",
-                path_params={
-                    "batch_job_id": batch_job_id,
-                },
-                query_params=serialize_query_params(
-                    {
-                        "chunk_id": chunk_id,
-                        "limit": limit,
-                        "offset": offset,
+
+        def fetch(page_param: int | None) -> BatchJobFailuresResponse:
+            response = self._request(
+                ApiRequest(
+                    method="get",
+                    path="/api/v1/batch-jobs/{batch_job_id}/failures",
+                    path_params={
+                        "batch_job_id": batch_job_id,
                     },
-                ),
-                error_types={
-                    "default": _models.RestErrorResponse,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                max_retries=max_retries,
+                    query_params=serialize_query_params(
+                        {
+                            "chunk_id": chunk_id,
+                            "limit": limit,
+                            "offset": page_param,
+                        },
+                    ),
+                    error_types={
+                        "default": _models.RestErrorResponse,
+                    },
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                    max_retries=max_retries,
+                )
             )
+            return decode_response(response, BatchJobFailuresResponse)
+
+        paging = OffsetPaging[BatchJobFailuresResponse, BatchJobItemFailureResponse](
+            items=lambda body: body.data,
+            total=lambda body: body.total_count,
         )
-        return decode_response(response, BatchJobFailuresResponse)
+        return BatchJobsListFailuresPage._first(fetch, offset, paging)
 
 
 class BatchJobsWithRawResponse:

@@ -18,6 +18,15 @@ from ..models import (
     PropertyConfig,
 )
 from ..serialization import UNSET, Unset, to_json_value
+from ._pages import (
+    AsyncCustomPropertiesListCustomPropertyDefinitionsPage,
+    CustomPropertiesListCustomPropertyDefinitionsPage,
+)
+from ._pagination import (
+    AsyncPaginator,
+    PagePaging,
+    step,
+)
 from ._response import async_to_raw_response_wrapper, to_raw_response_wrapper
 from .common import (
     ApiBaseAsync,
@@ -37,7 +46,7 @@ class AsyncCustomProperties(ApiBaseAsync):
         """These methods, returning an :class:`APIResponse` with the status and headers."""
         return AsyncCustomPropertiesWithRawResponse(self)
 
-    async def list_custom_property_definitions(
+    def list_custom_property_definitions(
         self,
         *,
         entity_type: CustomPropertyEntityType | None = None,
@@ -49,36 +58,55 @@ class AsyncCustomProperties(ApiBaseAsync):
         extra_body: t.Mapping[str, object] | None = None,
         timeout: Timeout | Unset = UNSET,
         max_retries: int | None = None,
-    ) -> CustomPropertyDefinitionListResponse:
+    ) -> AsyncPaginator[
+        CustomPropertyDefinition, AsyncCustomPropertiesListCustomPropertyDefinitionsPage
+    ]:
         """List custom property definitions
 
         :param entity_type: Filter to a single entity type.
         :param include_archived: Include archived (soft-deleted) definitions. Defaults to false.
         :param page: Page number (0-indexed)
         :param per_page: Number of items per page"""
-        response = await self._request(
-            ApiRequest(
-                method="get",
-                path="/api/v1/custom-property-definitions",
-                query_params=serialize_query_params(
-                    {
-                        "entity_type": entity_type,
-                        "include_archived": include_archived,
-                        "page": page,
-                        "per_page": per_page,
+
+        async def fetch(page_param: int | None) -> CustomPropertyDefinitionListResponse:
+            response = await self._request(
+                ApiRequest(
+                    method="get",
+                    path="/api/v1/custom-property-definitions",
+                    query_params=serialize_query_params(
+                        {
+                            "entity_type": entity_type,
+                            "include_archived": include_archived,
+                            "page": page_param,
+                            "per_page": per_page,
+                        },
+                    ),
+                    error_types={
+                        "default": _models.RestErrorResponse,
                     },
-                ),
-                error_types={
-                    "default": _models.RestErrorResponse,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                max_retries=max_retries,
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                    max_retries=max_retries,
+                )
+            )
+            return decode_response(response, CustomPropertyDefinitionListResponse)
+
+        paging = PagePaging[
+            CustomPropertyDefinitionListResponse, CustomPropertyDefinition
+        ](
+            items=lambda body: body.data,
+            total_pages=lambda body: step(
+                body.pagination_meta, lambda v: v.total_pages
+            ),
+            first_page=0,
+        )
+        return AsyncPaginator(
+            lambda: AsyncCustomPropertiesListCustomPropertyDefinitionsPage._first(
+                fetch, page, paging
             )
         )
-        return decode_response(response, CustomPropertyDefinitionListResponse)
 
     async def create_custom_property_definition(
         self,
@@ -283,36 +311,51 @@ class CustomProperties(ApiBaseSync):
         extra_body: t.Mapping[str, object] | None = None,
         timeout: Timeout | Unset = UNSET,
         max_retries: int | None = None,
-    ) -> CustomPropertyDefinitionListResponse:
+    ) -> CustomPropertiesListCustomPropertyDefinitionsPage:
         """List custom property definitions
 
         :param entity_type: Filter to a single entity type.
         :param include_archived: Include archived (soft-deleted) definitions. Defaults to false.
         :param page: Page number (0-indexed)
         :param per_page: Number of items per page"""
-        response = self._request(
-            ApiRequest(
-                method="get",
-                path="/api/v1/custom-property-definitions",
-                query_params=serialize_query_params(
-                    {
-                        "entity_type": entity_type,
-                        "include_archived": include_archived,
-                        "page": page,
-                        "per_page": per_page,
+
+        def fetch(page_param: int | None) -> CustomPropertyDefinitionListResponse:
+            response = self._request(
+                ApiRequest(
+                    method="get",
+                    path="/api/v1/custom-property-definitions",
+                    query_params=serialize_query_params(
+                        {
+                            "entity_type": entity_type,
+                            "include_archived": include_archived,
+                            "page": page_param,
+                            "per_page": per_page,
+                        },
+                    ),
+                    error_types={
+                        "default": _models.RestErrorResponse,
                     },
-                ),
-                error_types={
-                    "default": _models.RestErrorResponse,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                max_retries=max_retries,
+                    extra_headers=extra_headers,
+                    extra_query=extra_query,
+                    extra_body=extra_body,
+                    timeout=timeout,
+                    max_retries=max_retries,
+                )
             )
+            return decode_response(response, CustomPropertyDefinitionListResponse)
+
+        paging = PagePaging[
+            CustomPropertyDefinitionListResponse, CustomPropertyDefinition
+        ](
+            items=lambda body: body.data,
+            total_pages=lambda body: step(
+                body.pagination_meta, lambda v: v.total_pages
+            ),
+            first_page=0,
         )
-        return decode_response(response, CustomPropertyDefinitionListResponse)
+        return CustomPropertiesListCustomPropertyDefinitionsPage._first(
+            fetch, page, paging
+        )
 
     def create_custom_property_definition(
         self,
