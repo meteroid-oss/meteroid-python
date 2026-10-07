@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.28.0](https://github.com/meteroid-oss/meteroid-python/compare/v0.27.1...v0.28.0) (2026-10-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** update SDKs to meteroid 0.1.0 ([#8](https://github.com/meteroid-oss/meteroid-python/issues/8))
+
+### Features
+
+* **api:** update SDKs to meteroid 0.1.0 ([#8](https://github.com/meteroid-oss/meteroid-python/issues/8)) ([6263e19](https://github.com/meteroid-oss/meteroid-python/commit/6263e19f302acf0810964b4e07c9228719bfa6f5))
+
+
+### Documentation
+
+* describe the SDK and link to Meteroid ([#5](https://github.com/meteroid-oss/meteroid-python/issues/5)) ([3d31c15](https://github.com/meteroid-oss/meteroid-python/commit/3d31c159c5c8bb4920f18022374dbe40a578a373))
+* document pagination and the default base URL ([#7](https://github.com/meteroid-oss/meteroid-python/issues/7)) ([bb3e257](https://github.com/meteroid-oss/meteroid-python/commit/bb3e2576c4cd3674f6b8008a5857c66c0af90641))
+
 ## [0.27.1](https://github.com/meteroid-oss/meteroid-python/compare/v0.27.0...v0.27.1) (2026-10-06)
 
 
