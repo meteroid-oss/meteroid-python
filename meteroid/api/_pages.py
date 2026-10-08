@@ -60,8 +60,8 @@ __all__ = [
     "MetricsListPage",
     "AsyncPlansListPage",
     "PlansListPage",
-    "AsyncPlansListVersionsPage",
-    "PlansListVersionsPage",
+    "AsyncPlansVersionsListPage",
+    "PlansVersionsListPage",
     "AsyncProductFamiliesListPage",
     "ProductFamiliesListPage",
     "AsyncProductsListPage",
@@ -187,13 +187,13 @@ class AsyncPlansListPage(AsyncPage[Plan, PlanListResponse], PlanListResponse):
     """A page of :class:`Plan`, and the :class:`PlanListResponse` response of its request."""
 
 
-class PlansListVersionsPage(
+class PlansVersionsListPage(
     SyncPage[PlanVersionSummary, PlanVersionListResponse], PlanVersionListResponse
 ):
     """A page of :class:`PlanVersionSummary`, and the :class:`PlanVersionListResponse` response of its request."""
 
 
-class AsyncPlansListVersionsPage(
+class AsyncPlansVersionsListPage(
     AsyncPage[PlanVersionSummary, PlanVersionListResponse], PlanVersionListResponse
 ):
     """A page of :class:`PlanVersionSummary`, and the :class:`PlanVersionListResponse` response of its request."""

@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import builtins
+import functools
 import typing as t
 
 from .. import models as _models
@@ -13,9 +14,7 @@ from ..models import (
     CreatePlanRequest,
     EntitlementListResponse,
     EntitlementSpecRequest,
-    MinimumCommitment,
     MinimumCommitmentInput,
-    MinimumCommitmentScope,
     PatchPlanRequest,
     Plan,
     PlanAddOnInput,
@@ -24,8 +23,6 @@ from ..models import (
     PlanStatusEnumLiteral,
     PlanTypeEnum,
     PlanTypeEnumLiteral,
-    PlanVersionListResponse,
-    PlanVersionSummary,
     PriceComponentInput,
     ProductFamilyId,
     ReplacePlanRequest,
@@ -35,9 +32,7 @@ from ..models import (
 from ..serialization import UNSET, Unset, to_json_value
 from ._pages import (
     AsyncPlansListPage,
-    AsyncPlansListVersionsPage,
     PlansListPage,
-    PlansListVersionsPage,
 )
 from ._pagination import (
     AsyncPaginator,
@@ -53,6 +48,12 @@ from .common import (
     decode_response,
     serialize_query_params,
 )
+from .plans_versions import (
+    AsyncPlansVersions,
+    AsyncPlansVersionsWithRawResponse,
+    PlansVersions,
+    PlansVersionsWithRawResponse,
+)
 
 
 class AsyncPlans(ApiBaseAsync):
@@ -62,6 +63,11 @@ class AsyncPlans(ApiBaseAsync):
     def with_raw_response(self) -> AsyncPlansWithRawResponse:
         """These methods, returning an :class:`APIResponse` with the status and headers."""
         return AsyncPlansWithRawResponse(self)
+
+    @functools.cached_property
+    def versions(self) -> AsyncPlansVersions:
+        """The versions API."""
+        return AsyncPlansVersions(self._cfg, self._httpx_client)
 
     async def list_plan_version_entitlements(
         self,
@@ -256,76 +262,6 @@ class AsyncPlans(ApiBaseAsync):
             )
         )
         return decode_response(response, Plan)
-
-    async def update_version_minimum(
-        self,
-        plan_version_id: str,
-        *,
-        amount: str,
-        scope: MinimumCommitmentScope,
-        extra_headers: t.Mapping[str, str] | None = None,
-        extra_query: t.Mapping[str, object] | None = None,
-        extra_body: t.Mapping[str, object] | None = None,
-        timeout: Timeout | Unset = UNSET,
-        max_retries: int | None = None,
-    ) -> MinimumCommitment:
-        """Set or replace the plan-level minimum commitment for a draft plan version.
-
-        :param amount: Decimal string in the plan currency, e.g. "100.00"."""
-        response = await self._request(
-            ApiRequest(
-                method="put",
-                path="/api/v1/plans/versions/{plan_version_id}/minimum",
-                path_params={
-                    "plan_version_id": plan_version_id,
-                },
-                json_body=to_json_value(
-                    MinimumCommitment(
-                        amount=amount,
-                        scope=scope,
-                    ),
-                    MinimumCommitment,
-                ),
-                error_types={
-                    "default": _models.RestErrorResponse,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                max_retries=max_retries,
-            )
-        )
-        return decode_response(response, MinimumCommitment)
-
-    async def delete_version_minimum(
-        self,
-        plan_version_id: str,
-        *,
-        extra_headers: t.Mapping[str, str] | None = None,
-        extra_query: t.Mapping[str, object] | None = None,
-        extra_body: t.Mapping[str, object] | None = None,
-        timeout: Timeout | Unset = UNSET,
-        max_retries: int | None = None,
-    ) -> None:
-        """Remove the plan-level minimum commitment for a draft plan version."""
-        await self._request(
-            ApiRequest(
-                method="delete",
-                path="/api/v1/plans/versions/{plan_version_id}/minimum",
-                path_params={
-                    "plan_version_id": plan_version_id,
-                },
-                error_types={
-                    "default": _models.RestErrorResponse,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                max_retries=max_retries,
-            )
-        )
 
     async def retrieve(
         self,
@@ -566,65 +502,12 @@ class AsyncPlans(ApiBaseAsync):
             )
         )
 
-    def list_versions(
-        self,
-        plan_id: str,
-        *,
-        page: int | None = None,
-        per_page: int | None = None,
-        extra_headers: t.Mapping[str, str] | None = None,
-        extra_query: t.Mapping[str, object] | None = None,
-        extra_body: t.Mapping[str, object] | None = None,
-        timeout: Timeout | Unset = UNSET,
-        max_retries: int | None = None,
-    ) -> AsyncPaginator[PlanVersionSummary, AsyncPlansListVersionsPage]:
-        """List plan versions
-
-        :param page: Page number (0-indexed)
-        :param per_page: Number of items per page"""
-
-        async def fetch(page_param: int | None) -> PlanVersionListResponse:
-            response = await self._request(
-                ApiRequest(
-                    method="get",
-                    path="/api/v1/plans/{plan_id}/versions",
-                    path_params={
-                        "plan_id": plan_id,
-                    },
-                    query_params=serialize_query_params(
-                        {
-                            "page": page_param,
-                            "per_page": per_page,
-                        },
-                    ),
-                    error_types={
-                        "default": _models.RestErrorResponse,
-                    },
-                    extra_headers=extra_headers,
-                    extra_query=extra_query,
-                    extra_body=extra_body,
-                    timeout=timeout,
-                    max_retries=max_retries,
-                )
-            )
-            return decode_response(response, PlanVersionListResponse)
-
-        paging = PagePaging[PlanVersionListResponse, PlanVersionSummary](
-            items=lambda body: body.data,
-            total_pages=lambda body: step(
-                body.pagination_meta, lambda v: v.total_pages
-            ),
-            first_page=0,
-        )
-        return AsyncPaginator(
-            lambda: AsyncPlansListVersionsPage._first(fetch, page, paging)
-        )
-
 
 class AsyncPlansWithRawResponse:
     """The methods of :class:`AsyncPlans`, returning an :class:`APIResponse`."""
 
     def __init__(self, resource: AsyncPlans) -> None:
+        self._resource = resource
         self.list_plan_version_entitlements = async_to_raw_response_wrapper(
             resource.list_plan_version_entitlements
         )
@@ -633,19 +516,17 @@ class AsyncPlansWithRawResponse:
         )
         self.list = async_to_raw_response_wrapper(resource.list)
         self.create = async_to_raw_response_wrapper(resource.create)
-        self.update_version_minimum = async_to_raw_response_wrapper(
-            resource.update_version_minimum
-        )
-        self.delete_version_minimum = async_to_raw_response_wrapper(
-            resource.delete_version_minimum
-        )
         self.retrieve = async_to_raw_response_wrapper(resource.retrieve)
         self.replace = async_to_raw_response_wrapper(resource.replace)
         self.update = async_to_raw_response_wrapper(resource.update)
         self.archive = async_to_raw_response_wrapper(resource.archive)
         self.publish = async_to_raw_response_wrapper(resource.publish)
         self.unarchive = async_to_raw_response_wrapper(resource.unarchive)
-        self.list_versions = async_to_raw_response_wrapper(resource.list_versions)
+
+    @property
+    def versions(self) -> AsyncPlansVersionsWithRawResponse:
+        """The versions API."""
+        return AsyncPlansVersionsWithRawResponse(self._resource.versions)
 
 
 class Plans(ApiBaseSync):
@@ -655,6 +536,11 @@ class Plans(ApiBaseSync):
     def with_raw_response(self) -> PlansWithRawResponse:
         """These methods, returning an :class:`APIResponse` with the status and headers."""
         return PlansWithRawResponse(self)
+
+    @functools.cached_property
+    def versions(self) -> PlansVersions:
+        """The versions API."""
+        return PlansVersions(self._cfg, self._httpx_client)
 
     def list_plan_version_entitlements(
         self,
@@ -849,76 +735,6 @@ class Plans(ApiBaseSync):
             )
         )
         return decode_response(response, Plan)
-
-    def update_version_minimum(
-        self,
-        plan_version_id: str,
-        *,
-        amount: str,
-        scope: MinimumCommitmentScope,
-        extra_headers: t.Mapping[str, str] | None = None,
-        extra_query: t.Mapping[str, object] | None = None,
-        extra_body: t.Mapping[str, object] | None = None,
-        timeout: Timeout | Unset = UNSET,
-        max_retries: int | None = None,
-    ) -> MinimumCommitment:
-        """Set or replace the plan-level minimum commitment for a draft plan version.
-
-        :param amount: Decimal string in the plan currency, e.g. "100.00"."""
-        response = self._request(
-            ApiRequest(
-                method="put",
-                path="/api/v1/plans/versions/{plan_version_id}/minimum",
-                path_params={
-                    "plan_version_id": plan_version_id,
-                },
-                json_body=to_json_value(
-                    MinimumCommitment(
-                        amount=amount,
-                        scope=scope,
-                    ),
-                    MinimumCommitment,
-                ),
-                error_types={
-                    "default": _models.RestErrorResponse,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                max_retries=max_retries,
-            )
-        )
-        return decode_response(response, MinimumCommitment)
-
-    def delete_version_minimum(
-        self,
-        plan_version_id: str,
-        *,
-        extra_headers: t.Mapping[str, str] | None = None,
-        extra_query: t.Mapping[str, object] | None = None,
-        extra_body: t.Mapping[str, object] | None = None,
-        timeout: Timeout | Unset = UNSET,
-        max_retries: int | None = None,
-    ) -> None:
-        """Remove the plan-level minimum commitment for a draft plan version."""
-        self._request(
-            ApiRequest(
-                method="delete",
-                path="/api/v1/plans/versions/{plan_version_id}/minimum",
-                path_params={
-                    "plan_version_id": plan_version_id,
-                },
-                error_types={
-                    "default": _models.RestErrorResponse,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                max_retries=max_retries,
-            )
-        )
 
     def retrieve(
         self,
@@ -1159,63 +975,12 @@ class Plans(ApiBaseSync):
             )
         )
 
-    def list_versions(
-        self,
-        plan_id: str,
-        *,
-        page: int | None = None,
-        per_page: int | None = None,
-        extra_headers: t.Mapping[str, str] | None = None,
-        extra_query: t.Mapping[str, object] | None = None,
-        extra_body: t.Mapping[str, object] | None = None,
-        timeout: Timeout | Unset = UNSET,
-        max_retries: int | None = None,
-    ) -> PlansListVersionsPage:
-        """List plan versions
-
-        :param page: Page number (0-indexed)
-        :param per_page: Number of items per page"""
-
-        def fetch(page_param: int | None) -> PlanVersionListResponse:
-            response = self._request(
-                ApiRequest(
-                    method="get",
-                    path="/api/v1/plans/{plan_id}/versions",
-                    path_params={
-                        "plan_id": plan_id,
-                    },
-                    query_params=serialize_query_params(
-                        {
-                            "page": page_param,
-                            "per_page": per_page,
-                        },
-                    ),
-                    error_types={
-                        "default": _models.RestErrorResponse,
-                    },
-                    extra_headers=extra_headers,
-                    extra_query=extra_query,
-                    extra_body=extra_body,
-                    timeout=timeout,
-                    max_retries=max_retries,
-                )
-            )
-            return decode_response(response, PlanVersionListResponse)
-
-        paging = PagePaging[PlanVersionListResponse, PlanVersionSummary](
-            items=lambda body: body.data,
-            total_pages=lambda body: step(
-                body.pagination_meta, lambda v: v.total_pages
-            ),
-            first_page=0,
-        )
-        return PlansListVersionsPage._first(fetch, page, paging)
-
 
 class PlansWithRawResponse:
     """The methods of :class:`Plans`, returning an :class:`APIResponse`."""
 
     def __init__(self, resource: Plans) -> None:
+        self._resource = resource
         self.list_plan_version_entitlements = to_raw_response_wrapper(
             resource.list_plan_version_entitlements
         )
@@ -1224,16 +989,14 @@ class PlansWithRawResponse:
         )
         self.list = to_raw_response_wrapper(resource.list)
         self.create = to_raw_response_wrapper(resource.create)
-        self.update_version_minimum = to_raw_response_wrapper(
-            resource.update_version_minimum
-        )
-        self.delete_version_minimum = to_raw_response_wrapper(
-            resource.delete_version_minimum
-        )
         self.retrieve = to_raw_response_wrapper(resource.retrieve)
         self.replace = to_raw_response_wrapper(resource.replace)
         self.update = to_raw_response_wrapper(resource.update)
         self.archive = to_raw_response_wrapper(resource.archive)
         self.publish = to_raw_response_wrapper(resource.publish)
         self.unarchive = to_raw_response_wrapper(resource.unarchive)
-        self.list_versions = to_raw_response_wrapper(resource.list_versions)
+
+    @property
+    def versions(self) -> PlansVersionsWithRawResponse:
+        """The versions API."""
+        return PlansVersionsWithRawResponse(self._resource.versions)

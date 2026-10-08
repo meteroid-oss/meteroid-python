@@ -3,20 +3,16 @@
 
 from __future__ import annotations
 
-import builtins
+import functools
 import typing as t
 
 from .. import models as _models
 from ..models import (
-    CreateEntitlementsRequest,
     CreateProductRequest,
-    EntitlementListResponse,
-    EntitlementSpecRequest,
     Product,
     ProductFamilyId,
     ProductFeeStructure,
     ProductListResponse,
-    ResolvedEntitlementListResponse,
     UpdateProductRequest,
 )
 from ..serialization import UNSET, Unset, to_json_value
@@ -38,6 +34,12 @@ from .common import (
     decode_response,
     serialize_query_params,
 )
+from .products_entitlements import (
+    AsyncProductsEntitlements,
+    AsyncProductsEntitlementsWithRawResponse,
+    ProductsEntitlements,
+    ProductsEntitlementsWithRawResponse,
+)
 
 
 class AsyncProducts(ApiBaseAsync):
@@ -47,6 +49,11 @@ class AsyncProducts(ApiBaseAsync):
     def with_raw_response(self) -> AsyncProductsWithRawResponse:
         """These methods, returning an :class:`APIResponse` with the status and headers."""
         return AsyncProductsWithRawResponse(self)
+
+    @functools.cached_property
+    def entitlements(self) -> AsyncProductsEntitlements:
+        """The entitlements API."""
+        return AsyncProductsEntitlements(self._cfg, self._httpx_client)
 
     def list(
         self,
@@ -246,81 +253,6 @@ class AsyncProducts(ApiBaseAsync):
             )
         )
 
-    async def list_entitlements(
-        self,
-        product_id: str,
-        *,
-        extra_headers: t.Mapping[str, str] | None = None,
-        extra_query: t.Mapping[str, object] | None = None,
-        extra_body: t.Mapping[str, object] | None = None,
-        timeout: Timeout | Unset = UNSET,
-        max_retries: int | None = None,
-    ) -> ResolvedEntitlementListResponse:
-        """List product entitlements"""
-        response = await self._request(
-            ApiRequest(
-                method="get",
-                path="/api/v1/products/{product_id}/entitlements",
-                path_params={
-                    "product_id": product_id,
-                },
-                error_types={
-                    "default": _models.RestErrorResponse,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                max_retries=max_retries,
-            )
-        )
-        return decode_response(response, ResolvedEntitlementListResponse)
-
-    async def create_entitlement(
-        self,
-        product_id: str,
-        *,
-        entitlements: builtins.list[EntitlementSpecRequest],
-        extra_headers: t.Mapping[str, str] | None = None,
-        extra_query: t.Mapping[str, object] | None = None,
-        extra_body: t.Mapping[str, object] | None = None,
-        timeout: Timeout | Unset = UNSET,
-        max_retries: int | None = None,
-    ) -> EntitlementListResponse:
-        """Create product entitlements
-
-        A product has no entitlement rows of its own: its entitlements are the feature-level
-        defaults of the features scoped to it, which is what `GET` on this path resolves. Every
-        spec must therefore target a feature belonging to `product_id`. Features that already
-        carry a default entitlement are skipped.
-
-        Specs are validated up front, but the writes are not atomic: each feature is written on
-        its own, so a failure part-way can leave earlier specs committed. Retrying is safe."""
-        response = await self._request(
-            ApiRequest(
-                method="post",
-                path="/api/v1/products/{product_id}/entitlements",
-                path_params={
-                    "product_id": product_id,
-                },
-                json_body=to_json_value(
-                    CreateEntitlementsRequest(
-                        entitlements=entitlements,
-                    ),
-                    CreateEntitlementsRequest,
-                ),
-                error_types={
-                    "default": _models.RestErrorResponse,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                max_retries=max_retries,
-            )
-        )
-        return decode_response(response, EntitlementListResponse)
-
     async def unarchive(
         self,
         product_id: str,
@@ -355,18 +287,18 @@ class AsyncProductsWithRawResponse:
     """The methods of :class:`AsyncProducts`, returning an :class:`APIResponse`."""
 
     def __init__(self, resource: AsyncProducts) -> None:
+        self._resource = resource
         self.list = async_to_raw_response_wrapper(resource.list)
         self.create = async_to_raw_response_wrapper(resource.create)
         self.retrieve = async_to_raw_response_wrapper(resource.retrieve)
         self.update = async_to_raw_response_wrapper(resource.update)
         self.archive = async_to_raw_response_wrapper(resource.archive)
-        self.list_entitlements = async_to_raw_response_wrapper(
-            resource.list_entitlements
-        )
-        self.create_entitlement = async_to_raw_response_wrapper(
-            resource.create_entitlement
-        )
         self.unarchive = async_to_raw_response_wrapper(resource.unarchive)
+
+    @property
+    def entitlements(self) -> AsyncProductsEntitlementsWithRawResponse:
+        """The entitlements API."""
+        return AsyncProductsEntitlementsWithRawResponse(self._resource.entitlements)
 
 
 class Products(ApiBaseSync):
@@ -376,6 +308,11 @@ class Products(ApiBaseSync):
     def with_raw_response(self) -> ProductsWithRawResponse:
         """These methods, returning an :class:`APIResponse` with the status and headers."""
         return ProductsWithRawResponse(self)
+
+    @functools.cached_property
+    def entitlements(self) -> ProductsEntitlements:
+        """The entitlements API."""
+        return ProductsEntitlements(self._cfg, self._httpx_client)
 
     def list(
         self,
@@ -575,81 +512,6 @@ class Products(ApiBaseSync):
             )
         )
 
-    def list_entitlements(
-        self,
-        product_id: str,
-        *,
-        extra_headers: t.Mapping[str, str] | None = None,
-        extra_query: t.Mapping[str, object] | None = None,
-        extra_body: t.Mapping[str, object] | None = None,
-        timeout: Timeout | Unset = UNSET,
-        max_retries: int | None = None,
-    ) -> ResolvedEntitlementListResponse:
-        """List product entitlements"""
-        response = self._request(
-            ApiRequest(
-                method="get",
-                path="/api/v1/products/{product_id}/entitlements",
-                path_params={
-                    "product_id": product_id,
-                },
-                error_types={
-                    "default": _models.RestErrorResponse,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                max_retries=max_retries,
-            )
-        )
-        return decode_response(response, ResolvedEntitlementListResponse)
-
-    def create_entitlement(
-        self,
-        product_id: str,
-        *,
-        entitlements: builtins.list[EntitlementSpecRequest],
-        extra_headers: t.Mapping[str, str] | None = None,
-        extra_query: t.Mapping[str, object] | None = None,
-        extra_body: t.Mapping[str, object] | None = None,
-        timeout: Timeout | Unset = UNSET,
-        max_retries: int | None = None,
-    ) -> EntitlementListResponse:
-        """Create product entitlements
-
-        A product has no entitlement rows of its own: its entitlements are the feature-level
-        defaults of the features scoped to it, which is what `GET` on this path resolves. Every
-        spec must therefore target a feature belonging to `product_id`. Features that already
-        carry a default entitlement are skipped.
-
-        Specs are validated up front, but the writes are not atomic: each feature is written on
-        its own, so a failure part-way can leave earlier specs committed. Retrying is safe."""
-        response = self._request(
-            ApiRequest(
-                method="post",
-                path="/api/v1/products/{product_id}/entitlements",
-                path_params={
-                    "product_id": product_id,
-                },
-                json_body=to_json_value(
-                    CreateEntitlementsRequest(
-                        entitlements=entitlements,
-                    ),
-                    CreateEntitlementsRequest,
-                ),
-                error_types={
-                    "default": _models.RestErrorResponse,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                max_retries=max_retries,
-            )
-        )
-        return decode_response(response, EntitlementListResponse)
-
     def unarchive(
         self,
         product_id: str,
@@ -684,11 +546,15 @@ class ProductsWithRawResponse:
     """The methods of :class:`Products`, returning an :class:`APIResponse`."""
 
     def __init__(self, resource: Products) -> None:
+        self._resource = resource
         self.list = to_raw_response_wrapper(resource.list)
         self.create = to_raw_response_wrapper(resource.create)
         self.retrieve = to_raw_response_wrapper(resource.retrieve)
         self.update = to_raw_response_wrapper(resource.update)
         self.archive = to_raw_response_wrapper(resource.archive)
-        self.list_entitlements = to_raw_response_wrapper(resource.list_entitlements)
-        self.create_entitlement = to_raw_response_wrapper(resource.create_entitlement)
         self.unarchive = to_raw_response_wrapper(resource.unarchive)
+
+    @property
+    def entitlements(self) -> ProductsEntitlementsWithRawResponse:
+        """The entitlements API."""
+        return ProductsEntitlementsWithRawResponse(self._resource.entitlements)

@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 
-import builtins
+import functools
 import typing as t
 
 from .. import models as _models
@@ -11,12 +11,8 @@ from ..models import (
     AddOn,
     AddOnListResponse,
     CreateAddOnRequest,
-    CreateEntitlementsRequest,
-    EntitlementListResponse,
-    EntitlementSpecRequest,
     PriceId,
     ProductId,
-    ResolvedEntitlementListResponse,
     UpdateAddOnRequest,
 )
 from ..serialization import UNSET, Unset, to_json_value
@@ -30,6 +26,12 @@ from ._pagination import (
     step,
 )
 from ._response import async_to_raw_response_wrapper, to_raw_response_wrapper
+from .add_ons_entitlements import (
+    AddOnsEntitlements,
+    AddOnsEntitlementsWithRawResponse,
+    AsyncAddOnsEntitlements,
+    AsyncAddOnsEntitlementsWithRawResponse,
+)
 from .common import (
     ApiBaseAsync,
     ApiBaseSync,
@@ -47,6 +49,11 @@ class AsyncAddOns(ApiBaseAsync):
     def with_raw_response(self) -> AsyncAddOnsWithRawResponse:
         """These methods, returning an :class:`APIResponse` with the status and headers."""
         return AsyncAddOnsWithRawResponse(self)
+
+    @functools.cached_property
+    def entitlements(self) -> AsyncAddOnsEntitlements:
+        """The entitlements API."""
+        return AsyncAddOnsEntitlements(self._cfg, self._httpx_client)
 
     def list(
         self,
@@ -253,75 +260,6 @@ class AsyncAddOns(ApiBaseAsync):
             )
         )
 
-    async def list_entitlements(
-        self,
-        addon_id: str,
-        *,
-        extra_headers: t.Mapping[str, str] | None = None,
-        extra_query: t.Mapping[str, object] | None = None,
-        extra_body: t.Mapping[str, object] | None = None,
-        timeout: Timeout | Unset = UNSET,
-        max_retries: int | None = None,
-    ) -> ResolvedEntitlementListResponse:
-        """List add-on entitlements"""
-        response = await self._request(
-            ApiRequest(
-                method="get",
-                path="/api/v1/addons/{addon_id}/entitlements",
-                path_params={
-                    "addon_id": addon_id,
-                },
-                error_types={
-                    "default": _models.RestErrorResponse,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                max_retries=max_retries,
-            )
-        )
-        return decode_response(response, ResolvedEntitlementListResponse)
-
-    async def create_entitlement(
-        self,
-        addon_id: str,
-        *,
-        entitlements: builtins.list[EntitlementSpecRequest],
-        extra_headers: t.Mapping[str, str] | None = None,
-        extra_query: t.Mapping[str, object] | None = None,
-        extra_body: t.Mapping[str, object] | None = None,
-        timeout: Timeout | Unset = UNSET,
-        max_retries: int | None = None,
-    ) -> EntitlementListResponse:
-        """Create add-on entitlements
-
-        Entitlements already present on this add-on are skipped."""
-        response = await self._request(
-            ApiRequest(
-                method="post",
-                path="/api/v1/addons/{addon_id}/entitlements",
-                path_params={
-                    "addon_id": addon_id,
-                },
-                json_body=to_json_value(
-                    CreateEntitlementsRequest(
-                        entitlements=entitlements,
-                    ),
-                    CreateEntitlementsRequest,
-                ),
-                error_types={
-                    "default": _models.RestErrorResponse,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                max_retries=max_retries,
-            )
-        )
-        return decode_response(response, EntitlementListResponse)
-
     async def unarchive(
         self,
         addon_id: str,
@@ -356,18 +294,18 @@ class AsyncAddOnsWithRawResponse:
     """The methods of :class:`AsyncAddOns`, returning an :class:`APIResponse`."""
 
     def __init__(self, resource: AsyncAddOns) -> None:
+        self._resource = resource
         self.list = async_to_raw_response_wrapper(resource.list)
         self.create = async_to_raw_response_wrapper(resource.create)
         self.retrieve = async_to_raw_response_wrapper(resource.retrieve)
         self.update = async_to_raw_response_wrapper(resource.update)
         self.archive = async_to_raw_response_wrapper(resource.archive)
-        self.list_entitlements = async_to_raw_response_wrapper(
-            resource.list_entitlements
-        )
-        self.create_entitlement = async_to_raw_response_wrapper(
-            resource.create_entitlement
-        )
         self.unarchive = async_to_raw_response_wrapper(resource.unarchive)
+
+    @property
+    def entitlements(self) -> AsyncAddOnsEntitlementsWithRawResponse:
+        """The entitlements API."""
+        return AsyncAddOnsEntitlementsWithRawResponse(self._resource.entitlements)
 
 
 class AddOns(ApiBaseSync):
@@ -377,6 +315,11 @@ class AddOns(ApiBaseSync):
     def with_raw_response(self) -> AddOnsWithRawResponse:
         """These methods, returning an :class:`APIResponse` with the status and headers."""
         return AddOnsWithRawResponse(self)
+
+    @functools.cached_property
+    def entitlements(self) -> AddOnsEntitlements:
+        """The entitlements API."""
+        return AddOnsEntitlements(self._cfg, self._httpx_client)
 
     def list(
         self,
@@ -583,75 +526,6 @@ class AddOns(ApiBaseSync):
             )
         )
 
-    def list_entitlements(
-        self,
-        addon_id: str,
-        *,
-        extra_headers: t.Mapping[str, str] | None = None,
-        extra_query: t.Mapping[str, object] | None = None,
-        extra_body: t.Mapping[str, object] | None = None,
-        timeout: Timeout | Unset = UNSET,
-        max_retries: int | None = None,
-    ) -> ResolvedEntitlementListResponse:
-        """List add-on entitlements"""
-        response = self._request(
-            ApiRequest(
-                method="get",
-                path="/api/v1/addons/{addon_id}/entitlements",
-                path_params={
-                    "addon_id": addon_id,
-                },
-                error_types={
-                    "default": _models.RestErrorResponse,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                max_retries=max_retries,
-            )
-        )
-        return decode_response(response, ResolvedEntitlementListResponse)
-
-    def create_entitlement(
-        self,
-        addon_id: str,
-        *,
-        entitlements: builtins.list[EntitlementSpecRequest],
-        extra_headers: t.Mapping[str, str] | None = None,
-        extra_query: t.Mapping[str, object] | None = None,
-        extra_body: t.Mapping[str, object] | None = None,
-        timeout: Timeout | Unset = UNSET,
-        max_retries: int | None = None,
-    ) -> EntitlementListResponse:
-        """Create add-on entitlements
-
-        Entitlements already present on this add-on are skipped."""
-        response = self._request(
-            ApiRequest(
-                method="post",
-                path="/api/v1/addons/{addon_id}/entitlements",
-                path_params={
-                    "addon_id": addon_id,
-                },
-                json_body=to_json_value(
-                    CreateEntitlementsRequest(
-                        entitlements=entitlements,
-                    ),
-                    CreateEntitlementsRequest,
-                ),
-                error_types={
-                    "default": _models.RestErrorResponse,
-                },
-                extra_headers=extra_headers,
-                extra_query=extra_query,
-                extra_body=extra_body,
-                timeout=timeout,
-                max_retries=max_retries,
-            )
-        )
-        return decode_response(response, EntitlementListResponse)
-
     def unarchive(
         self,
         addon_id: str,
@@ -686,11 +560,15 @@ class AddOnsWithRawResponse:
     """The methods of :class:`AddOns`, returning an :class:`APIResponse`."""
 
     def __init__(self, resource: AddOns) -> None:
+        self._resource = resource
         self.list = to_raw_response_wrapper(resource.list)
         self.create = to_raw_response_wrapper(resource.create)
         self.retrieve = to_raw_response_wrapper(resource.retrieve)
         self.update = to_raw_response_wrapper(resource.update)
         self.archive = to_raw_response_wrapper(resource.archive)
-        self.list_entitlements = to_raw_response_wrapper(resource.list_entitlements)
-        self.create_entitlement = to_raw_response_wrapper(resource.create_entitlement)
         self.unarchive = to_raw_response_wrapper(resource.unarchive)
+
+    @property
+    def entitlements(self) -> AddOnsEntitlementsWithRawResponse:
+        """The entitlements API."""
+        return AddOnsEntitlementsWithRawResponse(self._resource.entitlements)
