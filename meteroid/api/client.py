@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import dataclasses
+import functools
 import os
 import typing as t
 
@@ -283,140 +284,140 @@ class Meteroid:
     def __exit__(self, *exc_info: object) -> None:
         self.close()
 
-    @property
+    @functools.cached_property
     def add_ons(self) -> AddOns:
         """The add ons API."""
         from .add_ons import AddOns
 
         return AddOns(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def batch_jobs(self) -> BatchJobs:
         """The batch jobs API."""
         from .batch_jobs import BatchJobs
 
         return BatchJobs(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def checkout_sessions(self) -> CheckoutSessions:
         """The checkout sessions API."""
         from .checkout_sessions import CheckoutSessions
 
         return CheckoutSessions(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def connect(self) -> Connect:
         """The connect API."""
         from .connect import Connect
 
         return Connect(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def coupons(self) -> Coupons:
         """The coupons API."""
         from .coupons import Coupons
 
         return Coupons(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def credit_notes(self) -> CreditNotes:
         """The credit notes API."""
         from .credit_notes import CreditNotes
 
         return CreditNotes(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def custom_properties(self) -> CustomProperties:
         """The custom properties API."""
         from .custom_properties import CustomProperties
 
         return CustomProperties(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def customers(self) -> Customers:
         """The customers API."""
         from .customers import Customers
 
         return Customers(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def entitlements(self) -> Entitlements:
         """The entitlements API."""
         from .entitlements import Entitlements
 
         return Entitlements(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def events(self) -> Events:
         """The events API."""
         from .events import Events
 
         return Events(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def features(self) -> Features:
         """The features API."""
         from .features import Features
 
         return Features(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def invoices(self) -> Invoices:
         """The invoices API."""
         from .invoices import Invoices
 
         return Invoices(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def metrics(self) -> Metrics:
         """The metrics API."""
         from .metrics import Metrics
 
         return Metrics(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def oauth(self) -> Oauth:
         """The oauth API."""
         from .oauth import Oauth
 
         return Oauth(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def oauth_apps(self) -> OauthApps:
         """The oauth apps API."""
         from .oauth_apps import OauthApps
 
         return OauthApps(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def plans(self) -> Plans:
         """The plans API."""
         from .plans import Plans
 
         return Plans(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def product_families(self) -> ProductFamilies:
         """The product families API."""
         from .product_families import ProductFamilies
 
         return ProductFamilies(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def products(self) -> Products:
         """The products API."""
         from .products import Products
 
         return Products(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def subscriptions(self) -> Subscriptions:
         """The subscriptions API."""
         from .subscriptions import Subscriptions
 
         return Subscriptions(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def usage(self) -> Usage:
         """The usage API."""
         from .usage import Usage
@@ -677,140 +678,140 @@ class AsyncMeteroid:
     async def __aexit__(self, *exc_info: object) -> None:
         await self.aclose()
 
-    @property
+    @functools.cached_property
     def add_ons(self) -> AsyncAddOns:
         """The add ons API."""
         from .add_ons import AsyncAddOns
 
         return AsyncAddOns(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def batch_jobs(self) -> AsyncBatchJobs:
         """The batch jobs API."""
         from .batch_jobs import AsyncBatchJobs
 
         return AsyncBatchJobs(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def checkout_sessions(self) -> AsyncCheckoutSessions:
         """The checkout sessions API."""
         from .checkout_sessions import AsyncCheckoutSessions
 
         return AsyncCheckoutSessions(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def connect(self) -> AsyncConnect:
         """The connect API."""
         from .connect import AsyncConnect
 
         return AsyncConnect(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def coupons(self) -> AsyncCoupons:
         """The coupons API."""
         from .coupons import AsyncCoupons
 
         return AsyncCoupons(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def credit_notes(self) -> AsyncCreditNotes:
         """The credit notes API."""
         from .credit_notes import AsyncCreditNotes
 
         return AsyncCreditNotes(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def custom_properties(self) -> AsyncCustomProperties:
         """The custom properties API."""
         from .custom_properties import AsyncCustomProperties
 
         return AsyncCustomProperties(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def customers(self) -> AsyncCustomers:
         """The customers API."""
         from .customers import AsyncCustomers
 
         return AsyncCustomers(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def entitlements(self) -> AsyncEntitlements:
         """The entitlements API."""
         from .entitlements import AsyncEntitlements
 
         return AsyncEntitlements(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def events(self) -> AsyncEvents:
         """The events API."""
         from .events import AsyncEvents
 
         return AsyncEvents(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def features(self) -> AsyncFeatures:
         """The features API."""
         from .features import AsyncFeatures
 
         return AsyncFeatures(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def invoices(self) -> AsyncInvoices:
         """The invoices API."""
         from .invoices import AsyncInvoices
 
         return AsyncInvoices(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def metrics(self) -> AsyncMetrics:
         """The metrics API."""
         from .metrics import AsyncMetrics
 
         return AsyncMetrics(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def oauth(self) -> AsyncOauth:
         """The oauth API."""
         from .oauth import AsyncOauth
 
         return AsyncOauth(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def oauth_apps(self) -> AsyncOauthApps:
         """The oauth apps API."""
         from .oauth_apps import AsyncOauthApps
 
         return AsyncOauthApps(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def plans(self) -> AsyncPlans:
         """The plans API."""
         from .plans import AsyncPlans
 
         return AsyncPlans(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def product_families(self) -> AsyncProductFamilies:
         """The product families API."""
         from .product_families import AsyncProductFamilies
 
         return AsyncProductFamilies(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def products(self) -> AsyncProducts:
         """The products API."""
         from .products import AsyncProducts
 
         return AsyncProducts(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def subscriptions(self) -> AsyncSubscriptions:
         """The subscriptions API."""
         from .subscriptions import AsyncSubscriptions
 
         return AsyncSubscriptions(self._cfg, self._httpx_client)
 
-    @property
+    @functools.cached_property
     def usage(self) -> AsyncUsage:
         """The usage API."""
         from .usage import AsyncUsage

@@ -73,10 +73,12 @@ class Paging(t.Generic[_Body, _Item, _P]):
 
 @dataclasses.dataclass(frozen=True)
 class CursorPaging(Paging[_Body, _Item, str]):
-    """The next page starts after a cursor: one the page gives, or the last item's."""
+    """The next page starts after a cursor: one the page gives, or the last item's. Paging
+    ``backwards``, it ends before the first item's."""
 
     next_cursor: t.Callable[[_Body], str | Unset | None] | None = None
     item_cursor: t.Callable[[_Item], str | Unset | None] | None = None
+    backwards: bool = False
 
     def next(
         self, param: str | None, body: _Body, items: t.Sequence[_Item]
@@ -86,7 +88,7 @@ class CursorPaging(Paging[_Body, _Item, str]):
         if self.next_cursor is not None:
             cursor = self.next_cursor(body)
         elif self.item_cursor is not None:
-            cursor = self.item_cursor(items[-1])
+            cursor = self.item_cursor(items[0] if self.backwards else items[-1])
         else:
             cursor = None
         return (

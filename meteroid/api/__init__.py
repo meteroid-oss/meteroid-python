@@ -51,7 +51,7 @@ if t.TYPE_CHECKING:
         AsyncInvoicesListPage,
         AsyncMetricsListPage,
         AsyncPlansListPage,
-        AsyncPlansListVersionsPage,
+        AsyncPlansVersionsListPage,
         AsyncProductFamiliesListPage,
         AsyncProductsListPage,
         AsyncSubscriptionsListPage,
@@ -65,12 +65,13 @@ if t.TYPE_CHECKING:
         InvoicesListPage,
         MetricsListPage,
         PlansListPage,
-        PlansListVersionsPage,
+        PlansVersionsListPage,
         ProductFamiliesListPage,
         ProductsListPage,
         SubscriptionsListPage,
     )
     from .add_ons import AddOns, AsyncAddOns
+    from .add_ons_entitlements import AddOnsEntitlements, AsyncAddOnsEntitlements
     from .batch_jobs import AsyncBatchJobs, BatchJobs
     from .checkout_sessions import AsyncCheckoutSessions, CheckoutSessions
     from .connect import AsyncConnect, Connect
@@ -86,8 +87,10 @@ if t.TYPE_CHECKING:
     from .oauth import AsyncOauth, Oauth
     from .oauth_apps import AsyncOauthApps, OauthApps
     from .plans import AsyncPlans, Plans
+    from .plans_versions import AsyncPlansVersions, PlansVersions
     from .product_families import AsyncProductFamilies, ProductFamilies
     from .products import AsyncProducts, Products
+    from .products_entitlements import AsyncProductsEntitlements, ProductsEntitlements
     from .subscriptions import AsyncSubscriptions, Subscriptions
     from .usage import AsyncUsage, Usage
 
@@ -95,6 +98,8 @@ if t.TYPE_CHECKING:
 _MODULES: dict[str, str] = {
     "AsyncAddOns": "add_ons",
     "AddOns": "add_ons",
+    "AsyncAddOnsEntitlements": "add_ons_entitlements",
+    "AddOnsEntitlements": "add_ons_entitlements",
     "AsyncBatchJobs": "batch_jobs",
     "BatchJobs": "batch_jobs",
     "AsyncCheckoutSessions": "checkout_sessions",
@@ -125,10 +130,14 @@ _MODULES: dict[str, str] = {
     "OauthApps": "oauth_apps",
     "AsyncPlans": "plans",
     "Plans": "plans",
+    "AsyncPlansVersions": "plans_versions",
+    "PlansVersions": "plans_versions",
     "AsyncProductFamilies": "product_families",
     "ProductFamilies": "product_families",
     "AsyncProducts": "products",
     "Products": "products",
+    "AsyncProductsEntitlements": "products_entitlements",
+    "ProductsEntitlements": "products_entitlements",
     "AsyncSubscriptions": "subscriptions",
     "Subscriptions": "subscriptions",
     "AsyncUsage": "usage",
@@ -155,8 +164,8 @@ _MODULES: dict[str, str] = {
     "MetricsListPage": "_pages",
     "AsyncPlansListPage": "_pages",
     "PlansListPage": "_pages",
-    "AsyncPlansListVersionsPage": "_pages",
-    "PlansListVersionsPage": "_pages",
+    "AsyncPlansVersionsListPage": "_pages",
+    "PlansVersionsListPage": "_pages",
     "AsyncProductFamiliesListPage": "_pages",
     "ProductFamiliesListPage": "_pages",
     "AsyncProductsListPage": "_pages",
@@ -209,6 +218,8 @@ __all__ = [
     "UnprocessableEntityError",
     "AsyncAddOns",
     "AddOns",
+    "AsyncAddOnsEntitlements",
+    "AddOnsEntitlements",
     "AsyncBatchJobs",
     "BatchJobs",
     "AsyncCheckoutSessions",
@@ -239,10 +250,14 @@ __all__ = [
     "OauthApps",
     "AsyncPlans",
     "Plans",
+    "AsyncPlansVersions",
+    "PlansVersions",
     "AsyncProductFamilies",
     "ProductFamilies",
     "AsyncProducts",
     "Products",
+    "AsyncProductsEntitlements",
+    "ProductsEntitlements",
     "AsyncSubscriptions",
     "Subscriptions",
     "AsyncUsage",
@@ -269,8 +284,8 @@ __all__ = [
     "MetricsListPage",
     "AsyncPlansListPage",
     "PlansListPage",
-    "AsyncPlansListVersionsPage",
-    "PlansListVersionsPage",
+    "AsyncPlansVersionsListPage",
+    "PlansVersionsListPage",
     "AsyncProductFamiliesListPage",
     "ProductFamiliesListPage",
     "AsyncProductsListPage",

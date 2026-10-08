@@ -10,7 +10,7 @@ A list method returns its first page, such as a `AddOnsListPage`: a subclass of 
 model (`AddOnListResponse`) with the paging members `items`, `has_next_page()`, `get_next_page()`,
 `iter_pages()` and `body`, which iterates every item. The page classes are in `meteroid.api`.
 
-[Add ons](#add-ons) · [Batch jobs](#batch-jobs) · [Checkout sessions](#checkout-sessions) · [Connect](#connect) · [Coupons](#coupons) · [Credit notes](#credit-notes) · [Custom properties](#custom-properties) · [Customers](#customers) · [Entitlements](#entitlements) · [Events](#events) · [Features](#features) · [Invoices](#invoices) · [Metrics](#metrics) · [Oauth](#oauth) · [Oauth apps](#oauth-apps) · [Plans](#plans) · [Product families](#product-families) · [Products](#products) · [Subscriptions](#subscriptions) · [Usage](#usage)
+[Add ons](#add-ons) · [Add ons entitlements](#add-ons-entitlements) · [Batch jobs](#batch-jobs) · [Checkout sessions](#checkout-sessions) · [Connect](#connect) · [Coupons](#coupons) · [Credit notes](#credit-notes) · [Custom properties](#custom-properties) · [Customers](#customers) · [Entitlements](#entitlements) · [Events](#events) · [Features](#features) · [Invoices](#invoices) · [Metrics](#metrics) · [Oauth](#oauth) · [Oauth apps](#oauth-apps) · [Plans](#plans) · [Plans versions](#plans-versions) · [Product families](#product-families) · [Products](#products) · [Products entitlements](#products-entitlements) · [Subscriptions](#subscriptions) · [Usage](#usage)
 
 ## Add ons
 
@@ -23,9 +23,16 @@ model (`AddOnListResponse`) with the paging members `items`, `has_next_page()`, 
 | `client.add_ons.retrieve(addon_id: str) -> AddOn` | `GET /api/v1/addons/{addon_id}` | [`AddOn`](meteroid/models/add_on.py) |
 | `client.add_ons.update(addon_id: str, *, description=..., max_instances_per_subscription=..., name=..., price_id=..., self_serviceable=...) -> AddOn` | `PATCH /api/v1/addons/{addon_id}` | [`AddOn`](meteroid/models/add_on.py) |
 | `client.add_ons.archive(addon_id: str) -> None` | `POST /api/v1/addons/{addon_id}/archive` | nothing |
-| `client.add_ons.list_entitlements(addon_id: str) -> ResolvedEntitlementListResponse` | `GET /api/v1/addons/{addon_id}/entitlements` | [`ResolvedEntitlementListResponse`](meteroid/models/resolved_entitlement_list_response.py) |
-| `client.add_ons.create_entitlement(addon_id: str, *, entitlements: list[EntitlementSpecRequest]) -> EntitlementListResponse` | `POST /api/v1/addons/{addon_id}/entitlements` | [`EntitlementListResponse`](meteroid/models/entitlement_list_response.py) |
 | `client.add_ons.unarchive(addon_id: str) -> None` | `POST /api/v1/addons/{addon_id}/unarchive` | nothing |
+
+### Add ons entitlements
+
+[`client.add_ons.entitlements`](meteroid/api/add_ons_entitlements.py)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.add_ons.entitlements.list(addon_id: str) -> ResolvedEntitlementListResponse` | `GET /api/v1/addons/{addon_id}/entitlements` | [`ResolvedEntitlementListResponse`](meteroid/models/resolved_entitlement_list_response.py) |
+| `client.add_ons.entitlements.create(addon_id: str, *, entitlements: list[EntitlementSpecRequest]) -> EntitlementListResponse` | `POST /api/v1/addons/{addon_id}/entitlements` | [`EntitlementListResponse`](meteroid/models/entitlement_list_response.py) |
 
 ## Batch jobs
 
@@ -204,15 +211,22 @@ model (`AddOnListResponse`) with the paging members `items`, `has_next_page()`, 
 | `client.plans.create_plan_version_entitlement(plan_version_id: str, *, entitlements: list[EntitlementSpecRequest]) -> EntitlementListResponse` | `POST /api/v1/plan-versions/{plan_version_id}/entitlements` | [`EntitlementListResponse`](meteroid/models/entitlement_list_response.py) |
 | `client.plans.list(*, product_family_id=..., search=..., status=..., plan_type=..., order_by=..., page=..., per_page=...) -> PlansListPage` | `GET /api/v1/plans` | [`PlanListResponse`](meteroid/models/plan_list_response.py) pages of [`Plan`](meteroid/models/plan.py) |
 | `client.plans.create(*, components: list[PriceComponentInput], currency: str, name: str, plan_type: PlanTypeEnum, product_family_id: ProductFamilyId, status: PlanStatusEnum, add_ons=..., billing=..., description=..., entitlements=..., self_service_rank=..., tax_inclusive=..., trial=...) -> Plan` | `POST /api/v1/plans` | [`Plan`](meteroid/models/plan.py) |
-| `client.plans.update_version_minimum(plan_version_id: str, *, amount: str, scope: MinimumCommitmentScope) -> MinimumCommitment` | `PUT /api/v1/plans/versions/{plan_version_id}/minimum` | [`MinimumCommitment`](meteroid/models/minimum_commitment.py) |
-| `client.plans.delete_version_minimum(plan_version_id: str) -> None` | `DELETE /api/v1/plans/versions/{plan_version_id}/minimum` | nothing |
 | `client.plans.retrieve(plan_id: str, *, version=...) -> Plan` | `GET /api/v1/plans/{plan_id}` | [`Plan`](meteroid/models/plan.py) |
 | `client.plans.replace(plan_id: str, *, components: list[PriceComponentInput], currency: str, name: str, add_ons=..., billing=..., description=..., entitlements=..., minimum_commitment=..., status=..., tax_inclusive=..., trial=...) -> Plan` | `PUT /api/v1/plans/{plan_id}` | [`Plan`](meteroid/models/plan.py) |
 | `client.plans.update(plan_id: str, *, description=..., name=..., self_service_rank=...) -> Plan` | `PATCH /api/v1/plans/{plan_id}` | [`Plan`](meteroid/models/plan.py) |
 | `client.plans.archive(plan_id: str) -> None` | `POST /api/v1/plans/{plan_id}/archive` | nothing |
 | `client.plans.publish(plan_id: str) -> Plan` | `POST /api/v1/plans/{plan_id}/publish` | [`Plan`](meteroid/models/plan.py) |
 | `client.plans.unarchive(plan_id: str) -> None` | `POST /api/v1/plans/{plan_id}/unarchive` | nothing |
-| `client.plans.list_versions(plan_id: str, *, page=..., per_page=...) -> PlansListVersionsPage` | `GET /api/v1/plans/{plan_id}/versions` | [`PlanVersionListResponse`](meteroid/models/plan_version_list_response.py) pages of [`PlanVersionSummary`](meteroid/models/plan_version_summary.py) |
+
+### Plans versions
+
+[`client.plans.versions`](meteroid/api/plans_versions.py)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.plans.versions.update_minimum(plan_version_id: str, *, amount: str, scope: MinimumCommitmentScope) -> MinimumCommitment` | `PUT /api/v1/plans/versions/{plan_version_id}/minimum` | [`MinimumCommitment`](meteroid/models/minimum_commitment.py) |
+| `client.plans.versions.delete_minimum(plan_version_id: str) -> None` | `DELETE /api/v1/plans/versions/{plan_version_id}/minimum` | nothing |
+| `client.plans.versions.list(plan_id: str, *, page=..., per_page=...) -> PlansVersionsListPage` | `GET /api/v1/plans/{plan_id}/versions` | [`PlanVersionListResponse`](meteroid/models/plan_version_list_response.py) pages of [`PlanVersionSummary`](meteroid/models/plan_version_summary.py) |
 
 ## Product families
 
@@ -235,9 +249,16 @@ model (`AddOnListResponse`) with the paging members `items`, `has_next_page()`, 
 | `client.products.retrieve(product_id: str) -> Product` | `GET /api/v1/products/{product_id}` | [`Product`](meteroid/models/product.py) |
 | `client.products.update(product_id: str, *, description=..., fee_structure=..., name=...) -> Product` | `PATCH /api/v1/products/{product_id}` | [`Product`](meteroid/models/product.py) |
 | `client.products.archive(product_id: str) -> None` | `POST /api/v1/products/{product_id}/archive` | nothing |
-| `client.products.list_entitlements(product_id: str) -> ResolvedEntitlementListResponse` | `GET /api/v1/products/{product_id}/entitlements` | [`ResolvedEntitlementListResponse`](meteroid/models/resolved_entitlement_list_response.py) |
-| `client.products.create_entitlement(product_id: str, *, entitlements: list[EntitlementSpecRequest]) -> EntitlementListResponse` | `POST /api/v1/products/{product_id}/entitlements` | [`EntitlementListResponse`](meteroid/models/entitlement_list_response.py) |
 | `client.products.unarchive(product_id: str) -> None` | `POST /api/v1/products/{product_id}/unarchive` | nothing |
+
+### Products entitlements
+
+[`client.products.entitlements`](meteroid/api/products_entitlements.py)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.products.entitlements.list(product_id: str) -> ResolvedEntitlementListResponse` | `GET /api/v1/products/{product_id}/entitlements` | [`ResolvedEntitlementListResponse`](meteroid/models/resolved_entitlement_list_response.py) |
+| `client.products.entitlements.create(product_id: str, *, entitlements: list[EntitlementSpecRequest]) -> EntitlementListResponse` | `POST /api/v1/products/{product_id}/entitlements` | [`EntitlementListResponse`](meteroid/models/entitlement_list_response.py) |
 
 ## Subscriptions
 
