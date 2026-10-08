@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "meteroid"
-version = "0.28.0"
+version = "0.29.0"
 description = "Official Python SDK for Meteroid, the open-source billing platform: subscriptions, invoicing, usage-based billing and webhooks."
 readme = "README.md"
 license = "Apache-2.0"
