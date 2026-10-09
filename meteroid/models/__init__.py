@@ -104,6 +104,8 @@ if t.TYPE_CHECKING:
     from .create_product_request import CreateProductRequest
     from .create_subscription_add_on import CreateSubscriptionAddOn
     from .create_subscription_components import CreateSubscriptionComponents
+    from .create_webhook_endpoint_request import CreateWebhookEndpointRequest
+    from .created_webhook_endpoint import CreatedWebhookEndpoint
     from .credit_note import CreditNote
     from .credit_note_custom_properties_request import CreditNoteCustomPropertiesRequest
     from .credit_note_event import CreditNoteEvent
@@ -394,6 +396,7 @@ if t.TYPE_CHECKING:
     from .update_feature_request import UpdateFeatureRequest
     from .update_metric_request import UpdateMetricRequest
     from .update_product_request import UpdateProductRequest
+    from .update_webhook_endpoint_request import UpdateWebhookEndpointRequest
     from .usage_fee import UsageFee
     from .usage_fee_structure import UsageFeeStructure
     from .usage_model_enum import UsageModelEnum, UsageModelEnumLiteral
@@ -403,6 +406,23 @@ if t.TYPE_CHECKING:
     from .usage_response import UsageResponse
     from .volume_plan_pricing import VolumePlanPricing
     from .volume_pricing import VolumePricing
+    from .webhook_delivery import WebhookDelivery
+    from .webhook_delivery_id import WebhookDeliveryId
+    from .webhook_delivery_list_response import WebhookDeliveryListResponse
+    from .webhook_delivery_status import (
+        WebhookDeliveryStatus,
+        WebhookDeliveryStatusLiteral,
+    )
+    from .webhook_endpoint import WebhookEndpoint
+    from .webhook_endpoint_disabled_reason import (
+        WebhookEndpointDisabledReason,
+        WebhookEndpointDisabledReasonLiteral,
+    )
+    from .webhook_endpoint_id import WebhookEndpointId
+    from .webhook_endpoint_list_response import WebhookEndpointListResponse
+    from .webhook_endpoint_secret import WebhookEndpointSecret
+    from .webhook_header import WebhookHeader
+    from .webhook_header_input import WebhookHeaderInput
 
 _MODULES: dict[str, str] = {
     "AddOn": "add_on",
@@ -504,6 +524,8 @@ _MODULES: dict[str, str] = {
     "CreateProductRequest": "create_product_request",
     "CreateSubscriptionAddOn": "create_subscription_add_on",
     "CreateSubscriptionComponents": "create_subscription_components",
+    "CreateWebhookEndpointRequest": "create_webhook_endpoint_request",
+    "CreatedWebhookEndpoint": "created_webhook_endpoint",
     "CreditNote": "credit_note",
     "CreditNoteCustomPropertiesRequest": "credit_note_custom_properties_request",
     "CreditNoteEvent": "credit_note_event",
@@ -787,6 +809,7 @@ _MODULES: dict[str, str] = {
     "UpdateFeatureRequest": "update_feature_request",
     "UpdateMetricRequest": "update_metric_request",
     "UpdateProductRequest": "update_product_request",
+    "UpdateWebhookEndpointRequest": "update_webhook_endpoint_request",
     "UsageFee": "usage_fee",
     "UsageFeeStructure": "usage_fee_structure",
     "UsageModelEnum": "usage_model_enum",
@@ -797,6 +820,19 @@ _MODULES: dict[str, str] = {
     "UsageResponse": "usage_response",
     "VolumePlanPricing": "volume_plan_pricing",
     "VolumePricing": "volume_pricing",
+    "WebhookDelivery": "webhook_delivery",
+    "WebhookDeliveryId": "webhook_delivery_id",
+    "WebhookDeliveryListResponse": "webhook_delivery_list_response",
+    "WebhookDeliveryStatus": "webhook_delivery_status",
+    "WebhookDeliveryStatusLiteral": "webhook_delivery_status",
+    "WebhookEndpoint": "webhook_endpoint",
+    "WebhookEndpointDisabledReason": "webhook_endpoint_disabled_reason",
+    "WebhookEndpointDisabledReasonLiteral": "webhook_endpoint_disabled_reason",
+    "WebhookEndpointId": "webhook_endpoint_id",
+    "WebhookEndpointListResponse": "webhook_endpoint_list_response",
+    "WebhookEndpointSecret": "webhook_endpoint_secret",
+    "WebhookHeader": "webhook_header",
+    "WebhookHeaderInput": "webhook_header_input",
 }
 
 
@@ -916,6 +952,8 @@ __all__ = [
     "CreateProductRequest",
     "CreateSubscriptionAddOn",
     "CreateSubscriptionComponents",
+    "CreateWebhookEndpointRequest",
+    "CreatedWebhookEndpoint",
     "CreditNote",
     "CreditNoteCustomPropertiesRequest",
     "CreditNoteEvent",
@@ -1199,6 +1237,7 @@ __all__ = [
     "UpdateFeatureRequest",
     "UpdateMetricRequest",
     "UpdateProductRequest",
+    "UpdateWebhookEndpointRequest",
     "UsageFee",
     "UsageFeeStructure",
     "UsageModelEnum",
@@ -1209,4 +1248,17 @@ __all__ = [
     "UsageResponse",
     "VolumePlanPricing",
     "VolumePricing",
+    "WebhookDelivery",
+    "WebhookDeliveryId",
+    "WebhookDeliveryListResponse",
+    "WebhookDeliveryStatus",
+    "WebhookDeliveryStatusLiteral",
+    "WebhookEndpoint",
+    "WebhookEndpointDisabledReason",
+    "WebhookEndpointDisabledReasonLiteral",
+    "WebhookEndpointId",
+    "WebhookEndpointListResponse",
+    "WebhookEndpointSecret",
+    "WebhookHeader",
+    "WebhookHeaderInput",
 ]

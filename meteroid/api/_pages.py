@@ -34,6 +34,8 @@ from ..models import (
     ProductListResponse,
     Subscription,
     SubscriptionListResponse,
+    WebhookDelivery,
+    WebhookDeliveryListResponse,
 )
 from ._pagination import AsyncPage, SyncPage
 
@@ -68,6 +70,8 @@ __all__ = [
     "ProductsListPage",
     "AsyncSubscriptionsListPage",
     "SubscriptionsListPage",
+    "AsyncWebhookEndpointsEndpointsListDeliveriesPage",
+    "WebhookEndpointsEndpointsListDeliveriesPage",
 ]
 
 
@@ -231,3 +235,15 @@ class AsyncSubscriptionsListPage(
     AsyncPage[Subscription, SubscriptionListResponse], SubscriptionListResponse
 ):
     """A page of :class:`Subscription`, and the :class:`SubscriptionListResponse` response of its request."""
+
+
+class WebhookEndpointsEndpointsListDeliveriesPage(
+    SyncPage[WebhookDelivery, WebhookDeliveryListResponse], WebhookDeliveryListResponse
+):
+    """A page of :class:`WebhookDelivery`, and the :class:`WebhookDeliveryListResponse` response of its request."""
+
+
+class AsyncWebhookEndpointsEndpointsListDeliveriesPage(
+    AsyncPage[WebhookDelivery, WebhookDeliveryListResponse], WebhookDeliveryListResponse
+):
+    """A page of :class:`WebhookDelivery`, and the :class:`WebhookDeliveryListResponse` response of its request."""

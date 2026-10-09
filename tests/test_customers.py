@@ -30,10 +30,7 @@ class CustomersTest(unittest.TestCase):
         )
         call(
             client.customers.create,
-            body=decode(
-                CustomerCreateRequest,
-                '{"currency":"ERN","custom_taxes":[{"name":"sample","rate":"sample","tax_code":"sample"}],"invoicing_emails":["sample"]}',
-            ),
+            body=decode(CustomerCreateRequest, '{"currency":"ERN"}'),
         )
         self.assertEqual(requests, ["POST /api/v1/customers"])
 
