@@ -137,6 +137,12 @@ if t.TYPE_CHECKING:
         Usage,
         UsageWithRawResponse,
     )
+    from .webhook_endpoints import (
+        AsyncWebhookEndpoints,
+        AsyncWebhookEndpointsWithRawResponse,
+        WebhookEndpoints,
+        WebhookEndpointsWithRawResponse,
+    )
 
 __all__ = [
     "AsyncMeteroid",
@@ -424,6 +430,13 @@ class Meteroid:
 
         return Usage(self._cfg, self._httpx_client)
 
+    @functools.cached_property
+    def webhook_endpoints(self) -> WebhookEndpoints:
+        """The webhook endpoints API."""
+        from .webhook_endpoints import WebhookEndpoints
+
+        return WebhookEndpoints(self._cfg, self._httpx_client)
+
 
 class MeteroidWithRawResponse:
     """The resources of :class:`Meteroid`, whose methods return an :class:`APIResponse`."""
@@ -570,6 +583,13 @@ class MeteroidWithRawResponse:
         from .usage import UsageWithRawResponse
 
         return UsageWithRawResponse(self._client.usage)
+
+    @property
+    def webhook_endpoints(self) -> WebhookEndpointsWithRawResponse:
+        """The webhook endpoints API."""
+        from .webhook_endpoints import WebhookEndpointsWithRawResponse
+
+        return WebhookEndpointsWithRawResponse(self._client.webhook_endpoints)
 
 
 class AsyncMeteroid:
@@ -818,6 +838,13 @@ class AsyncMeteroid:
 
         return AsyncUsage(self._cfg, self._httpx_client)
 
+    @functools.cached_property
+    def webhook_endpoints(self) -> AsyncWebhookEndpoints:
+        """The webhook endpoints API."""
+        from .webhook_endpoints import AsyncWebhookEndpoints
+
+        return AsyncWebhookEndpoints(self._cfg, self._httpx_client)
+
 
 class AsyncMeteroidWithRawResponse:
     """The resources of :class:`AsyncMeteroid`, whose methods return an :class:`APIResponse`."""
@@ -964,3 +991,10 @@ class AsyncMeteroidWithRawResponse:
         from .usage import AsyncUsageWithRawResponse
 
         return AsyncUsageWithRawResponse(self._client.usage)
+
+    @property
+    def webhook_endpoints(self) -> AsyncWebhookEndpointsWithRawResponse:
+        """The webhook endpoints API."""
+        from .webhook_endpoints import AsyncWebhookEndpointsWithRawResponse
+
+        return AsyncWebhookEndpointsWithRawResponse(self._client.webhook_endpoints)

@@ -10,7 +10,7 @@ A list method returns its first page, such as a `AddOnsListPage`: a subclass of 
 model (`AddOnListResponse`) with the paging members `items`, `has_next_page()`, `get_next_page()`,
 `iter_pages()` and `body`, which iterates every item. The page classes are in `meteroid.api`.
 
-[Add ons](#add-ons) · [Add ons entitlements](#add-ons-entitlements) · [Batch jobs](#batch-jobs) · [Checkout sessions](#checkout-sessions) · [Connect](#connect) · [Coupons](#coupons) · [Credit notes](#credit-notes) · [Custom properties](#custom-properties) · [Customers](#customers) · [Entitlements](#entitlements) · [Events](#events) · [Features](#features) · [Invoices](#invoices) · [Metrics](#metrics) · [Oauth](#oauth) · [Oauth apps](#oauth-apps) · [Plans](#plans) · [Plans versions](#plans-versions) · [Product families](#product-families) · [Products](#products) · [Products entitlements](#products-entitlements) · [Subscriptions](#subscriptions) · [Usage](#usage)
+[Add ons](#add-ons) · [Add ons entitlements](#add-ons-entitlements) · [Batch jobs](#batch-jobs) · [Checkout sessions](#checkout-sessions) · [Connect](#connect) · [Coupons](#coupons) · [Credit notes](#credit-notes) · [Custom properties](#custom-properties) · [Customers](#customers) · [Entitlements](#entitlements) · [Events](#events) · [Features](#features) · [Invoices](#invoices) · [Metrics](#metrics) · [Oauth](#oauth) · [Oauth apps](#oauth-apps) · [Plans](#plans) · [Plans versions](#plans-versions) · [Product families](#product-families) · [Products](#products) · [Products entitlements](#products-entitlements) · [Subscriptions](#subscriptions) · [Usage](#usage) · [Webhook endpoints](#webhook-endpoints) · [Webhook endpoints endpoints](#webhook-endpoints-endpoints)
 
 ## Add ons
 
@@ -113,7 +113,7 @@ model (`AddOnListResponse`) with the paging members `items`, `has_next_page()`, 
 | Method | Request | Returns |
 | --- | --- | --- |
 | `client.customers.list(*, order_by=..., page=..., per_page=..., search=..., archived=...) -> CustomersListPage` | `GET /api/v1/customers` | [`CustomerListResponse`](meteroid/models/customer_list_response.py) pages of [`Customer`](meteroid/models/customer.py) |
-| `client.customers.create(*, currency: Currency, custom_taxes: list[CustomTaxRate], invoicing_emails: list[str], alias=..., billing_address=..., billing_email=..., buyer_reference=..., connected_account_id=..., custom_properties=..., customer_type=..., exemption_reason=..., first_name=..., invoicing_entity_id=..., invoicing_language=..., is_tax_exempt=..., last_name=..., legal_number=..., name=..., phone=..., preferred_locales=..., shipping_address=..., vat_number=...) -> Customer` | `POST /api/v1/customers` | [`Customer`](meteroid/models/customer.py) |
+| `client.customers.create(*, currency: Currency, alias=..., billing_address=..., billing_email=..., buyer_reference=..., connected_account_id=..., custom_properties=..., custom_taxes=..., customer_type=..., exemption_reason=..., first_name=..., invoicing_emails=..., invoicing_entity_id=..., invoicing_language=..., is_tax_exempt=..., last_name=..., legal_number=..., name=..., phone=..., preferred_locales=..., shipping_address=..., vat_number=...) -> Customer` | `POST /api/v1/customers` | [`Customer`](meteroid/models/customer.py) |
 | `client.customers.retrieve(id_or_alias: str) -> Customer` | `GET /api/v1/customers/{id_or_alias}` | [`Customer`](meteroid/models/customer.py) |
 | `client.customers.replace(id_or_alias: str, *, currency: Currency, custom_taxes: list[CustomTaxRate], invoicing_emails: list[str], invoicing_entity_id: InvoicingEntityId, alias=..., billing_address=..., billing_email=..., buyer_reference=..., custom_properties=..., customer_type=..., exemption_reason=..., first_name=..., invoicing_language=..., is_tax_exempt=..., last_name=..., legal_number=..., name=..., phone=..., preferred_locales=..., shipping_address=..., vat_number=...) -> Customer` | `PUT /api/v1/customers/{id_or_alias}` | [`Customer`](meteroid/models/customer.py) |
 | `client.customers.archive(id_or_alias: str) -> None` | `DELETE /api/v1/customers/{id_or_alias}` | nothing |
@@ -283,3 +283,26 @@ model (`AddOnListResponse`) with the paging members `items`, `has_next_page()`, 
 | `client.usage.retrieve_customer(customer_id: str, *, start_date: date, end_date: date, metric_id=...) -> UsageResponse` | `GET /api/v1/usage/customer/{customer_id}` | [`UsageResponse`](meteroid/models/usage_response.py) |
 | `client.usage.retrieve_subscription(subscription_id: str, *, start_date=..., end_date=..., metric_id=...) -> UsageResponse` | `GET /api/v1/usage/subscription/{subscription_id}` | [`UsageResponse`](meteroid/models/usage_response.py) |
 | `client.usage.retrieve_summary(*, start_date: date, end_date: date, metric_id=...) -> UsageResponse` | `GET /api/v1/usage/summary` | [`UsageResponse`](meteroid/models/usage_response.py) |
+
+## Webhook endpoints
+
+[`client.webhook_endpoints`](meteroid/api/webhook_endpoints.py)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.webhook_endpoints.resend_webhook_delivery(delivery_id: str) -> WebhookDelivery` | `POST /api/v1/webhooks/deliveries/{delivery_id}/resend` | [`WebhookDelivery`](meteroid/models/webhook_delivery.py) |
+
+### Webhook endpoints endpoints
+
+[`client.webhook_endpoints.endpoints`](meteroid/api/webhook_endpoints_endpoints.py)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.webhook_endpoints.endpoints.list() -> WebhookEndpointListResponse` | `GET /api/v1/webhooks/endpoints` | [`WebhookEndpointListResponse`](meteroid/models/webhook_endpoint_list_response.py) |
+| `client.webhook_endpoints.endpoints.create(*, url: str, description=..., event_types=..., headers=..., rate_limit_per_sec=...) -> CreatedWebhookEndpoint` | `POST /api/v1/webhooks/endpoints` | [`CreatedWebhookEndpoint`](meteroid/models/created_webhook_endpoint.py) |
+| `client.webhook_endpoints.endpoints.retrieve(endpoint_id: str) -> WebhookEndpoint` | `GET /api/v1/webhooks/endpoints/{endpoint_id}` | [`WebhookEndpoint`](meteroid/models/webhook_endpoint.py) |
+| `client.webhook_endpoints.endpoints.delete(endpoint_id: str) -> None` | `DELETE /api/v1/webhooks/endpoints/{endpoint_id}` | nothing |
+| `client.webhook_endpoints.endpoints.update(endpoint_id: str, *, description=..., disabled=..., event_types=..., headers=..., rate_limit_per_sec=..., url=...) -> WebhookEndpoint` | `PATCH /api/v1/webhooks/endpoints/{endpoint_id}` | [`WebhookEndpoint`](meteroid/models/webhook_endpoint.py) |
+| `client.webhook_endpoints.endpoints.list_deliveries(endpoint_id: str, *, status=..., page=..., per_page=...) -> WebhookEndpointsEndpointsListDeliveriesPage` | `GET /api/v1/webhooks/endpoints/{endpoint_id}/deliveries` | [`WebhookDeliveryListResponse`](meteroid/models/webhook_delivery_list_response.py) pages of [`WebhookDelivery`](meteroid/models/webhook_delivery.py) |
+| `client.webhook_endpoints.endpoints.rotate_secret(endpoint_id: str) -> WebhookEndpointSecret` | `POST /api/v1/webhooks/endpoints/{endpoint_id}/rotate-secret` | [`WebhookEndpointSecret`](meteroid/models/webhook_endpoint_secret.py) |
+| `client.webhook_endpoints.endpoints.retrieve_secret(endpoint_id: str) -> WebhookEndpointSecret` | `GET /api/v1/webhooks/endpoints/{endpoint_id}/secret` | [`WebhookEndpointSecret`](meteroid/models/webhook_endpoint_secret.py) |

@@ -14,7 +14,7 @@ class EventsTest(unittest.TestCase):
             client.events.ingest,
             body=decode(
                 IngestEventsRequest,
-                '{"events":[{"code":"sample","customer_id":"sample","event_id":"sample","timestamp":"sample"}]}',
+                '{"events":[{"code":"sample","customer_id":"sample","event_id":"sample"}]}',
             ),
         )
         self.assertEqual(requests, ["POST /api/v1/events/ingest"])

@@ -9,6 +9,7 @@ from ..serialization import BaseModel
 
 if t.TYPE_CHECKING:
     from .available_parameters import AvailableParameters
+    from .currency import Currency
     from .entitlement import Entitlement
     from .minimum_commitment import MinimumCommitment
     from .plan_id import PlanId
@@ -28,7 +29,7 @@ class Plan(BaseModel):
 
     created_at: datetime
 
-    currency: str
+    currency: Currency
 
     id: PlanId
 

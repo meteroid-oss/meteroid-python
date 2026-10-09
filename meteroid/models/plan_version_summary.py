@@ -8,6 +8,7 @@ from datetime import datetime
 from ..serialization import BaseModel
 
 if t.TYPE_CHECKING:
+    from .currency import Currency
     from .plan_version_id import PlanVersionId
 
 
@@ -17,7 +18,7 @@ class PlanVersionSummary(BaseModel):
 
     created_at: datetime
 
-    currency: str
+    currency: Currency
 
     id: PlanVersionId
 

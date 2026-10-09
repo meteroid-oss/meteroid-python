@@ -21,10 +21,6 @@ class CustomerCreateRequest(BaseModel):
 
     currency: Currency
 
-    custom_taxes: list[CustomTaxRate]
-
-    invoicing_emails: list[str]
-
     alias: str | None | Unset = UNSET
 
     billing_address: Address | None | Unset = UNSET
@@ -41,6 +37,8 @@ class CustomerCreateRequest(BaseModel):
     """User-defined custom property values, keyed by definition `key`. Validated against the
     tenant's `CUSTOMER` property definitions. Omit to leave unset."""
 
+    custom_taxes: list[CustomTaxRate] | None = None
+
     customer_type: CustomerType | None = None
     """`INDIVIDUAL` requires `first_name`, `last_name`, and a billing-address country."""
 
@@ -48,6 +46,8 @@ class CustomerCreateRequest(BaseModel):
     """Free-text legal exemption mention surfaced on exempt invoices."""
 
     first_name: str | None | Unset = UNSET
+
+    invoicing_emails: list[str] | None = None
 
     invoicing_entity_id: InvoicingEntityId | None | Unset = UNSET
 

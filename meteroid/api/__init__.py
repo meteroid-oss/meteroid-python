@@ -55,6 +55,7 @@ if t.TYPE_CHECKING:
         AsyncProductFamiliesListPage,
         AsyncProductsListPage,
         AsyncSubscriptionsListPage,
+        AsyncWebhookEndpointsEndpointsListDeliveriesPage,
         BatchJobsListFailuresPage,
         BatchJobsListPage,
         CouponsListPage,
@@ -69,6 +70,7 @@ if t.TYPE_CHECKING:
         ProductFamiliesListPage,
         ProductsListPage,
         SubscriptionsListPage,
+        WebhookEndpointsEndpointsListDeliveriesPage,
     )
     from .add_ons import AddOns, AsyncAddOns
     from .add_ons_entitlements import AddOnsEntitlements, AsyncAddOnsEntitlements
@@ -93,6 +95,11 @@ if t.TYPE_CHECKING:
     from .products_entitlements import AsyncProductsEntitlements, ProductsEntitlements
     from .subscriptions import AsyncSubscriptions, Subscriptions
     from .usage import AsyncUsage, Usage
+    from .webhook_endpoints import AsyncWebhookEndpoints, WebhookEndpoints
+    from .webhook_endpoints_endpoints import (
+        AsyncWebhookEndpointsEndpoints,
+        WebhookEndpointsEndpoints,
+    )
 
 # Each resource's module is imported the first time it is used.
 _MODULES: dict[str, str] = {
@@ -142,6 +149,10 @@ _MODULES: dict[str, str] = {
     "Subscriptions": "subscriptions",
     "AsyncUsage": "usage",
     "Usage": "usage",
+    "AsyncWebhookEndpoints": "webhook_endpoints",
+    "WebhookEndpoints": "webhook_endpoints",
+    "AsyncWebhookEndpointsEndpoints": "webhook_endpoints_endpoints",
+    "WebhookEndpointsEndpoints": "webhook_endpoints_endpoints",
     "AsyncAddOnsListPage": "_pages",
     "AddOnsListPage": "_pages",
     "AsyncBatchJobsListPage": "_pages",
@@ -172,6 +183,8 @@ _MODULES: dict[str, str] = {
     "ProductsListPage": "_pages",
     "AsyncSubscriptionsListPage": "_pages",
     "SubscriptionsListPage": "_pages",
+    "AsyncWebhookEndpointsEndpointsListDeliveriesPage": "_pages",
+    "WebhookEndpointsEndpointsListDeliveriesPage": "_pages",
 }
 
 
@@ -262,6 +275,10 @@ __all__ = [
     "Subscriptions",
     "AsyncUsage",
     "Usage",
+    "AsyncWebhookEndpoints",
+    "WebhookEndpoints",
+    "AsyncWebhookEndpointsEndpoints",
+    "WebhookEndpointsEndpoints",
     "AsyncAddOnsListPage",
     "AddOnsListPage",
     "AsyncBatchJobsListPage",
@@ -292,4 +309,6 @@ __all__ = [
     "ProductsListPage",
     "AsyncSubscriptionsListPage",
     "SubscriptionsListPage",
+    "AsyncWebhookEndpointsEndpointsListDeliveriesPage",
+    "WebhookEndpointsEndpointsListDeliveriesPage",
 ]
