@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.30.0](https://github.com/meteroid-oss/meteroid-python/compare/v0.29.0...v0.30.0) (2026-10-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** update SDKs to meteroid 0.1.0 ([#11](https://github.com/meteroid-oss/meteroid-python/issues/11))
+* **api:** `POST /api/v1/events/ingest`: the `events/items/timestamp` request property `type/format` changed from `string` to `string, null/date-time`
+
+### Features
+
+* **api:** `POST /api/v1/events/ingest`: the `events/items/timestamp` request property `type/format` changed from `string` to `string, null/date-time` ([39cacd4](https://github.com/meteroid-oss/meteroid-python/commit/39cacd4d911d35f9ee8b579007bea7be344b07ce))
+* **api:** add `DELETE /api/v1/webhooks/endpoints/{endpoint_id}` ([39cacd4](https://github.com/meteroid-oss/meteroid-python/commit/39cacd4d911d35f9ee8b579007bea7be344b07ce))
+* **api:** update `GET /api/v1/plans` and 1029 more ([39cacd4](https://github.com/meteroid-oss/meteroid-python/commit/39cacd4d911d35f9ee8b579007bea7be344b07ce))
+* **api:** update SDKs to meteroid 0.1.0 ([#11](https://github.com/meteroid-oss/meteroid-python/issues/11)) ([39cacd4](https://github.com/meteroid-oss/meteroid-python/commit/39cacd4d911d35f9ee8b579007bea7be344b07ce))
+
 ## [0.29.0](https://github.com/meteroid-oss/meteroid-python/compare/v0.28.0...v0.29.0) (2026-10-08)
 
 
