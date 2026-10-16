@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.30.1](https://github.com/meteroid-oss/meteroid-python/compare/v0.30.0...v0.30.1) (2026-10-16)
+
+
+### Bug Fixes
+
+* **api:** update SDKs to meteroid 0.1.0 ([#13](https://github.com/meteroid-oss/meteroid-python/issues/13)) ([6d51785](https://github.com/meteroid-oss/meteroid-python/commit/6d51785f3244058ef028de4366dd440ceb37fced))
+
 ## [0.30.0](https://github.com/meteroid-oss/meteroid-python/compare/v0.29.0...v0.30.0) (2026-10-09)
 
 
