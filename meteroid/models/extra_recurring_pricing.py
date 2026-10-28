@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import dataclasses
+import typing as t
 from decimal import Decimal
 
 from ..serialization import BaseModel
@@ -12,5 +13,7 @@ class ExtraRecurringPricing(BaseModel):
     """The `ExtraRecurringPricing` object."""
 
     quantity: int
+
+    type: t.Literal["EXTRA_RECURRING"] = "EXTRA_RECURRING"
 
     unit_price: Decimal

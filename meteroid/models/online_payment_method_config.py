@@ -14,4 +14,6 @@ if t.TYPE_CHECKING:
 class OnlinePaymentMethodConfig(BaseModel):
     """The `OnlinePaymentMethodConfig` object."""
 
+    type: t.Literal["online"] = "online"
+
     config: OnlineMethodsConfig | None | Unset = UNSET

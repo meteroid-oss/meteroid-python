@@ -29,11 +29,23 @@ if t.TYPE_CHECKING:
         BatchJobs,
         BatchJobsWithRawResponse,
     )
+    from .budgets import (
+        AsyncBudgets,
+        AsyncBudgetsWithRawResponse,
+        Budgets,
+        BudgetsWithRawResponse,
+    )
     from .checkout_sessions import (
         AsyncCheckoutSessions,
         AsyncCheckoutSessionsWithRawResponse,
         CheckoutSessions,
         CheckoutSessionsWithRawResponse,
+    )
+    from .checks import (
+        AsyncChecks,
+        AsyncChecksWithRawResponse,
+        Checks,
+        ChecksWithRawResponse,
     )
     from .connect import (
         AsyncConnect,
@@ -52,6 +64,18 @@ if t.TYPE_CHECKING:
         AsyncCreditNotesWithRawResponse,
         CreditNotes,
         CreditNotesWithRawResponse,
+    )
+    from .credit_units import (
+        AsyncCreditUnits,
+        AsyncCreditUnitsWithRawResponse,
+        CreditUnits,
+        CreditUnitsWithRawResponse,
+    )
+    from .credits import (
+        AsyncCredits,
+        AsyncCreditsWithRawResponse,
+        Credits,
+        CreditsWithRawResponse,
     )
     from .custom_properties import (
         AsyncCustomProperties,
@@ -136,6 +160,12 @@ if t.TYPE_CHECKING:
         AsyncUsageWithRawResponse,
         Usage,
         UsageWithRawResponse,
+    )
+    from .usage_costs import (
+        AsyncUsageCosts,
+        AsyncUsageCostsWithRawResponse,
+        UsageCosts,
+        UsageCostsWithRawResponse,
     )
     from .webhook_endpoints import (
         AsyncWebhookEndpoints,
@@ -305,11 +335,25 @@ class Meteroid:
         return BatchJobs(self._cfg, self._httpx_client)
 
     @functools.cached_property
+    def budgets(self) -> Budgets:
+        """The budgets API."""
+        from .budgets import Budgets
+
+        return Budgets(self._cfg, self._httpx_client)
+
+    @functools.cached_property
     def checkout_sessions(self) -> CheckoutSessions:
         """The checkout sessions API."""
         from .checkout_sessions import CheckoutSessions
 
         return CheckoutSessions(self._cfg, self._httpx_client)
+
+    @functools.cached_property
+    def checks(self) -> Checks:
+        """The checks API."""
+        from .checks import Checks
+
+        return Checks(self._cfg, self._httpx_client)
 
     @functools.cached_property
     def connect(self) -> Connect:
@@ -331,6 +375,20 @@ class Meteroid:
         from .credit_notes import CreditNotes
 
         return CreditNotes(self._cfg, self._httpx_client)
+
+    @functools.cached_property
+    def credit_units(self) -> CreditUnits:
+        """The credit units API."""
+        from .credit_units import CreditUnits
+
+        return CreditUnits(self._cfg, self._httpx_client)
+
+    @functools.cached_property
+    def credits(self) -> Credits:
+        """The credits API."""
+        from .credits import Credits
+
+        return Credits(self._cfg, self._httpx_client)
 
     @functools.cached_property
     def custom_properties(self) -> CustomProperties:
@@ -431,6 +489,13 @@ class Meteroid:
         return Usage(self._cfg, self._httpx_client)
 
     @functools.cached_property
+    def usage_costs(self) -> UsageCosts:
+        """The usage costs API."""
+        from .usage_costs import UsageCosts
+
+        return UsageCosts(self._cfg, self._httpx_client)
+
+    @functools.cached_property
     def webhook_endpoints(self) -> WebhookEndpoints:
         """The webhook endpoints API."""
         from .webhook_endpoints import WebhookEndpoints
@@ -459,11 +524,25 @@ class MeteroidWithRawResponse:
         return BatchJobsWithRawResponse(self._client.batch_jobs)
 
     @property
+    def budgets(self) -> BudgetsWithRawResponse:
+        """The budgets API."""
+        from .budgets import BudgetsWithRawResponse
+
+        return BudgetsWithRawResponse(self._client.budgets)
+
+    @property
     def checkout_sessions(self) -> CheckoutSessionsWithRawResponse:
         """The checkout sessions API."""
         from .checkout_sessions import CheckoutSessionsWithRawResponse
 
         return CheckoutSessionsWithRawResponse(self._client.checkout_sessions)
+
+    @property
+    def checks(self) -> ChecksWithRawResponse:
+        """The checks API."""
+        from .checks import ChecksWithRawResponse
+
+        return ChecksWithRawResponse(self._client.checks)
 
     @property
     def connect(self) -> ConnectWithRawResponse:
@@ -485,6 +564,20 @@ class MeteroidWithRawResponse:
         from .credit_notes import CreditNotesWithRawResponse
 
         return CreditNotesWithRawResponse(self._client.credit_notes)
+
+    @property
+    def credit_units(self) -> CreditUnitsWithRawResponse:
+        """The credit units API."""
+        from .credit_units import CreditUnitsWithRawResponse
+
+        return CreditUnitsWithRawResponse(self._client.credit_units)
+
+    @property
+    def credits(self) -> CreditsWithRawResponse:
+        """The credits API."""
+        from .credits import CreditsWithRawResponse
+
+        return CreditsWithRawResponse(self._client.credits)
 
     @property
     def custom_properties(self) -> CustomPropertiesWithRawResponse:
@@ -583,6 +676,13 @@ class MeteroidWithRawResponse:
         from .usage import UsageWithRawResponse
 
         return UsageWithRawResponse(self._client.usage)
+
+    @property
+    def usage_costs(self) -> UsageCostsWithRawResponse:
+        """The usage costs API."""
+        from .usage_costs import UsageCostsWithRawResponse
+
+        return UsageCostsWithRawResponse(self._client.usage_costs)
 
     @property
     def webhook_endpoints(self) -> WebhookEndpointsWithRawResponse:
@@ -713,11 +813,25 @@ class AsyncMeteroid:
         return AsyncBatchJobs(self._cfg, self._httpx_client)
 
     @functools.cached_property
+    def budgets(self) -> AsyncBudgets:
+        """The budgets API."""
+        from .budgets import AsyncBudgets
+
+        return AsyncBudgets(self._cfg, self._httpx_client)
+
+    @functools.cached_property
     def checkout_sessions(self) -> AsyncCheckoutSessions:
         """The checkout sessions API."""
         from .checkout_sessions import AsyncCheckoutSessions
 
         return AsyncCheckoutSessions(self._cfg, self._httpx_client)
+
+    @functools.cached_property
+    def checks(self) -> AsyncChecks:
+        """The checks API."""
+        from .checks import AsyncChecks
+
+        return AsyncChecks(self._cfg, self._httpx_client)
 
     @functools.cached_property
     def connect(self) -> AsyncConnect:
@@ -739,6 +853,20 @@ class AsyncMeteroid:
         from .credit_notes import AsyncCreditNotes
 
         return AsyncCreditNotes(self._cfg, self._httpx_client)
+
+    @functools.cached_property
+    def credit_units(self) -> AsyncCreditUnits:
+        """The credit units API."""
+        from .credit_units import AsyncCreditUnits
+
+        return AsyncCreditUnits(self._cfg, self._httpx_client)
+
+    @functools.cached_property
+    def credits(self) -> AsyncCredits:
+        """The credits API."""
+        from .credits import AsyncCredits
+
+        return AsyncCredits(self._cfg, self._httpx_client)
 
     @functools.cached_property
     def custom_properties(self) -> AsyncCustomProperties:
@@ -839,6 +967,13 @@ class AsyncMeteroid:
         return AsyncUsage(self._cfg, self._httpx_client)
 
     @functools.cached_property
+    def usage_costs(self) -> AsyncUsageCosts:
+        """The usage costs API."""
+        from .usage_costs import AsyncUsageCosts
+
+        return AsyncUsageCosts(self._cfg, self._httpx_client)
+
+    @functools.cached_property
     def webhook_endpoints(self) -> AsyncWebhookEndpoints:
         """The webhook endpoints API."""
         from .webhook_endpoints import AsyncWebhookEndpoints
@@ -867,11 +1002,25 @@ class AsyncMeteroidWithRawResponse:
         return AsyncBatchJobsWithRawResponse(self._client.batch_jobs)
 
     @property
+    def budgets(self) -> AsyncBudgetsWithRawResponse:
+        """The budgets API."""
+        from .budgets import AsyncBudgetsWithRawResponse
+
+        return AsyncBudgetsWithRawResponse(self._client.budgets)
+
+    @property
     def checkout_sessions(self) -> AsyncCheckoutSessionsWithRawResponse:
         """The checkout sessions API."""
         from .checkout_sessions import AsyncCheckoutSessionsWithRawResponse
 
         return AsyncCheckoutSessionsWithRawResponse(self._client.checkout_sessions)
+
+    @property
+    def checks(self) -> AsyncChecksWithRawResponse:
+        """The checks API."""
+        from .checks import AsyncChecksWithRawResponse
+
+        return AsyncChecksWithRawResponse(self._client.checks)
 
     @property
     def connect(self) -> AsyncConnectWithRawResponse:
@@ -893,6 +1042,20 @@ class AsyncMeteroidWithRawResponse:
         from .credit_notes import AsyncCreditNotesWithRawResponse
 
         return AsyncCreditNotesWithRawResponse(self._client.credit_notes)
+
+    @property
+    def credit_units(self) -> AsyncCreditUnitsWithRawResponse:
+        """The credit units API."""
+        from .credit_units import AsyncCreditUnitsWithRawResponse
+
+        return AsyncCreditUnitsWithRawResponse(self._client.credit_units)
+
+    @property
+    def credits(self) -> AsyncCreditsWithRawResponse:
+        """The credits API."""
+        from .credits import AsyncCreditsWithRawResponse
+
+        return AsyncCreditsWithRawResponse(self._client.credits)
 
     @property
     def custom_properties(self) -> AsyncCustomPropertiesWithRawResponse:
@@ -991,6 +1154,13 @@ class AsyncMeteroidWithRawResponse:
         from .usage import AsyncUsageWithRawResponse
 
         return AsyncUsageWithRawResponse(self._client.usage)
+
+    @property
+    def usage_costs(self) -> AsyncUsageCostsWithRawResponse:
+        """The usage costs API."""
+        from .usage_costs import AsyncUsageCostsWithRawResponse
+
+        return AsyncUsageCostsWithRawResponse(self._client.usage_costs)
 
     @property
     def webhook_endpoints(self) -> AsyncWebhookEndpointsWithRawResponse:

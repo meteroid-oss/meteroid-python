@@ -17,6 +17,8 @@ class CreateCouponRequest(BaseModel):
     """The `CreateCouponRequest` object."""
 
     code: str
+    """1 to 64 ASCII letters, digits, hyphens or underscores. A promotional-credit (`CREDIT`) code
+    is stored upper-case. Codes are matched as described on `Coupon.code`."""
 
     discount: CouponDiscount
 
@@ -31,3 +33,5 @@ class CreateCouponRequest(BaseModel):
     redemption_limit: int | None | Unset = UNSET
 
     reusable: bool | None = None
+    """Whether one customer may redeem the coupon more than once. Must be false for a
+    promotional-credit (`CREDIT`) coupon."""

@@ -16,4 +16,6 @@ class CalendarResetPeriod(BaseModel):
 
     interval: int
 
+    type: t.Literal["CALENDAR"] = "CALENDAR"
+
     unit: CalendarUnit

@@ -14,6 +14,8 @@ if t.TYPE_CHECKING:
 class SubscriptionAddOnParameterization(BaseModel):
     """The `SubscriptionAddOnParameterization` object."""
 
+    type: t.Literal["PARAMETERIZATION"] = "PARAMETERIZATION"
+
     billing_period: BillingPeriodEnum | None | Unset = UNSET
 
     committed_capacity: int | None | Unset = UNSET

@@ -40,4 +40,13 @@ class CreateMetricRequest(BaseModel):
 
     unit_conversion: UnitConversion | None | Unset = UNSET
 
+    unit_plural: str | None | Unset = UNSET
+    """What several units of the metric are called, e.g. `tokens`. Set together with
+    `unit_singular`. Trimmed; at most 32 characters."""
+
+    unit_singular: str | None | Unset = UNSET
+    """What one unit of the metric is called, e.g. `token`, used to label quantities and
+    prices ("$12.00 per 1M tokens"). Set both `unit_singular` and `unit_plural`, or neither.
+    Trimmed; at most 32 characters."""
+
     usage_group_key: str | None | Unset = UNSET

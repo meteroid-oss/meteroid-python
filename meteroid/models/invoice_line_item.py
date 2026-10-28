@@ -9,6 +9,7 @@ from decimal import Decimal
 from ..serialization import BaseModel
 
 if t.TYPE_CHECKING:
+    from .invoice_line_credit_unit import InvoiceLineCreditUnit
     from .sub_line_item import SubLineItem
 
 
@@ -27,6 +28,8 @@ class InvoiceLineItem(BaseModel):
     sub_line_items: list[SubLineItem]
 
     tax_rate: Decimal
+
+    credit_unit: InvoiceLineCreditUnit | None = None
 
     description: str | None = None
 

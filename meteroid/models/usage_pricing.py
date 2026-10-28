@@ -15,3 +15,5 @@ class UsagePricing(BaseModel):
     """The `UsagePricing` object."""
 
     model: UsagePricingModel
+
+    type: t.Literal["USAGE"] = "USAGE"

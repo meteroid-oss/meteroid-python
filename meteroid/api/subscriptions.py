@@ -25,6 +25,7 @@ from ..models import (
     SubscriptionStatusEnum,
     SubscriptionUpdateRequest,
     SubscriptionUpdateResponse,
+    UsageFilter,
 )
 from ..serialization import UNSET, Unset, to_json_value
 from ._pages import (
@@ -138,6 +139,7 @@ class AsyncSubscriptions(ApiBaseAsync):
         purchase_order: str | None | Unset = UNSET,
         skip_past_invoices: bool | None = None,
         trial_days: int | None = None,
+        usage_filter: UsageFilter | None = None,
         version: int | None = None,
         extra_headers: t.Mapping[str, str] | None = None,
         extra_query: t.Mapping[str, object] | None = None,
@@ -150,9 +152,11 @@ class AsyncSubscriptions(ApiBaseAsync):
         Create a new subscription for a customer with a specific plan.
 
         :param backdate_invoices: Historical import mode: when true, invoices finalized for this subscription keep their billing-period date as the invoice date instead of being stamped with the emission date.
+        :param coupon_codes: Codes of the coupons to apply. A code matches whatever the case of its ASCII letters; when several coupons differ from it only in that case, the one with exactly that code applies. A code that names no live coupon, or several differing only in case, refuses the request with 400 listing the codes (unknown codes used to be ignored silently).
         :param custom_properties: User-defined custom property values, keyed by definition `key`. Validated against the tenant's subscription definitions.
         :param payment_methods_config: Payment methods configuration. If not specified, inherits from the invoicing entity.
-        :param skip_past_invoices: Migration mode: when true with a past start_date, skip creating invoices for past cycles. The subscription will be set to the current billing period with correct cycle_index."""
+        :param skip_past_invoices: Migration mode: when true with a past start_date, skip creating invoices for past cycles. The subscription will be set to the current billing period with correct cycle_index.
+        :param usage_filter: Bill only the customer's events whose property has this value. Omit to bill the events no usage filter of the customer's other subscriptions matches."""
         response = await self._request(
             ApiRequest(
                 method="post",
@@ -180,6 +184,7 @@ class AsyncSubscriptions(ApiBaseAsync):
                         skip_past_invoices=skip_past_invoices,
                         start_date=start_date,
                         trial_days=trial_days,
+                        usage_filter=usage_filter,
                         version=version,
                     ),
                     SubscriptionCreateRequest,
@@ -239,6 +244,7 @@ class AsyncSubscriptions(ApiBaseAsync):
         net_terms: int | None | Unset = UNSET,
         payment_methods_config: PaymentMethodsConfig | None | Unset = UNSET,
         purchase_order: str | None | Unset = UNSET,
+        usage_filter: UsageFilter | None | Unset = UNSET,
         extra_headers: t.Mapping[str, str] | None = None,
         extra_query: t.Mapping[str, object] | None = None,
         extra_body: t.Mapping[str, object] | None = None,
@@ -269,6 +275,7 @@ class AsyncSubscriptions(ApiBaseAsync):
                         net_terms=net_terms,
                         payment_methods_config=payment_methods_config,
                         purchase_order=purchase_order,
+                        usage_filter=usage_filter,
                     ),
                     SubscriptionUpdateRequest,
                 ),
@@ -495,6 +502,7 @@ class Subscriptions(ApiBaseSync):
         purchase_order: str | None | Unset = UNSET,
         skip_past_invoices: bool | None = None,
         trial_days: int | None = None,
+        usage_filter: UsageFilter | None = None,
         version: int | None = None,
         extra_headers: t.Mapping[str, str] | None = None,
         extra_query: t.Mapping[str, object] | None = None,
@@ -507,9 +515,11 @@ class Subscriptions(ApiBaseSync):
         Create a new subscription for a customer with a specific plan.
 
         :param backdate_invoices: Historical import mode: when true, invoices finalized for this subscription keep their billing-period date as the invoice date instead of being stamped with the emission date.
+        :param coupon_codes: Codes of the coupons to apply. A code matches whatever the case of its ASCII letters; when several coupons differ from it only in that case, the one with exactly that code applies. A code that names no live coupon, or several differing only in case, refuses the request with 400 listing the codes (unknown codes used to be ignored silently).
         :param custom_properties: User-defined custom property values, keyed by definition `key`. Validated against the tenant's subscription definitions.
         :param payment_methods_config: Payment methods configuration. If not specified, inherits from the invoicing entity.
-        :param skip_past_invoices: Migration mode: when true with a past start_date, skip creating invoices for past cycles. The subscription will be set to the current billing period with correct cycle_index."""
+        :param skip_past_invoices: Migration mode: when true with a past start_date, skip creating invoices for past cycles. The subscription will be set to the current billing period with correct cycle_index.
+        :param usage_filter: Bill only the customer's events whose property has this value. Omit to bill the events no usage filter of the customer's other subscriptions matches."""
         response = self._request(
             ApiRequest(
                 method="post",
@@ -537,6 +547,7 @@ class Subscriptions(ApiBaseSync):
                         skip_past_invoices=skip_past_invoices,
                         start_date=start_date,
                         trial_days=trial_days,
+                        usage_filter=usage_filter,
                         version=version,
                     ),
                     SubscriptionCreateRequest,
@@ -596,6 +607,7 @@ class Subscriptions(ApiBaseSync):
         net_terms: int | None | Unset = UNSET,
         payment_methods_config: PaymentMethodsConfig | None | Unset = UNSET,
         purchase_order: str | None | Unset = UNSET,
+        usage_filter: UsageFilter | None | Unset = UNSET,
         extra_headers: t.Mapping[str, str] | None = None,
         extra_query: t.Mapping[str, object] | None = None,
         extra_body: t.Mapping[str, object] | None = None,
@@ -626,6 +638,7 @@ class Subscriptions(ApiBaseSync):
                         net_terms=net_terms,
                         payment_methods_config=payment_methods_config,
                         purchase_order=purchase_order,
+                        usage_filter=usage_filter,
                     ),
                     SubscriptionUpdateRequest,
                 ),

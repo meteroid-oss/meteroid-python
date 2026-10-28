@@ -15,6 +15,7 @@ class DeclineKind(StrEnum):
     FRAUD = "FRAUD"
     PROCESSING_ERROR = "PROCESSING_ERROR"
     OTHER = "OTHER"
+    DO_NOT_RETRY = "DO_NOT_RETRY"
 
 
 DeclineKindLiteral: t.TypeAlias = t.Literal[
@@ -26,5 +27,6 @@ DeclineKindLiteral: t.TypeAlias = t.Literal[
     "FRAUD",
     "PROCESSING_ERROR",
     "OTHER",
+    "DO_NOT_RETRY",
 ]
 """The values of :class:`DeclineKind`, which arguments take as plain strings too."""

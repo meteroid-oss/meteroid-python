@@ -21,7 +21,8 @@ class CreateWebhookEndpointRequest(BaseModel):
     description: str | None | Unset = UNSET
 
     event_types: list[str] | None = None
-    """Event types to subscribe to. Omit or leave empty to receive every event type."""
+    """Event types to subscribe to. Omit or leave empty to receive every event type except Beta
+    ones, which are sent only to endpoints that list them."""
 
     headers: list[WebhookHeaderInput] | None = None
     """Custom headers sent with every delivery."""

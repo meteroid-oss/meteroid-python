@@ -21,6 +21,7 @@ if t.TYPE_CHECKING:
     from .subscription_component import SubscriptionComponent
     from .subscription_id import SubscriptionId
     from .subscription_status_enum import SubscriptionStatusEnum
+    from .usage_filter import UsageFilter
 
 
 @dataclasses.dataclass(kw_only=True)
@@ -110,3 +111,9 @@ class SubscriptionDetails(BaseModel):
 
     trial_duration: int | None = None
     """Trial duration in days"""
+
+    usage_filter: UsageFilter | None = None
+
+    usage_filter_effective_from: datetime | None = None
+    """When the current usage filter, or its removal, started to apply: the start of the usage
+    neither this subscription nor the customer's others had invoiced when it was set."""

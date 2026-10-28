@@ -5,6 +5,7 @@ import typing as t
 
 from ..serialization import Discriminator, UnknownVariant
 from .capacity_fee_structure import CapacityFeeStructure
+from .credit_fee_structure import CreditFeeStructure
 from .extra_recurring_fee_structure import ExtraRecurringFeeStructure
 from .one_time_fee_structure import OneTimeFeeStructure
 from .rate_fee_structure import RateFeeStructure
@@ -18,6 +19,7 @@ ProductFeeStructure: t.TypeAlias = t.Annotated[
     | UsageFeeStructure
     | ExtraRecurringFeeStructure
     | OneTimeFeeStructure
+    | CreditFeeStructure
     | UnknownVariant,
     Discriminator(
         "type",
@@ -28,6 +30,7 @@ ProductFeeStructure: t.TypeAlias = t.Annotated[
             "USAGE": UsageFeeStructure,
             "EXTRA_RECURRING": ExtraRecurringFeeStructure,
             "ONE_TIME": OneTimeFeeStructure,
+            "CREDIT": CreditFeeStructure,
         },
     ),
 ]

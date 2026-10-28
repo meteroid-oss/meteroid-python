@@ -10,8 +10,12 @@ from ..models import (
     BatchJobItemFailureResponse,
     BatchJobListResponse,
     BatchJobResponse,
+    Budget,
+    BudgetListResponse,
     Coupon,
     CouponListResponse,
+    CreditGrant,
+    CreditGrantListResponse,
     CreditNote,
     CreditNoteListResponse,
     Customer,
@@ -22,6 +26,8 @@ from ..models import (
     FeatureListResponse,
     Invoice,
     InvoiceListResponse,
+    LedgerEntry,
+    LedgerListResponse,
     MetricListResponse,
     MetricSummary,
     Plan,
@@ -46,10 +52,16 @@ __all__ = [
     "BatchJobsListPage",
     "AsyncBatchJobsListFailuresPage",
     "BatchJobsListFailuresPage",
+    "AsyncBudgetsListPage",
+    "BudgetsListPage",
     "AsyncCouponsListPage",
     "CouponsListPage",
     "AsyncCreditNotesListPage",
     "CreditNotesListPage",
+    "AsyncCreditsListCustomerCreditLedgerPage",
+    "CreditsListCustomerCreditLedgerPage",
+    "AsyncCreditsGrantsListPage",
+    "CreditsGrantsListPage",
     "AsyncCustomPropertiesListCustomPropertyDefinitionsPage",
     "CustomPropertiesListCustomPropertyDefinitionsPage",
     "AsyncCustomersListPage",
@@ -109,6 +121,14 @@ class AsyncBatchJobsListFailuresPage(
     """A page of :class:`BatchJobItemFailureResponse`, and the :class:`BatchJobFailuresResponse` response of its request."""
 
 
+class BudgetsListPage(SyncPage[Budget, BudgetListResponse], BudgetListResponse):
+    """A page of :class:`Budget`, and the :class:`BudgetListResponse` response of its request."""
+
+
+class AsyncBudgetsListPage(AsyncPage[Budget, BudgetListResponse], BudgetListResponse):
+    """A page of :class:`Budget`, and the :class:`BudgetListResponse` response of its request."""
+
+
 class CouponsListPage(SyncPage[Coupon, CouponListResponse], CouponListResponse):
     """A page of :class:`Coupon`, and the :class:`CouponListResponse` response of its request."""
 
@@ -127,6 +147,30 @@ class AsyncCreditNotesListPage(
     AsyncPage[CreditNote, CreditNoteListResponse], CreditNoteListResponse
 ):
     """A page of :class:`CreditNote`, and the :class:`CreditNoteListResponse` response of its request."""
+
+
+class CreditsListCustomerCreditLedgerPage(
+    SyncPage[LedgerEntry, LedgerListResponse], LedgerListResponse
+):
+    """A page of :class:`LedgerEntry`, and the :class:`LedgerListResponse` response of its request."""
+
+
+class AsyncCreditsListCustomerCreditLedgerPage(
+    AsyncPage[LedgerEntry, LedgerListResponse], LedgerListResponse
+):
+    """A page of :class:`LedgerEntry`, and the :class:`LedgerListResponse` response of its request."""
+
+
+class CreditsGrantsListPage(
+    SyncPage[CreditGrant, CreditGrantListResponse], CreditGrantListResponse
+):
+    """A page of :class:`CreditGrant`, and the :class:`CreditGrantListResponse` response of its request."""
+
+
+class AsyncCreditsGrantsListPage(
+    AsyncPage[CreditGrant, CreditGrantListResponse], CreditGrantListResponse
+):
+    """A page of :class:`CreditGrant`, and the :class:`CreditGrantListResponse` response of its request."""
 
 
 class CustomPropertiesListCustomPropertyDefinitionsPage(

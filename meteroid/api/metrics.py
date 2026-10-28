@@ -120,6 +120,8 @@ class AsyncMetrics(ApiBaseAsync):
         product_id: ProductId | None | Unset = UNSET,
         segmentation_matrix: MetricSegmentationMatrix | None | Unset = UNSET,
         unit_conversion: UnitConversion | None | Unset = UNSET,
+        unit_plural: str | None | Unset = UNSET,
+        unit_singular: str | None | Unset = UNSET,
         usage_group_key: str | None | Unset = UNSET,
         extra_headers: t.Mapping[str, str] | None = None,
         extra_query: t.Mapping[str, object] | None = None,
@@ -129,7 +131,9 @@ class AsyncMetrics(ApiBaseAsync):
     ) -> Metric:
         """Create a billable metric
 
-        :param filters: Pre-aggregation property filters. Optional and backward-compatible; omit for none."""
+        :param filters: Pre-aggregation property filters. Optional and backward-compatible; omit for none.
+        :param unit_plural: What several units of the metric are called, e.g. `tokens`. Set together with `unit_singular`. Trimmed; at most 32 characters.
+        :param unit_singular: What one unit of the metric is called, e.g. `token`, used to label quantities and prices ("$12.00 per 1M tokens"). Set both `unit_singular` and `unit_plural`, or neither. Trimmed; at most 32 characters."""
         response = await self._request(
             ApiRequest(
                 method="post",
@@ -148,6 +152,8 @@ class AsyncMetrics(ApiBaseAsync):
                         product_id=product_id,
                         segmentation_matrix=segmentation_matrix,
                         unit_conversion=unit_conversion,
+                        unit_plural=unit_plural,
+                        unit_singular=unit_singular,
                         usage_group_key=usage_group_key,
                     ),
                     CreateMetricRequest,
@@ -203,6 +209,8 @@ class AsyncMetrics(ApiBaseAsync):
         name: str | None | Unset = UNSET,
         segmentation_matrix: MetricSegmentationMatrix | None | Unset = UNSET,
         unit_conversion: UnitConversion | None | Unset = UNSET,
+        unit_plural: str | None | Unset = UNSET,
+        unit_singular: str | None | Unset = UNSET,
         extra_headers: t.Mapping[str, str] | None = None,
         extra_query: t.Mapping[str, object] | None = None,
         extra_body: t.Mapping[str, object] | None = None,
@@ -213,7 +221,9 @@ class AsyncMetrics(ApiBaseAsync):
 
         Partially update metric fields. Code and aggregation_type are immutable.
 
-        :param filters: Absent = leave filters untouched; present (even empty) = replace them."""
+        :param filters: Absent = leave filters untouched; present (even empty) = replace them.
+        :param unit_plural: What several units of the metric are called, e.g. `tokens`. See `unit_singular`.
+        :param unit_singular: What one unit of the metric is called, e.g. `token`. Send `unit_singular` and `unit_plural` together; omit both to leave the label unchanged, or send both as empty strings to remove it. Trimmed; at most 32 characters."""
         response = await self._request(
             ApiRequest(
                 method="patch",
@@ -228,6 +238,8 @@ class AsyncMetrics(ApiBaseAsync):
                         name=name,
                         segmentation_matrix=segmentation_matrix,
                         unit_conversion=unit_conversion,
+                        unit_plural=unit_plural,
+                        unit_singular=unit_singular,
                     ),
                     UpdateMetricRequest,
                 ),
@@ -392,6 +404,8 @@ class Metrics(ApiBaseSync):
         product_id: ProductId | None | Unset = UNSET,
         segmentation_matrix: MetricSegmentationMatrix | None | Unset = UNSET,
         unit_conversion: UnitConversion | None | Unset = UNSET,
+        unit_plural: str | None | Unset = UNSET,
+        unit_singular: str | None | Unset = UNSET,
         usage_group_key: str | None | Unset = UNSET,
         extra_headers: t.Mapping[str, str] | None = None,
         extra_query: t.Mapping[str, object] | None = None,
@@ -401,7 +415,9 @@ class Metrics(ApiBaseSync):
     ) -> Metric:
         """Create a billable metric
 
-        :param filters: Pre-aggregation property filters. Optional and backward-compatible; omit for none."""
+        :param filters: Pre-aggregation property filters. Optional and backward-compatible; omit for none.
+        :param unit_plural: What several units of the metric are called, e.g. `tokens`. Set together with `unit_singular`. Trimmed; at most 32 characters.
+        :param unit_singular: What one unit of the metric is called, e.g. `token`, used to label quantities and prices ("$12.00 per 1M tokens"). Set both `unit_singular` and `unit_plural`, or neither. Trimmed; at most 32 characters."""
         response = self._request(
             ApiRequest(
                 method="post",
@@ -420,6 +436,8 @@ class Metrics(ApiBaseSync):
                         product_id=product_id,
                         segmentation_matrix=segmentation_matrix,
                         unit_conversion=unit_conversion,
+                        unit_plural=unit_plural,
+                        unit_singular=unit_singular,
                         usage_group_key=usage_group_key,
                     ),
                     CreateMetricRequest,
@@ -475,6 +493,8 @@ class Metrics(ApiBaseSync):
         name: str | None | Unset = UNSET,
         segmentation_matrix: MetricSegmentationMatrix | None | Unset = UNSET,
         unit_conversion: UnitConversion | None | Unset = UNSET,
+        unit_plural: str | None | Unset = UNSET,
+        unit_singular: str | None | Unset = UNSET,
         extra_headers: t.Mapping[str, str] | None = None,
         extra_query: t.Mapping[str, object] | None = None,
         extra_body: t.Mapping[str, object] | None = None,
@@ -485,7 +505,9 @@ class Metrics(ApiBaseSync):
 
         Partially update metric fields. Code and aggregation_type are immutable.
 
-        :param filters: Absent = leave filters untouched; present (even empty) = replace them."""
+        :param filters: Absent = leave filters untouched; present (even empty) = replace them.
+        :param unit_plural: What several units of the metric are called, e.g. `tokens`. See `unit_singular`.
+        :param unit_singular: What one unit of the metric is called, e.g. `token`. Send `unit_singular` and `unit_plural` together; omit both to leave the label unchanged, or send both as empty strings to remove it. Trimmed; at most 32 characters."""
         response = self._request(
             ApiRequest(
                 method="patch",
@@ -500,6 +522,8 @@ class Metrics(ApiBaseSync):
                         name=name,
                         segmentation_matrix=segmentation_matrix,
                         unit_conversion=unit_conversion,
+                        unit_plural=unit_plural,
+                        unit_singular=unit_singular,
                     ),
                     UpdateMetricRequest,
                 ),

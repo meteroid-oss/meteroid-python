@@ -43,8 +43,11 @@ if t.TYPE_CHECKING:
         AsyncAddOnsListPage,
         AsyncBatchJobsListFailuresPage,
         AsyncBatchJobsListPage,
+        AsyncBudgetsListPage,
         AsyncCouponsListPage,
         AsyncCreditNotesListPage,
+        AsyncCreditsGrantsListPage,
+        AsyncCreditsListCustomerCreditLedgerPage,
         AsyncCustomersListPage,
         AsyncCustomPropertiesListCustomPropertyDefinitionsPage,
         AsyncFeaturesListPage,
@@ -58,8 +61,11 @@ if t.TYPE_CHECKING:
         AsyncWebhookEndpointsEndpointsListDeliveriesPage,
         BatchJobsListFailuresPage,
         BatchJobsListPage,
+        BudgetsListPage,
         CouponsListPage,
         CreditNotesListPage,
+        CreditsGrantsListPage,
+        CreditsListCustomerCreditLedgerPage,
         CustomersListPage,
         CustomPropertiesListCustomPropertyDefinitionsPage,
         FeaturesListPage,
@@ -75,10 +81,17 @@ if t.TYPE_CHECKING:
     from .add_ons import AddOns, AsyncAddOns
     from .add_ons_entitlements import AddOnsEntitlements, AsyncAddOnsEntitlements
     from .batch_jobs import AsyncBatchJobs, BatchJobs
+    from .budgets import AsyncBudgets, Budgets
     from .checkout_sessions import AsyncCheckoutSessions, CheckoutSessions
+    from .checks import AsyncChecks, Checks
     from .connect import AsyncConnect, Connect
     from .coupons import AsyncCoupons, Coupons
     from .credit_notes import AsyncCreditNotes, CreditNotes
+    from .credit_units import AsyncCreditUnits, CreditUnits
+    from .credit_units_prices import AsyncCreditUnitsPrices, CreditUnitsPrices
+    from .credits import AsyncCredits, Credits
+    from .credits_grants import AsyncCreditsGrants, CreditsGrants
+    from .credits_wallets import AsyncCreditsWallets, CreditsWallets
     from .custom_properties import AsyncCustomProperties, CustomProperties
     from .customers import AsyncCustomers, Customers
     from .entitlements import AsyncEntitlements, Entitlements
@@ -95,6 +108,13 @@ if t.TYPE_CHECKING:
     from .products_entitlements import AsyncProductsEntitlements, ProductsEntitlements
     from .subscriptions import AsyncSubscriptions, Subscriptions
     from .usage import AsyncUsage, Usage
+    from .usage_costs import AsyncUsageCosts, UsageCosts
+    from .usage_costs_customer import AsyncUsageCostsCustomer, UsageCostsCustomer
+    from .usage_costs_subscription import (
+        AsyncUsageCostsSubscription,
+        UsageCostsSubscription,
+    )
+    from .usage_customer import AsyncUsageCustomer, UsageCustomer
     from .webhook_endpoints import AsyncWebhookEndpoints, WebhookEndpoints
     from .webhook_endpoints_endpoints import (
         AsyncWebhookEndpointsEndpoints,
@@ -109,14 +129,28 @@ _MODULES: dict[str, str] = {
     "AddOnsEntitlements": "add_ons_entitlements",
     "AsyncBatchJobs": "batch_jobs",
     "BatchJobs": "batch_jobs",
+    "AsyncBudgets": "budgets",
+    "Budgets": "budgets",
     "AsyncCheckoutSessions": "checkout_sessions",
     "CheckoutSessions": "checkout_sessions",
+    "AsyncChecks": "checks",
+    "Checks": "checks",
     "AsyncConnect": "connect",
     "Connect": "connect",
     "AsyncCoupons": "coupons",
     "Coupons": "coupons",
     "AsyncCreditNotes": "credit_notes",
     "CreditNotes": "credit_notes",
+    "AsyncCreditUnits": "credit_units",
+    "CreditUnits": "credit_units",
+    "AsyncCreditUnitsPrices": "credit_units_prices",
+    "CreditUnitsPrices": "credit_units_prices",
+    "AsyncCredits": "credits",
+    "Credits": "credits",
+    "AsyncCreditsGrants": "credits_grants",
+    "CreditsGrants": "credits_grants",
+    "AsyncCreditsWallets": "credits_wallets",
+    "CreditsWallets": "credits_wallets",
     "AsyncCustomProperties": "custom_properties",
     "CustomProperties": "custom_properties",
     "AsyncCustomers": "customers",
@@ -149,6 +183,14 @@ _MODULES: dict[str, str] = {
     "Subscriptions": "subscriptions",
     "AsyncUsage": "usage",
     "Usage": "usage",
+    "AsyncUsageCustomer": "usage_customer",
+    "UsageCustomer": "usage_customer",
+    "AsyncUsageCosts": "usage_costs",
+    "UsageCosts": "usage_costs",
+    "AsyncUsageCostsCustomer": "usage_costs_customer",
+    "UsageCostsCustomer": "usage_costs_customer",
+    "AsyncUsageCostsSubscription": "usage_costs_subscription",
+    "UsageCostsSubscription": "usage_costs_subscription",
     "AsyncWebhookEndpoints": "webhook_endpoints",
     "WebhookEndpoints": "webhook_endpoints",
     "AsyncWebhookEndpointsEndpoints": "webhook_endpoints_endpoints",
@@ -159,10 +201,16 @@ _MODULES: dict[str, str] = {
     "BatchJobsListPage": "_pages",
     "AsyncBatchJobsListFailuresPage": "_pages",
     "BatchJobsListFailuresPage": "_pages",
+    "AsyncBudgetsListPage": "_pages",
+    "BudgetsListPage": "_pages",
     "AsyncCouponsListPage": "_pages",
     "CouponsListPage": "_pages",
     "AsyncCreditNotesListPage": "_pages",
     "CreditNotesListPage": "_pages",
+    "AsyncCreditsListCustomerCreditLedgerPage": "_pages",
+    "CreditsListCustomerCreditLedgerPage": "_pages",
+    "AsyncCreditsGrantsListPage": "_pages",
+    "CreditsGrantsListPage": "_pages",
     "AsyncCustomPropertiesListCustomPropertyDefinitionsPage": "_pages",
     "CustomPropertiesListCustomPropertyDefinitionsPage": "_pages",
     "AsyncCustomersListPage": "_pages",
@@ -235,14 +283,28 @@ __all__ = [
     "AddOnsEntitlements",
     "AsyncBatchJobs",
     "BatchJobs",
+    "AsyncBudgets",
+    "Budgets",
     "AsyncCheckoutSessions",
     "CheckoutSessions",
+    "AsyncChecks",
+    "Checks",
     "AsyncConnect",
     "Connect",
     "AsyncCoupons",
     "Coupons",
     "AsyncCreditNotes",
     "CreditNotes",
+    "AsyncCreditUnits",
+    "CreditUnits",
+    "AsyncCreditUnitsPrices",
+    "CreditUnitsPrices",
+    "AsyncCredits",
+    "Credits",
+    "AsyncCreditsGrants",
+    "CreditsGrants",
+    "AsyncCreditsWallets",
+    "CreditsWallets",
     "AsyncCustomProperties",
     "CustomProperties",
     "AsyncCustomers",
@@ -275,6 +337,14 @@ __all__ = [
     "Subscriptions",
     "AsyncUsage",
     "Usage",
+    "AsyncUsageCustomer",
+    "UsageCustomer",
+    "AsyncUsageCosts",
+    "UsageCosts",
+    "AsyncUsageCostsCustomer",
+    "UsageCostsCustomer",
+    "AsyncUsageCostsSubscription",
+    "UsageCostsSubscription",
     "AsyncWebhookEndpoints",
     "WebhookEndpoints",
     "AsyncWebhookEndpointsEndpoints",
@@ -285,10 +355,16 @@ __all__ = [
     "BatchJobsListPage",
     "AsyncBatchJobsListFailuresPage",
     "BatchJobsListFailuresPage",
+    "AsyncBudgetsListPage",
+    "BudgetsListPage",
     "AsyncCouponsListPage",
     "CouponsListPage",
     "AsyncCreditNotesListPage",
     "CreditNotesListPage",
+    "AsyncCreditsListCustomerCreditLedgerPage",
+    "CreditsListCustomerCreditLedgerPage",
+    "AsyncCreditsGrantsListPage",
+    "CreditsGrantsListPage",
     "AsyncCustomPropertiesListCustomPropertyDefinitionsPage",
     "CustomPropertiesListCustomPropertyDefinitionsPage",
     "AsyncCustomersListPage",

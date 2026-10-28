@@ -25,7 +25,8 @@ class WebhookEndpoint(BaseModel):
     disabled: bool
 
     event_types: list[str]
-    """Subscribed event types. Empty means every event type."""
+    """Subscribed event types. Empty means every event type except Beta ones, which are sent
+    only to endpoints that list them."""
 
     headers: list[WebhookHeader]
     """Custom headers sent with every delivery."""

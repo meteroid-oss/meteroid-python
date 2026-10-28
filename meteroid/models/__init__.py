@@ -12,6 +12,8 @@ import typing as t
 from ..serialization import UNSET, UnknownVariant, Unset
 
 if t.TYPE_CHECKING:
+    from .actor import Actor
+    from .actor_type import ActorType, ActorTypeLiteral
     from .add_on import AddOn
     from .add_on_event import AddOnEvent
     from .add_on_event_data import AddOnEventData
@@ -22,6 +24,16 @@ if t.TYPE_CHECKING:
     from .applied_coupon import AppliedCoupon
     from .applied_coupon_detailed import AppliedCouponDetailed
     from .applied_coupon_id import AppliedCouponId
+    from .auto_top_up import AutoTopUp
+    from .auto_top_up_cap_reached_event import AutoTopUpCapReachedEvent
+    from .auto_top_up_cap_reached_event_data import AutoTopUpCapReachedEventData
+    from .auto_top_up_consent_changed_event import AutoTopUpConsentChangedEvent
+    from .auto_top_up_consent_changed_event_data import AutoTopUpConsentChangedEventData
+    from .auto_top_up_event import AutoTopUpEvent
+    from .auto_top_up_event_data import AutoTopUpEventData
+    from .auto_top_up_method import AutoTopUpMethod, AutoTopUpMethodLiteral
+    from .auto_top_up_status import AutoTopUpStatus, AutoTopUpStatusLiteral
+    from .auto_top_up_write_request import AutoTopUpWriteRequest
     from .available_parameters import AvailableParameters
     from .bank_account_id import BankAccountId
     from .bank_transfer_payment_method_config import BankTransferPaymentMethodConfig
@@ -49,6 +61,11 @@ if t.TYPE_CHECKING:
     from .boolean_entitlement_value import BooleanEntitlementValue
     from .boolean_feature_type import BooleanFeatureType
     from .boolean_resolved_entitlement_value import BooleanResolvedEntitlementValue
+    from .budget import Budget
+    from .budget_author import BudgetAuthor, BudgetAuthorLiteral
+    from .budget_behavior import BudgetBehavior, BudgetBehaviorLiteral
+    from .budget_list_response import BudgetListResponse
+    from .budget_period import BudgetPeriod
     from .calendar_reset_period import CalendarResetPeriod
     from .calendar_unit import CalendarUnit, CalendarUnitLiteral
     from .cancel_checkout_session_response import CancelCheckoutSessionResponse
@@ -83,6 +100,7 @@ if t.TYPE_CHECKING:
     from .connection_type import ConnectionType, ConnectionTypeLiteral
     from .country_code import CountryCode
     from .coupon import Coupon
+    from .coupon_credit_scope import CouponCreditScope, CouponCreditScopeLiteral
     from .coupon_discount import CouponDiscount
     from .coupon_event import CouponEvent
     from .coupon_event_data import CouponEventData
@@ -91,10 +109,13 @@ if t.TYPE_CHECKING:
     from .coupon_line_item import CouponLineItem
     from .coupon_list_response import CouponListResponse
     from .create_add_on_request import CreateAddOnRequest
+    from .create_budget_request import CreateBudgetRequest
     from .create_checkout_session_request import CreateCheckoutSessionRequest
     from .create_checkout_session_response import CreateCheckoutSessionResponse
     from .create_connected_account_request import CreateConnectedAccountRequest
+    from .create_connected_account_response import CreateConnectedAccountResponse
     from .create_coupon_request import CreateCouponRequest
+    from .create_credit_grant_request import CreateCreditGrantRequest
     from .create_entitlements_request import CreateEntitlementsRequest
     from .create_feature_request import CreateFeatureRequest
     from .create_metric_request import CreateMetricRequest
@@ -104,8 +125,34 @@ if t.TYPE_CHECKING:
     from .create_product_request import CreateProductRequest
     from .create_subscription_add_on import CreateSubscriptionAddOn
     from .create_subscription_components import CreateSubscriptionComponents
+    from .create_top_up_request import CreateTopUpRequest
     from .create_webhook_endpoint_request import CreateWebhookEndpointRequest
     from .created_webhook_endpoint import CreatedWebhookEndpoint
+    from .credit_applies_to import CreditAppliesTo, CreditAppliesToLiteral
+    from .credit_cap import CreditCap
+    from .credit_caps import CreditCaps
+    from .credit_cost import CreditCost
+    from .credit_cost_request import CreditCostRequest
+    from .credit_discount import CreditDiscount
+    from .credit_exhausted_rule import CreditExhaustedRule
+    from .credit_exhausted_rule_invoice_variant import CreditExhaustedRuleInvoiceVariant
+    from .credit_exhausted_rule_pause_variant import CreditExhaustedRulePauseVariant
+    from .credit_expiry_unit import CreditExpiryUnit, CreditExpiryUnitLiteral
+    from .credit_fee import CreditFee
+    from .credit_fee_structure import CreditFeeStructure
+    from .credit_grant import CreditGrant
+    from .credit_grant_expired_event import CreditGrantExpiredEvent
+    from .credit_grant_expired_event_data import CreditGrantExpiredEventData
+    from .credit_grant_id import CreditGrantId
+    from .credit_grant_kind import CreditGrantKind, CreditGrantKindLiteral
+    from .credit_grant_lapse_reason import (
+        CreditGrantLapseReason,
+        CreditGrantLapseReasonLiteral,
+    )
+    from .credit_grant_list_response import CreditGrantListResponse
+    from .credit_grant_source import CreditGrantSource, CreditGrantSourceLiteral
+    from .credit_grant_status import CreditGrantStatus, CreditGrantStatusLiteral
+    from .credit_grant_type import CreditGrantType, CreditGrantTypeLiteral
     from .credit_note import CreditNote
     from .credit_note_custom_properties_request import CreditNoteCustomPropertiesRequest
     from .credit_note_event import CreditNoteEvent
@@ -113,7 +160,18 @@ if t.TYPE_CHECKING:
     from .credit_note_id import CreditNoteId
     from .credit_note_list_response import CreditNoteListResponse
     from .credit_note_status import CreditNoteStatus, CreditNoteStatusLiteral
+    from .credit_pack_expiry import CreditPackExpiry
+    from .credit_pack_rollover import CreditPackRollover
+    from .credit_pack_unit import CreditPackUnit
+    from .credit_plan_fee import CreditPlanFee
     from .credit_type import CreditType, CreditTypeLiteral
+    from .credit_unit import CreditUnit
+    from .credit_unit_create_request import CreditUnitCreateRequest
+    from .credit_unit_list_response import CreditUnitListResponse
+    from .credit_unit_price import CreditUnitPrice
+    from .credit_unit_price_list_response import CreditUnitPriceListResponse
+    from .credit_unit_price_set_request import CreditUnitPriceSetRequest
+    from .credit_unit_update_request import CreditUnitUpdateRequest
     from .currency import Currency, CurrencyLiteral
     from .custom_property_definition import CustomPropertyDefinition
     from .custom_property_definition_create_request import (
@@ -154,8 +212,24 @@ if t.TYPE_CHECKING:
     from .effective_entitlement_list_response import EffectiveEntitlementListResponse
     from .effective_entitlement_value import EffectiveEntitlementValue
     from .entitlement import Entitlement
+    from .entitlement_check import EntitlementCheck
+    from .entitlement_check_feature import EntitlementCheckFeature
+    from .entitlement_check_limit import EntitlementCheckLimit
+    from .entitlement_check_limit_behavior import (
+        EntitlementCheckLimitBehavior,
+        EntitlementCheckLimitBehaviorLiteral,
+    )
+    from .entitlement_check_period import EntitlementCheckPeriod
+    from .entitlement_check_reason import (
+        EntitlementCheckReason,
+        EntitlementCheckReasonLiteral,
+    )
     from .entitlement_id import EntitlementId
     from .entitlement_list_response import EntitlementListResponse
+    from .entitlement_overage_behavior import (
+        EntitlementOverageBehavior,
+        EntitlementOverageBehaviorLiteral,
+    )
     from .entitlement_product_ref import EntitlementProductRef
     from .entitlement_spec_request import EntitlementSpecRequest
     from .entitlement_value import EntitlementValue
@@ -181,6 +255,7 @@ if t.TYPE_CHECKING:
     from .feature_status import FeatureStatus, FeatureStatusLiteral
     from .feature_type import FeatureType
     from .fee import Fee
+    from .fee_credit_unit import FeeCreditUnit
     from .fixed_discount import FixedDiscount
     from .fixed_window_reset_period import FixedWindowResetPeriod
     from .get_checkout_session_response import GetCheckoutSessionResponse
@@ -196,6 +271,7 @@ if t.TYPE_CHECKING:
     from .invoice_event import InvoiceEvent
     from .invoice_event_data import InvoiceEventData
     from .invoice_id import InvoiceId
+    from .invoice_line_credit_unit import InvoiceLineCreditUnit
     from .invoice_line_item import InvoiceLineItem
     from .invoice_list_response import InvoiceListResponse
     from .invoice_payment_status import (
@@ -206,8 +282,20 @@ if t.TYPE_CHECKING:
     from .invoice_type import InvoiceType, InvoiceTypeLiteral
     from .invoicing_entity_id import InvoicingEntityId
     from .json_config_value import JsonConfigValue
+    from .ledger_entry import LedgerEntry
+    from .ledger_entry_id import LedgerEntryId
+    from .ledger_entry_type import LedgerEntryType, LedgerEntryTypeLiteral
+    from .ledger_list_response import LedgerListResponse
     from .linked_segmentation_matrix import LinkedSegmentationMatrix
     from .list_checkout_sessions_response import ListCheckoutSessionsResponse
+    from .list_customer_usage_costs_granularity import (
+        ListCustomerUsageCostsGranularity,
+        ListCustomerUsageCostsGranularityLiteral,
+    )
+    from .list_subscription_usage_costs_granularity import (
+        ListSubscriptionUsageCostsGranularity,
+        ListSubscriptionUsageCostsGranularityLiteral,
+    )
     from .matrix_dimension import MatrixDimension
     from .matrix_plan_pricing import MatrixPlanPricing
     from .matrix_pricing import MatrixPricing
@@ -257,7 +345,9 @@ if t.TYPE_CHECKING:
     from .package_plan_pricing import PackagePlanPricing
     from .package_pricing import PackagePricing
     from .pagination_response import PaginationResponse
+    from .patch_budget_request import PatchBudgetRequest
     from .patch_plan_request import PatchPlanRequest
+    from .patch_wallet_request import PatchWalletRequest
     from .payment_event import PaymentEvent
     from .payment_method_info import PaymentMethodInfo
     from .payment_method_type_enum import (
@@ -275,6 +365,7 @@ if t.TYPE_CHECKING:
     from .plan_add_on_input import PlanAddOnInput
     from .plan_event import PlanEvent
     from .plan_event_data import PlanEventData
+    from .plan_fee_credit_unit import PlanFeeCreditUnit
     from .plan_id import PlanId
     from .plan_list_response import PlanListResponse
     from .plan_status_enum import PlanStatusEnum, PlanStatusEnumLiteral
@@ -352,6 +443,7 @@ if t.TYPE_CHECKING:
     from .subscription_component import SubscriptionComponent
     from .subscription_coupon import SubscriptionCoupon
     from .subscription_create_request import SubscriptionCreateRequest
+    from .subscription_credit import SubscriptionCredit
     from .subscription_details import SubscriptionDetails
     from .subscription_event import SubscriptionEvent
     from .subscription_event_data import SubscriptionEventData
@@ -383,8 +475,13 @@ if t.TYPE_CHECKING:
     from .token_introspection_response import TokenIntrospectionResponse
     from .token_request import TokenRequest
     from .token_response import TokenResponse
+    from .top_up_collection import TopUpCollection, TopUpCollectionLiteral
+    from .top_up_response import TopUpResponse
+    from .top_up_status import TopUpStatus, TopUpStatusLiteral
     from .transaction import Transaction
     from .trial_config import TrialConfig
+    from .unattributed_metric_usage import UnattributedMetricUsage
+    from .unattributed_usage_response import UnattributedUsageResponse
     from .unit_conversion import UnitConversion
     from .unit_conversion_rounding_enum import (
         UnitConversionRoundingEnum,
@@ -397,8 +494,17 @@ if t.TYPE_CHECKING:
     from .update_metric_request import UpdateMetricRequest
     from .update_product_request import UpdateProductRequest
     from .update_webhook_endpoint_request import UpdateWebhookEndpointRequest
+    from .usage_at_zero import UsageAtZero, UsageAtZeroLiteral
+    from .usage_cost import UsageCost
+    from .usage_cost_list_response import UsageCostListResponse
+    from .usage_cost_row import UsageCostRow
+    from .usage_cost_unit import UsageCostUnit, UsageCostUnitLiteral
+    from .usage_event import UsageEvent
+    from .usage_event_list_response import UsageEventListResponse
     from .usage_fee import UsageFee
     from .usage_fee_structure import UsageFeeStructure
+    from .usage_filter import UsageFilter
+    from .usage_limit_id import UsageLimitId
     from .usage_model_enum import UsageModelEnum, UsageModelEnumLiteral
     from .usage_plan_fee import UsagePlanFee
     from .usage_pricing import UsagePricing
@@ -406,6 +512,23 @@ if t.TYPE_CHECKING:
     from .usage_response import UsageResponse
     from .volume_plan_pricing import VolumePlanPricing
     from .volume_pricing import VolumePricing
+    from .wallet import Wallet
+    from .wallet_balance_low_event import WalletBalanceLowEvent
+    from .wallet_balance_low_event_data import WalletBalanceLowEventData
+    from .wallet_check import WalletCheck
+    from .wallet_credit_recovered_event import WalletCreditRecoveredEvent
+    from .wallet_credit_recovered_event_data import WalletCreditRecoveredEventData
+    from .wallet_credit_unrecovered_event import WalletCreditUnrecoveredEvent
+    from .wallet_credit_unrecovered_event_data import WalletCreditUnrecoveredEventData
+    from .wallet_debited_event import WalletDebitedEvent
+    from .wallet_debited_event_data import WalletDebitedEventData
+    from .wallet_depleted_event import WalletDepletedEvent
+    from .wallet_depleted_event_data import WalletDepletedEventData
+    from .wallet_funded_event import WalletFundedEvent
+    from .wallet_funded_event_data import WalletFundedEventData
+    from .wallet_list_response import WalletListResponse
+    from .wallet_recovered_event import WalletRecoveredEvent
+    from .wallet_recovered_event_data import WalletRecoveredEventData
     from .webhook_delivery import WebhookDelivery
     from .webhook_delivery_id import WebhookDeliveryId
     from .webhook_delivery_list_response import WebhookDeliveryListResponse
@@ -425,6 +548,9 @@ if t.TYPE_CHECKING:
     from .webhook_header_input import WebhookHeaderInput
 
 _MODULES: dict[str, str] = {
+    "Actor": "actor",
+    "ActorType": "actor_type",
+    "ActorTypeLiteral": "actor_type",
     "AddOn": "add_on",
     "AddOnEvent": "add_on_event",
     "AddOnEventData": "add_on_event_data",
@@ -435,6 +561,18 @@ _MODULES: dict[str, str] = {
     "AppliedCoupon": "applied_coupon",
     "AppliedCouponDetailed": "applied_coupon_detailed",
     "AppliedCouponId": "applied_coupon_id",
+    "AutoTopUp": "auto_top_up",
+    "AutoTopUpCapReachedEvent": "auto_top_up_cap_reached_event",
+    "AutoTopUpCapReachedEventData": "auto_top_up_cap_reached_event_data",
+    "AutoTopUpConsentChangedEvent": "auto_top_up_consent_changed_event",
+    "AutoTopUpConsentChangedEventData": "auto_top_up_consent_changed_event_data",
+    "AutoTopUpEvent": "auto_top_up_event",
+    "AutoTopUpEventData": "auto_top_up_event_data",
+    "AutoTopUpMethod": "auto_top_up_method",
+    "AutoTopUpMethodLiteral": "auto_top_up_method",
+    "AutoTopUpStatus": "auto_top_up_status",
+    "AutoTopUpStatusLiteral": "auto_top_up_status",
+    "AutoTopUpWriteRequest": "auto_top_up_write_request",
     "AvailableParameters": "available_parameters",
     "BankAccountId": "bank_account_id",
     "BankTransferPaymentMethodConfig": "bank_transfer_payment_method_config",
@@ -465,6 +603,13 @@ _MODULES: dict[str, str] = {
     "BooleanEntitlementValue": "boolean_entitlement_value",
     "BooleanFeatureType": "boolean_feature_type",
     "BooleanResolvedEntitlementValue": "boolean_resolved_entitlement_value",
+    "Budget": "budget",
+    "BudgetAuthor": "budget_author",
+    "BudgetAuthorLiteral": "budget_author",
+    "BudgetBehavior": "budget_behavior",
+    "BudgetBehaviorLiteral": "budget_behavior",
+    "BudgetListResponse": "budget_list_response",
+    "BudgetPeriod": "budget_period",
     "CalendarResetPeriod": "calendar_reset_period",
     "CalendarUnit": "calendar_unit",
     "CalendarUnitLiteral": "calendar_unit",
@@ -502,6 +647,8 @@ _MODULES: dict[str, str] = {
     "ConnectionTypeLiteral": "connection_type",
     "CountryCode": "country_code",
     "Coupon": "coupon",
+    "CouponCreditScope": "coupon_credit_scope",
+    "CouponCreditScopeLiteral": "coupon_credit_scope",
     "CouponDiscount": "coupon_discount",
     "CouponEvent": "coupon_event",
     "CouponEventData": "coupon_event_data",
@@ -511,10 +658,13 @@ _MODULES: dict[str, str] = {
     "CouponLineItem": "coupon_line_item",
     "CouponListResponse": "coupon_list_response",
     "CreateAddOnRequest": "create_add_on_request",
+    "CreateBudgetRequest": "create_budget_request",
     "CreateCheckoutSessionRequest": "create_checkout_session_request",
     "CreateCheckoutSessionResponse": "create_checkout_session_response",
     "CreateConnectedAccountRequest": "create_connected_account_request",
+    "CreateConnectedAccountResponse": "create_connected_account_response",
     "CreateCouponRequest": "create_coupon_request",
+    "CreateCreditGrantRequest": "create_credit_grant_request",
     "CreateEntitlementsRequest": "create_entitlements_request",
     "CreateFeatureRequest": "create_feature_request",
     "CreateMetricRequest": "create_metric_request",
@@ -524,8 +674,38 @@ _MODULES: dict[str, str] = {
     "CreateProductRequest": "create_product_request",
     "CreateSubscriptionAddOn": "create_subscription_add_on",
     "CreateSubscriptionComponents": "create_subscription_components",
+    "CreateTopUpRequest": "create_top_up_request",
     "CreateWebhookEndpointRequest": "create_webhook_endpoint_request",
     "CreatedWebhookEndpoint": "created_webhook_endpoint",
+    "CreditAppliesTo": "credit_applies_to",
+    "CreditAppliesToLiteral": "credit_applies_to",
+    "CreditCap": "credit_cap",
+    "CreditCaps": "credit_caps",
+    "CreditCost": "credit_cost",
+    "CreditCostRequest": "credit_cost_request",
+    "CreditDiscount": "credit_discount",
+    "CreditExhaustedRule": "credit_exhausted_rule",
+    "CreditExhaustedRuleInvoiceVariant": "credit_exhausted_rule_invoice_variant",
+    "CreditExhaustedRulePauseVariant": "credit_exhausted_rule_pause_variant",
+    "CreditExpiryUnit": "credit_expiry_unit",
+    "CreditExpiryUnitLiteral": "credit_expiry_unit",
+    "CreditFee": "credit_fee",
+    "CreditFeeStructure": "credit_fee_structure",
+    "CreditGrant": "credit_grant",
+    "CreditGrantExpiredEvent": "credit_grant_expired_event",
+    "CreditGrantExpiredEventData": "credit_grant_expired_event_data",
+    "CreditGrantId": "credit_grant_id",
+    "CreditGrantKind": "credit_grant_kind",
+    "CreditGrantKindLiteral": "credit_grant_kind",
+    "CreditGrantLapseReason": "credit_grant_lapse_reason",
+    "CreditGrantLapseReasonLiteral": "credit_grant_lapse_reason",
+    "CreditGrantListResponse": "credit_grant_list_response",
+    "CreditGrantSource": "credit_grant_source",
+    "CreditGrantSourceLiteral": "credit_grant_source",
+    "CreditGrantStatus": "credit_grant_status",
+    "CreditGrantStatusLiteral": "credit_grant_status",
+    "CreditGrantType": "credit_grant_type",
+    "CreditGrantTypeLiteral": "credit_grant_type",
     "CreditNote": "credit_note",
     "CreditNoteCustomPropertiesRequest": "credit_note_custom_properties_request",
     "CreditNoteEvent": "credit_note_event",
@@ -534,8 +714,19 @@ _MODULES: dict[str, str] = {
     "CreditNoteListResponse": "credit_note_list_response",
     "CreditNoteStatus": "credit_note_status",
     "CreditNoteStatusLiteral": "credit_note_status",
+    "CreditPackExpiry": "credit_pack_expiry",
+    "CreditPackRollover": "credit_pack_rollover",
+    "CreditPackUnit": "credit_pack_unit",
+    "CreditPlanFee": "credit_plan_fee",
     "CreditType": "credit_type",
     "CreditTypeLiteral": "credit_type",
+    "CreditUnit": "credit_unit",
+    "CreditUnitCreateRequest": "credit_unit_create_request",
+    "CreditUnitListResponse": "credit_unit_list_response",
+    "CreditUnitPrice": "credit_unit_price",
+    "CreditUnitPriceListResponse": "credit_unit_price_list_response",
+    "CreditUnitPriceSetRequest": "credit_unit_price_set_request",
+    "CreditUnitUpdateRequest": "credit_unit_update_request",
     "Currency": "currency",
     "CurrencyLiteral": "currency",
     "CustomPropertyDefinition": "custom_property_definition",
@@ -574,8 +765,18 @@ _MODULES: dict[str, str] = {
     "EffectiveEntitlementListResponse": "effective_entitlement_list_response",
     "EffectiveEntitlementValue": "effective_entitlement_value",
     "Entitlement": "entitlement",
+    "EntitlementCheck": "entitlement_check",
+    "EntitlementCheckFeature": "entitlement_check_feature",
+    "EntitlementCheckLimit": "entitlement_check_limit",
+    "EntitlementCheckLimitBehavior": "entitlement_check_limit_behavior",
+    "EntitlementCheckLimitBehaviorLiteral": "entitlement_check_limit_behavior",
+    "EntitlementCheckPeriod": "entitlement_check_period",
+    "EntitlementCheckReason": "entitlement_check_reason",
+    "EntitlementCheckReasonLiteral": "entitlement_check_reason",
     "EntitlementId": "entitlement_id",
     "EntitlementListResponse": "entitlement_list_response",
+    "EntitlementOverageBehavior": "entitlement_overage_behavior",
+    "EntitlementOverageBehaviorLiteral": "entitlement_overage_behavior",
     "EntitlementProductRef": "entitlement_product_ref",
     "EntitlementSpecRequest": "entitlement_spec_request",
     "EntitlementValue": "entitlement_value",
@@ -602,6 +803,7 @@ _MODULES: dict[str, str] = {
     "FeatureStatusLiteral": "feature_status",
     "FeatureType": "feature_type",
     "Fee": "fee",
+    "FeeCreditUnit": "fee_credit_unit",
     "FixedDiscount": "fixed_discount",
     "FixedWindowResetPeriod": "fixed_window_reset_period",
     "GetCheckoutSessionResponse": "get_checkout_session_response",
@@ -617,6 +819,7 @@ _MODULES: dict[str, str] = {
     "InvoiceEvent": "invoice_event",
     "InvoiceEventData": "invoice_event_data",
     "InvoiceId": "invoice_id",
+    "InvoiceLineCreditUnit": "invoice_line_credit_unit",
     "InvoiceLineItem": "invoice_line_item",
     "InvoiceListResponse": "invoice_list_response",
     "InvoicePaymentStatus": "invoice_payment_status",
@@ -627,8 +830,17 @@ _MODULES: dict[str, str] = {
     "InvoiceTypeLiteral": "invoice_type",
     "InvoicingEntityId": "invoicing_entity_id",
     "JsonConfigValue": "json_config_value",
+    "LedgerEntry": "ledger_entry",
+    "LedgerEntryId": "ledger_entry_id",
+    "LedgerEntryType": "ledger_entry_type",
+    "LedgerEntryTypeLiteral": "ledger_entry_type",
+    "LedgerListResponse": "ledger_list_response",
     "LinkedSegmentationMatrix": "linked_segmentation_matrix",
     "ListCheckoutSessionsResponse": "list_checkout_sessions_response",
+    "ListCustomerUsageCostsGranularity": "list_customer_usage_costs_granularity",
+    "ListCustomerUsageCostsGranularityLiteral": "list_customer_usage_costs_granularity",
+    "ListSubscriptionUsageCostsGranularity": "list_subscription_usage_costs_granularity",
+    "ListSubscriptionUsageCostsGranularityLiteral": "list_subscription_usage_costs_granularity",
     "MatrixDimension": "matrix_dimension",
     "MatrixPlanPricing": "matrix_plan_pricing",
     "MatrixPricing": "matrix_pricing",
@@ -678,7 +890,9 @@ _MODULES: dict[str, str] = {
     "PackagePlanPricing": "package_plan_pricing",
     "PackagePricing": "package_pricing",
     "PaginationResponse": "pagination_response",
+    "PatchBudgetRequest": "patch_budget_request",
     "PatchPlanRequest": "patch_plan_request",
+    "PatchWalletRequest": "patch_wallet_request",
     "PaymentEvent": "payment_event",
     "PaymentMethodInfo": "payment_method_info",
     "PaymentMethodTypeEnum": "payment_method_type_enum",
@@ -696,6 +910,7 @@ _MODULES: dict[str, str] = {
     "PlanAddOnInput": "plan_add_on_input",
     "PlanEvent": "plan_event",
     "PlanEventData": "plan_event_data",
+    "PlanFeeCreditUnit": "plan_fee_credit_unit",
     "PlanId": "plan_id",
     "PlanListResponse": "plan_list_response",
     "PlanStatusEnum": "plan_status_enum",
@@ -772,6 +987,7 @@ _MODULES: dict[str, str] = {
     "SubscriptionComponent": "subscription_component",
     "SubscriptionCoupon": "subscription_coupon",
     "SubscriptionCreateRequest": "subscription_create_request",
+    "SubscriptionCredit": "subscription_credit",
     "SubscriptionDetails": "subscription_details",
     "SubscriptionEvent": "subscription_event",
     "SubscriptionEventData": "subscription_event_data",
@@ -798,8 +1014,15 @@ _MODULES: dict[str, str] = {
     "TokenIntrospectionResponse": "token_introspection_response",
     "TokenRequest": "token_request",
     "TokenResponse": "token_response",
+    "TopUpCollection": "top_up_collection",
+    "TopUpCollectionLiteral": "top_up_collection",
+    "TopUpResponse": "top_up_response",
+    "TopUpStatus": "top_up_status",
+    "TopUpStatusLiteral": "top_up_status",
     "Transaction": "transaction",
     "TrialConfig": "trial_config",
+    "UnattributedMetricUsage": "unattributed_metric_usage",
+    "UnattributedUsageResponse": "unattributed_usage_response",
     "UnitConversion": "unit_conversion",
     "UnitConversionRoundingEnum": "unit_conversion_rounding_enum",
     "UnitConversionRoundingEnumLiteral": "unit_conversion_rounding_enum",
@@ -810,8 +1033,19 @@ _MODULES: dict[str, str] = {
     "UpdateMetricRequest": "update_metric_request",
     "UpdateProductRequest": "update_product_request",
     "UpdateWebhookEndpointRequest": "update_webhook_endpoint_request",
+    "UsageAtZero": "usage_at_zero",
+    "UsageAtZeroLiteral": "usage_at_zero",
+    "UsageCost": "usage_cost",
+    "UsageCostListResponse": "usage_cost_list_response",
+    "UsageCostRow": "usage_cost_row",
+    "UsageCostUnit": "usage_cost_unit",
+    "UsageCostUnitLiteral": "usage_cost_unit",
+    "UsageEvent": "usage_event",
+    "UsageEventListResponse": "usage_event_list_response",
     "UsageFee": "usage_fee",
     "UsageFeeStructure": "usage_fee_structure",
+    "UsageFilter": "usage_filter",
+    "UsageLimitId": "usage_limit_id",
     "UsageModelEnum": "usage_model_enum",
     "UsageModelEnumLiteral": "usage_model_enum",
     "UsagePlanFee": "usage_plan_fee",
@@ -820,6 +1054,23 @@ _MODULES: dict[str, str] = {
     "UsageResponse": "usage_response",
     "VolumePlanPricing": "volume_plan_pricing",
     "VolumePricing": "volume_pricing",
+    "Wallet": "wallet",
+    "WalletBalanceLowEvent": "wallet_balance_low_event",
+    "WalletBalanceLowEventData": "wallet_balance_low_event_data",
+    "WalletCheck": "wallet_check",
+    "WalletCreditRecoveredEvent": "wallet_credit_recovered_event",
+    "WalletCreditRecoveredEventData": "wallet_credit_recovered_event_data",
+    "WalletCreditUnrecoveredEvent": "wallet_credit_unrecovered_event",
+    "WalletCreditUnrecoveredEventData": "wallet_credit_unrecovered_event_data",
+    "WalletDebitedEvent": "wallet_debited_event",
+    "WalletDebitedEventData": "wallet_debited_event_data",
+    "WalletDepletedEvent": "wallet_depleted_event",
+    "WalletDepletedEventData": "wallet_depleted_event_data",
+    "WalletFundedEvent": "wallet_funded_event",
+    "WalletFundedEventData": "wallet_funded_event_data",
+    "WalletListResponse": "wallet_list_response",
+    "WalletRecoveredEvent": "wallet_recovered_event",
+    "WalletRecoveredEventData": "wallet_recovered_event_data",
     "WebhookDelivery": "webhook_delivery",
     "WebhookDeliveryId": "webhook_delivery_id",
     "WebhookDeliveryListResponse": "webhook_delivery_list_response",
@@ -853,6 +1104,9 @@ __all__ = [
     "UNSET",
     "Unset",
     "UnknownVariant",
+    "Actor",
+    "ActorType",
+    "ActorTypeLiteral",
     "AddOn",
     "AddOnEvent",
     "AddOnEventData",
@@ -863,6 +1117,18 @@ __all__ = [
     "AppliedCoupon",
     "AppliedCouponDetailed",
     "AppliedCouponId",
+    "AutoTopUp",
+    "AutoTopUpCapReachedEvent",
+    "AutoTopUpCapReachedEventData",
+    "AutoTopUpConsentChangedEvent",
+    "AutoTopUpConsentChangedEventData",
+    "AutoTopUpEvent",
+    "AutoTopUpEventData",
+    "AutoTopUpMethod",
+    "AutoTopUpMethodLiteral",
+    "AutoTopUpStatus",
+    "AutoTopUpStatusLiteral",
+    "AutoTopUpWriteRequest",
     "AvailableParameters",
     "BankAccountId",
     "BankTransferPaymentMethodConfig",
@@ -893,6 +1159,13 @@ __all__ = [
     "BooleanEntitlementValue",
     "BooleanFeatureType",
     "BooleanResolvedEntitlementValue",
+    "Budget",
+    "BudgetAuthor",
+    "BudgetAuthorLiteral",
+    "BudgetBehavior",
+    "BudgetBehaviorLiteral",
+    "BudgetListResponse",
+    "BudgetPeriod",
     "CalendarResetPeriod",
     "CalendarUnit",
     "CalendarUnitLiteral",
@@ -930,6 +1203,8 @@ __all__ = [
     "ConnectionTypeLiteral",
     "CountryCode",
     "Coupon",
+    "CouponCreditScope",
+    "CouponCreditScopeLiteral",
     "CouponDiscount",
     "CouponEvent",
     "CouponEventData",
@@ -939,10 +1214,13 @@ __all__ = [
     "CouponLineItem",
     "CouponListResponse",
     "CreateAddOnRequest",
+    "CreateBudgetRequest",
     "CreateCheckoutSessionRequest",
     "CreateCheckoutSessionResponse",
     "CreateConnectedAccountRequest",
+    "CreateConnectedAccountResponse",
     "CreateCouponRequest",
+    "CreateCreditGrantRequest",
     "CreateEntitlementsRequest",
     "CreateFeatureRequest",
     "CreateMetricRequest",
@@ -952,8 +1230,38 @@ __all__ = [
     "CreateProductRequest",
     "CreateSubscriptionAddOn",
     "CreateSubscriptionComponents",
+    "CreateTopUpRequest",
     "CreateWebhookEndpointRequest",
     "CreatedWebhookEndpoint",
+    "CreditAppliesTo",
+    "CreditAppliesToLiteral",
+    "CreditCap",
+    "CreditCaps",
+    "CreditCost",
+    "CreditCostRequest",
+    "CreditDiscount",
+    "CreditExhaustedRule",
+    "CreditExhaustedRuleInvoiceVariant",
+    "CreditExhaustedRulePauseVariant",
+    "CreditExpiryUnit",
+    "CreditExpiryUnitLiteral",
+    "CreditFee",
+    "CreditFeeStructure",
+    "CreditGrant",
+    "CreditGrantExpiredEvent",
+    "CreditGrantExpiredEventData",
+    "CreditGrantId",
+    "CreditGrantKind",
+    "CreditGrantKindLiteral",
+    "CreditGrantLapseReason",
+    "CreditGrantLapseReasonLiteral",
+    "CreditGrantListResponse",
+    "CreditGrantSource",
+    "CreditGrantSourceLiteral",
+    "CreditGrantStatus",
+    "CreditGrantStatusLiteral",
+    "CreditGrantType",
+    "CreditGrantTypeLiteral",
     "CreditNote",
     "CreditNoteCustomPropertiesRequest",
     "CreditNoteEvent",
@@ -962,8 +1270,19 @@ __all__ = [
     "CreditNoteListResponse",
     "CreditNoteStatus",
     "CreditNoteStatusLiteral",
+    "CreditPackExpiry",
+    "CreditPackRollover",
+    "CreditPackUnit",
+    "CreditPlanFee",
     "CreditType",
     "CreditTypeLiteral",
+    "CreditUnit",
+    "CreditUnitCreateRequest",
+    "CreditUnitListResponse",
+    "CreditUnitPrice",
+    "CreditUnitPriceListResponse",
+    "CreditUnitPriceSetRequest",
+    "CreditUnitUpdateRequest",
     "Currency",
     "CurrencyLiteral",
     "CustomPropertyDefinition",
@@ -1002,8 +1321,18 @@ __all__ = [
     "EffectiveEntitlementListResponse",
     "EffectiveEntitlementValue",
     "Entitlement",
+    "EntitlementCheck",
+    "EntitlementCheckFeature",
+    "EntitlementCheckLimit",
+    "EntitlementCheckLimitBehavior",
+    "EntitlementCheckLimitBehaviorLiteral",
+    "EntitlementCheckPeriod",
+    "EntitlementCheckReason",
+    "EntitlementCheckReasonLiteral",
     "EntitlementId",
     "EntitlementListResponse",
+    "EntitlementOverageBehavior",
+    "EntitlementOverageBehaviorLiteral",
     "EntitlementProductRef",
     "EntitlementSpecRequest",
     "EntitlementValue",
@@ -1030,6 +1359,7 @@ __all__ = [
     "FeatureStatusLiteral",
     "FeatureType",
     "Fee",
+    "FeeCreditUnit",
     "FixedDiscount",
     "FixedWindowResetPeriod",
     "GetCheckoutSessionResponse",
@@ -1045,6 +1375,7 @@ __all__ = [
     "InvoiceEvent",
     "InvoiceEventData",
     "InvoiceId",
+    "InvoiceLineCreditUnit",
     "InvoiceLineItem",
     "InvoiceListResponse",
     "InvoicePaymentStatus",
@@ -1055,8 +1386,17 @@ __all__ = [
     "InvoiceTypeLiteral",
     "InvoicingEntityId",
     "JsonConfigValue",
+    "LedgerEntry",
+    "LedgerEntryId",
+    "LedgerEntryType",
+    "LedgerEntryTypeLiteral",
+    "LedgerListResponse",
     "LinkedSegmentationMatrix",
     "ListCheckoutSessionsResponse",
+    "ListCustomerUsageCostsGranularity",
+    "ListCustomerUsageCostsGranularityLiteral",
+    "ListSubscriptionUsageCostsGranularity",
+    "ListSubscriptionUsageCostsGranularityLiteral",
     "MatrixDimension",
     "MatrixPlanPricing",
     "MatrixPricing",
@@ -1106,7 +1446,9 @@ __all__ = [
     "PackagePlanPricing",
     "PackagePricing",
     "PaginationResponse",
+    "PatchBudgetRequest",
     "PatchPlanRequest",
+    "PatchWalletRequest",
     "PaymentEvent",
     "PaymentMethodInfo",
     "PaymentMethodTypeEnum",
@@ -1124,6 +1466,7 @@ __all__ = [
     "PlanAddOnInput",
     "PlanEvent",
     "PlanEventData",
+    "PlanFeeCreditUnit",
     "PlanId",
     "PlanListResponse",
     "PlanStatusEnum",
@@ -1200,6 +1543,7 @@ __all__ = [
     "SubscriptionComponent",
     "SubscriptionCoupon",
     "SubscriptionCreateRequest",
+    "SubscriptionCredit",
     "SubscriptionDetails",
     "SubscriptionEvent",
     "SubscriptionEventData",
@@ -1226,8 +1570,15 @@ __all__ = [
     "TokenIntrospectionResponse",
     "TokenRequest",
     "TokenResponse",
+    "TopUpCollection",
+    "TopUpCollectionLiteral",
+    "TopUpResponse",
+    "TopUpStatus",
+    "TopUpStatusLiteral",
     "Transaction",
     "TrialConfig",
+    "UnattributedMetricUsage",
+    "UnattributedUsageResponse",
     "UnitConversion",
     "UnitConversionRoundingEnum",
     "UnitConversionRoundingEnumLiteral",
@@ -1238,8 +1589,19 @@ __all__ = [
     "UpdateMetricRequest",
     "UpdateProductRequest",
     "UpdateWebhookEndpointRequest",
+    "UsageAtZero",
+    "UsageAtZeroLiteral",
+    "UsageCost",
+    "UsageCostListResponse",
+    "UsageCostRow",
+    "UsageCostUnit",
+    "UsageCostUnitLiteral",
+    "UsageEvent",
+    "UsageEventListResponse",
     "UsageFee",
     "UsageFeeStructure",
+    "UsageFilter",
+    "UsageLimitId",
     "UsageModelEnum",
     "UsageModelEnumLiteral",
     "UsagePlanFee",
@@ -1248,6 +1610,23 @@ __all__ = [
     "UsageResponse",
     "VolumePlanPricing",
     "VolumePricing",
+    "Wallet",
+    "WalletBalanceLowEvent",
+    "WalletBalanceLowEventData",
+    "WalletCheck",
+    "WalletCreditRecoveredEvent",
+    "WalletCreditRecoveredEventData",
+    "WalletCreditUnrecoveredEvent",
+    "WalletCreditUnrecoveredEventData",
+    "WalletDebitedEvent",
+    "WalletDebitedEventData",
+    "WalletDepletedEvent",
+    "WalletDepletedEventData",
+    "WalletFundedEvent",
+    "WalletFundedEventData",
+    "WalletListResponse",
+    "WalletRecoveredEvent",
+    "WalletRecoveredEventData",
     "WebhookDelivery",
     "WebhookDeliveryId",
     "WebhookDeliveryListResponse",

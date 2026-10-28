@@ -118,7 +118,10 @@ class AsyncCoupons(ApiBaseAsync):
         timeout: Timeout | Unset = UNSET,
         max_retries: int | None = None,
     ) -> Coupon:
-        """Create a coupon"""
+        """Create a coupon
+
+        :param code: 1 to 64 ASCII letters, digits, hyphens or underscores. A promotional-credit (`CREDIT`) code is stored upper-case. Codes are matched as described on `Coupon.code`.
+        :param reusable: Whether one customer may redeem the coupon more than once. Must be false for a promotional-credit (`CREDIT`) coupon."""
         response = await self._request(
             ApiRequest(
                 method="post",
@@ -430,7 +433,10 @@ class Coupons(ApiBaseSync):
         timeout: Timeout | Unset = UNSET,
         max_retries: int | None = None,
     ) -> Coupon:
-        """Create a coupon"""
+        """Create a coupon
+
+        :param code: 1 to 64 ASCII letters, digits, hyphens or underscores. A promotional-credit (`CREDIT`) code is stored upper-case. Codes are matched as described on `Coupon.code`.
+        :param reusable: Whether one customer may redeem the coupon more than once. Must be false for a promotional-credit (`CREDIT`) coupon."""
         response = self._request(
             ApiRequest(
                 method="post",

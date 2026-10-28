@@ -44,4 +44,10 @@ class MetricEventData(BaseModel):
 
     unit_conversion_rounding: UnitConversionRoundingEnum | None = None
 
+    unit_plural: str | None = None
+    """What several units of the metric are called, e.g. `tokens`."""
+
+    unit_singular: str | None = None
+    """What one unit of the metric is called, e.g. `token`."""
+
     usage_group_key: str | None = None

@@ -20,3 +20,5 @@ class NewProductRef(BaseModel):
     fee_type: ProductFeeTypeEnum
 
     name: str
+
+    type: t.Literal["NEW"] = "NEW"

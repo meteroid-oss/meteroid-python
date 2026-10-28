@@ -18,3 +18,5 @@ class UsageFeeStructure(BaseModel):
     metric_id: BillableMetricId
 
     model: UsageModelEnum
+
+    type: t.Literal["USAGE"] = "USAGE"

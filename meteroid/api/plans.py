@@ -12,6 +12,7 @@ from ..models import (
     BillingConfig,
     CreateEntitlementsRequest,
     CreatePlanRequest,
+    CreditExhaustedRule,
     EntitlementListResponse,
     EntitlementSpecRequest,
     MinimumCommitmentInput,
@@ -211,6 +212,7 @@ class AsyncPlans(ApiBaseAsync):
         status: PlanStatusEnum | PlanStatusEnumLiteral,
         add_ons: builtins.list[PlanAddOnInput] | None = None,
         billing: BillingConfig | None | Unset = UNSET,
+        credit_exhausted_rule: CreditExhaustedRule | None | Unset = UNSET,
         description: str | None | Unset = UNSET,
         entitlements: builtins.list[EntitlementSpecRequest] | None = None,
         self_service_rank: int | None | Unset = UNSET,
@@ -238,6 +240,7 @@ class AsyncPlans(ApiBaseAsync):
                         add_ons=add_ons,
                         billing=billing,
                         components=components,
+                        credit_exhausted_rule=credit_exhausted_rule,
                         currency=currency,
                         description=description,
                         entitlements=entitlements,
@@ -313,6 +316,7 @@ class AsyncPlans(ApiBaseAsync):
         name: str,
         add_ons: builtins.list[PlanAddOnInput] | None = None,
         billing: BillingConfig | None | Unset = UNSET,
+        credit_exhausted_rule: CreditExhaustedRule | None | Unset = UNSET,
         description: str | None | Unset = UNSET,
         entitlements: builtins.list[EntitlementSpecRequest] | None = None,
         minimum_commitment: MinimumCommitmentInput | None | Unset = UNSET,
@@ -329,7 +333,9 @@ class AsyncPlans(ApiBaseAsync):
 
         Full replacement of a plan's version. On a draft plan, updates in-place.
         On a published plan, creates a new version. Set `status` to `DRAFT` to
-        stage as a new draft without publishing.
+        stage as a new draft without publishing. A usage or capacity component priced in a credit
+        unit must be sent with its `credit_unit`, or the request is refused: omitting it would bill
+        its credits as money.
 
         :param entitlements: Entitlements to attach to this plan's version. Replacing a published plan creates a new version, and entitlements belong to a version, so passing them here keeps them attached to whichever version the call produces.
         :param tax_inclusive: The plan's amounts are quoted tax-included ("9.99 incl. VAT"): tax is carved out of them at invoice time instead of being added on top, so the customer pays the quoted price whatever rate applies. A customer who bears no tax (reverse charge, exempt, export) still pays it in full. Defaults to `false`."""
@@ -345,6 +351,7 @@ class AsyncPlans(ApiBaseAsync):
                         add_ons=add_ons,
                         billing=billing,
                         components=components,
+                        credit_exhausted_rule=credit_exhausted_rule,
                         currency=currency,
                         description=description,
                         entitlements=entitlements,
@@ -684,6 +691,7 @@ class Plans(ApiBaseSync):
         status: PlanStatusEnum | PlanStatusEnumLiteral,
         add_ons: builtins.list[PlanAddOnInput] | None = None,
         billing: BillingConfig | None | Unset = UNSET,
+        credit_exhausted_rule: CreditExhaustedRule | None | Unset = UNSET,
         description: str | None | Unset = UNSET,
         entitlements: builtins.list[EntitlementSpecRequest] | None = None,
         self_service_rank: int | None | Unset = UNSET,
@@ -711,6 +719,7 @@ class Plans(ApiBaseSync):
                         add_ons=add_ons,
                         billing=billing,
                         components=components,
+                        credit_exhausted_rule=credit_exhausted_rule,
                         currency=currency,
                         description=description,
                         entitlements=entitlements,
@@ -786,6 +795,7 @@ class Plans(ApiBaseSync):
         name: str,
         add_ons: builtins.list[PlanAddOnInput] | None = None,
         billing: BillingConfig | None | Unset = UNSET,
+        credit_exhausted_rule: CreditExhaustedRule | None | Unset = UNSET,
         description: str | None | Unset = UNSET,
         entitlements: builtins.list[EntitlementSpecRequest] | None = None,
         minimum_commitment: MinimumCommitmentInput | None | Unset = UNSET,
@@ -802,7 +812,9 @@ class Plans(ApiBaseSync):
 
         Full replacement of a plan's version. On a draft plan, updates in-place.
         On a published plan, creates a new version. Set `status` to `DRAFT` to
-        stage as a new draft without publishing.
+        stage as a new draft without publishing. A usage or capacity component priced in a credit
+        unit must be sent with its `credit_unit`, or the request is refused: omitting it would bill
+        its credits as money.
 
         :param entitlements: Entitlements to attach to this plan's version. Replacing a published plan creates a new version, and entitlements belong to a version, so passing them here keeps them attached to whichever version the call produces.
         :param tax_inclusive: The plan's amounts are quoted tax-included ("9.99 incl. VAT"): tax is carved out of them at invoice time instead of being added on top, so the customer pays the quoted price whatever rate applies. A customer who bears no tax (reverse charge, exempt, export) still pays it in full. Defaults to `false`."""
@@ -818,6 +830,7 @@ class Plans(ApiBaseSync):
                         add_ons=add_ons,
                         billing=billing,
                         components=components,
+                        credit_exhausted_rule=credit_exhausted_rule,
                         currency=currency,
                         description=description,
                         entitlements=entitlements,

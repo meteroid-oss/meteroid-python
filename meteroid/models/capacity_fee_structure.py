@@ -15,3 +15,5 @@ class CapacityFeeStructure(BaseModel):
     """The `CapacityFeeStructure` object."""
 
     metric_id: BillableMetricId
+
+    type: t.Literal["CAPACITY"] = "CAPACITY"

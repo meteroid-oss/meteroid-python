@@ -14,4 +14,6 @@ if t.TYPE_CHECKING:
 class BankTransferPaymentMethodConfig(BaseModel):
     """The `BankTransferPaymentMethodConfig` object."""
 
+    type: t.Literal["bank_transfer"] = "bank_transfer"
+
     account_id: BankAccountId | None | Unset = UNSET

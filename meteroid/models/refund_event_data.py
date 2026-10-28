@@ -38,6 +38,13 @@ class RefundEventData(BaseModel):
 
     transaction_id: PaymentTransactionId
 
+    amount_disputed: int | None = None
+    """The part of `amount_reversed` lost to disputes or chargebacks: the invoice stays paid."""
+
+    amount_reversed_excess: int | None = None
+    """What the provider withdrew above what the payment still held (refunded before); never
+    applied to the invoice or credit. Contest it with the provider."""
+
     credit_note_id: CreditNoteId | None = None
 
     decline_kind: DeclineKind | None = None

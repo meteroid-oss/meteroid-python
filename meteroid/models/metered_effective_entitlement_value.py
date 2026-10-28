@@ -17,4 +17,6 @@ class MeteredEffectiveEntitlementValue(BaseModel):
 
     spec: MeteredEntitlementSpec
 
+    type: t.Literal["METERED"] = "METERED"
+
     usage: MeteredEntitlementUsage

@@ -16,4 +16,6 @@ class SubscriptionAddOnPriceOverride(BaseModel):
 
     price_entry: PriceEntry
 
+    type: t.Literal["PRICE_OVERRIDE"] = "PRICE_OVERRIDE"
+
     name: str | None | Unset = UNSET

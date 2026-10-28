@@ -15,3 +15,5 @@ class MeteredFeatureType(BaseModel):
     """The `MeteredFeatureType` object."""
 
     metric_id: BillableMetricId
+
+    type: t.Literal["METERED"] = "METERED"

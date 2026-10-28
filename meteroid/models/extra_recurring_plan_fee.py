@@ -22,4 +22,6 @@ class ExtraRecurringPlanFee(BaseModel):
 
     quantity: int
 
+    type: t.Literal["EXTRA_RECURRING"] = "EXTRA_RECURRING"
+
     unit_price: Decimal

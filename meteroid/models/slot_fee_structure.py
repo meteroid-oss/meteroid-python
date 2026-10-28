@@ -19,4 +19,6 @@ class SlotFeeStructure(BaseModel):
 
     slot_unit_name: str
 
+    type: t.Literal["SLOT"] = "SLOT"
+
     upgrade_policy: SlotUpgradePolicyEnum

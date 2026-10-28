@@ -30,6 +30,8 @@ class Invoice(BaseModel):
     amount_due: int
 
     applied_credits: int
+    """Paid credit applied after tax, in minor units of the invoice currency: it settles part of
+    `total` like a payment, and `amount_due` is net of it."""
 
     coupons: list[CouponLineItem]
 
@@ -57,6 +59,10 @@ class Invoice(BaseModel):
     net_terms: int
 
     payment_status: InvoicePaymentStatus
+
+    settled_by_credit_notes: bool
+    """True when the invoice is `PAID` without any payment: finalized credit notes cancelled its
+    whole total. Nothing was collected, so it books no cash."""
 
     status: InvoiceStatus
 
@@ -96,6 +102,16 @@ class Invoice(BaseModel):
     paid_at: datetime | None = None
 
     parent_invoice_id: InvoiceId | None = None
+
+    payment_disputed_at: datetime | None = None
+    """When a dispute or chargeback first took money still lost on this invoice's payments. The
+    invoice stays paid; absent when nothing is disputed."""
+
+    promotional_credits: int | None = None
+    """Promotional credit applied before tax (credit included with the plan, coupon credit, bonus
+    credit), in minor units of the invoice currency. Like a discount, it reduces the taxable
+    amount: `tax_amount` and `total` already exclude it, `subtotal` does not. Unlike
+    `applied_credits`, which settles part of the `total` after tax."""
 
     purchase_order: str | None = None
 

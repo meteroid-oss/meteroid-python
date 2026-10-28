@@ -9,6 +9,7 @@ from ..serialization import BaseModel
 
 if t.TYPE_CHECKING:
     from .billable_metric_id import BillableMetricId
+    from .fee_credit_unit import FeeCreditUnit
 
 
 @dataclasses.dataclass(kw_only=True)
@@ -22,3 +23,7 @@ class CapacityFee(BaseModel):
     overage_rate: Decimal
 
     rate: Decimal
+
+    type: t.Literal["CAPACITY"] = "CAPACITY"
+
+    credit_unit: FeeCreditUnit | None = None

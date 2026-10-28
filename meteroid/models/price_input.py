@@ -20,3 +20,5 @@ class PriceInput(BaseModel):
     currency: str
 
     pricing: Pricing
+
+    type: t.Literal["NEW"] = "NEW"

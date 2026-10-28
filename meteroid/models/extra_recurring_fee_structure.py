@@ -15,3 +15,5 @@ class ExtraRecurringFeeStructure(BaseModel):
     """The `ExtraRecurringFeeStructure` object."""
 
     billing_type: ExtraRecurringBillingTypeEnum
+
+    type: t.Literal["EXTRA_RECURRING"] = "EXTRA_RECURRING"

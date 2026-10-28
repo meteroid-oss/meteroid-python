@@ -16,4 +16,6 @@ class VolumePricing(BaseModel):
 
     tiers: list[TierRow]
 
+    type: t.Literal["VOLUME"] = "VOLUME"
+
     block_size: int | None | Unset = UNSET

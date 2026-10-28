@@ -4,18 +4,18 @@
 from __future__ import annotations
 
 import typing as t
-from uuid import UUID
 
 from .. import models as _models
 from ..models import (
     ConnectedAccount,
     ConnectedAccountsResponse,
-    ConnectionType,
-    ConnectionTypeLiteral,
+    CountryCode,
     CreateConnectedAccountRequest,
+    CreateConnectedAccountResponse,
     CreateOnboardingLinkRequest,
-    CustomerId,
     OnboardingLinkResponse,
+    OnboardingMode,
+    OnboardingModeLiteral,
 )
 from ..serialization import UNSET, Unset, to_json_value
 from ._response import async_to_raw_response_wrapper, to_raw_response_wrapper
@@ -67,32 +67,34 @@ class AsyncConnect(ApiBaseAsync):
     async def create_connected_account(
         self,
         *,
-        connected_organization_id: UUID,
-        connection_type: ConnectionType | ConnectionTypeLiteral | None | Unset = UNSET,
+        email: str,
+        organization_name: str,
+        country: CountryCode | None | Unset = UNSET,
         metadata: t.Any = None,
-        platform_customer_id: CustomerId | None | Unset = UNSET,
+        mode: OnboardingMode | OnboardingModeLiteral | None | Unset = UNSET,
+        redirect_url: str | None | Unset = UNSET,
         extra_headers: t.Mapping[str, str] | None = None,
         extra_query: t.Mapping[str, object] | None = None,
         extra_body: t.Mapping[str, object] | None = None,
         timeout: Timeout | Unset = UNSET,
         max_retries: int | None = None,
-    ) -> ConnectedAccount:
+    ) -> CreateConnectedAccountResponse:
         """Create connected account
 
-        Create a new connected account (Express flow). Returns the account
-        and an onboarding link for the user to complete setup."""
+        Create a new pending connected account (Express flow). Returns the
+        account and an onboarding link for the user to complete setup."""
         response = await self._request(
             ApiRequest(
                 method="post",
                 path="/api/v1/connected-accounts",
                 json_body=to_json_value(
                     CreateConnectedAccountRequest(
-                        connected_organization_id=connected_organization_id,
-                        connection_type=t.cast(
-                            "ConnectionType | None | Unset", connection_type
-                        ),
+                        country=country,
+                        email=email,
                         metadata=metadata,
-                        platform_customer_id=platform_customer_id,
+                        mode=t.cast("OnboardingMode | None | Unset", mode),
+                        organization_name=organization_name,
+                        redirect_url=redirect_url,
                     ),
                     CreateConnectedAccountRequest,
                 ),
@@ -106,7 +108,7 @@ class AsyncConnect(ApiBaseAsync):
                 max_retries=max_retries,
             )
         )
-        return decode_response(response, ConnectedAccount)
+        return decode_response(response, CreateConnectedAccountResponse)
 
     async def retrieve_connected_account(
         self,
@@ -272,32 +274,34 @@ class Connect(ApiBaseSync):
     def create_connected_account(
         self,
         *,
-        connected_organization_id: UUID,
-        connection_type: ConnectionType | ConnectionTypeLiteral | None | Unset = UNSET,
+        email: str,
+        organization_name: str,
+        country: CountryCode | None | Unset = UNSET,
         metadata: t.Any = None,
-        platform_customer_id: CustomerId | None | Unset = UNSET,
+        mode: OnboardingMode | OnboardingModeLiteral | None | Unset = UNSET,
+        redirect_url: str | None | Unset = UNSET,
         extra_headers: t.Mapping[str, str] | None = None,
         extra_query: t.Mapping[str, object] | None = None,
         extra_body: t.Mapping[str, object] | None = None,
         timeout: Timeout | Unset = UNSET,
         max_retries: int | None = None,
-    ) -> ConnectedAccount:
+    ) -> CreateConnectedAccountResponse:
         """Create connected account
 
-        Create a new connected account (Express flow). Returns the account
-        and an onboarding link for the user to complete setup."""
+        Create a new pending connected account (Express flow). Returns the
+        account and an onboarding link for the user to complete setup."""
         response = self._request(
             ApiRequest(
                 method="post",
                 path="/api/v1/connected-accounts",
                 json_body=to_json_value(
                     CreateConnectedAccountRequest(
-                        connected_organization_id=connected_organization_id,
-                        connection_type=t.cast(
-                            "ConnectionType | None | Unset", connection_type
-                        ),
+                        country=country,
+                        email=email,
                         metadata=metadata,
-                        platform_customer_id=platform_customer_id,
+                        mode=t.cast("OnboardingMode | None | Unset", mode),
+                        organization_name=organization_name,
+                        redirect_url=redirect_url,
                     ),
                     CreateConnectedAccountRequest,
                 ),
@@ -311,7 +315,7 @@ class Connect(ApiBaseSync):
                 max_retries=max_retries,
             )
         )
-        return decode_response(response, ConnectedAccount)
+        return decode_response(response, CreateConnectedAccountResponse)
 
     def retrieve_connected_account(
         self,

@@ -3,23 +3,26 @@ from __future__ import annotations
 
 import dataclasses
 import typing as t
-from uuid import UUID
 
 from ..serialization import UNSET, BaseModel, Unset
 
 if t.TYPE_CHECKING:
-    from .connection_type import ConnectionType
-    from .customer_id import CustomerId
+    from .country_code import CountryCode
+    from .onboarding_mode import OnboardingMode
 
 
 @dataclasses.dataclass(kw_only=True)
 class CreateConnectedAccountRequest(BaseModel):
     """The `CreateConnectedAccountRequest` object."""
 
-    connected_organization_id: UUID
+    email: str
 
-    connection_type: ConnectionType | None | Unset = UNSET
+    organization_name: str
+
+    country: CountryCode | None | Unset = UNSET
 
     metadata: t.Any = None
 
-    platform_customer_id: CustomerId | None | Unset = UNSET
+    mode: OnboardingMode | None | Unset = UNSET
+
+    redirect_url: str | None | Unset = UNSET

@@ -92,7 +92,7 @@ class AsyncWebhookEndpointsEndpoints(ApiBaseAsync):
 
         The signing secret is returned once, in this response only.
 
-        :param event_types: Event types to subscribe to. Omit or leave empty to receive every event type.
+        :param event_types: Event types to subscribe to. Omit or leave empty to receive every event type except Beta ones, which are sent only to endpoints that list them.
         :param headers: Custom headers sent with every delivery.
         :param rate_limit_per_sec: Deliveries started per second, at most (1 to 1000).
         :param url: HTTPS destination. Private and loopback addresses are rejected unless the instance is configured to allow them."""
@@ -206,7 +206,7 @@ class AsyncWebhookEndpointsEndpoints(ApiBaseAsync):
 
         :param description: Omit to leave unchanged; send `null` or an empty string to clear.
         :param disabled: Re-enabling an endpoint also resets its consecutive failure count.
-        :param event_types: Replaces the subscription list. An empty array subscribes to every event type.
+        :param event_types: Replaces the subscription list. An empty array subscribes to every event type except Beta ones, which are sent only to endpoints that list them.
         :param headers: Replaces the custom header list. An empty array removes every header.
         :param rate_limit_per_sec: Omit to leave unchanged; send `null` to remove the rate limit."""
         response = await self._request(
@@ -430,7 +430,7 @@ class WebhookEndpointsEndpoints(ApiBaseSync):
 
         The signing secret is returned once, in this response only.
 
-        :param event_types: Event types to subscribe to. Omit or leave empty to receive every event type.
+        :param event_types: Event types to subscribe to. Omit or leave empty to receive every event type except Beta ones, which are sent only to endpoints that list them.
         :param headers: Custom headers sent with every delivery.
         :param rate_limit_per_sec: Deliveries started per second, at most (1 to 1000).
         :param url: HTTPS destination. Private and loopback addresses are rejected unless the instance is configured to allow them."""
@@ -544,7 +544,7 @@ class WebhookEndpointsEndpoints(ApiBaseSync):
 
         :param description: Omit to leave unchanged; send `null` or an empty string to clear.
         :param disabled: Re-enabling an endpoint also resets its consecutive failure count.
-        :param event_types: Replaces the subscription list. An empty array subscribes to every event type.
+        :param event_types: Replaces the subscription list. An empty array subscribes to every event type except Beta ones, which are sent only to endpoints that list them.
         :param headers: Replaces the custom header list. An empty array removes every header.
         :param rate_limit_per_sec: Omit to leave unchanged; send `null` to remove the rate limit."""
         response = self._request(

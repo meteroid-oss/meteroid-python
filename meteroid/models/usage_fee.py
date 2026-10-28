@@ -8,6 +8,7 @@ from ..serialization import BaseModel
 
 if t.TYPE_CHECKING:
     from .billable_metric_id import BillableMetricId
+    from .fee_credit_unit import FeeCreditUnit
     from .usage_pricing_model import UsagePricingModel
 
 
@@ -18,3 +19,7 @@ class UsageFee(BaseModel):
     metric_id: BillableMetricId
 
     model: UsagePricingModel
+
+    type: t.Literal["USAGE"] = "USAGE"
+
+    credit_unit: FeeCreditUnit | None = None
