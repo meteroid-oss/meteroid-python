@@ -31,3 +31,9 @@ class MetricSummary(BaseModel):
     archived_at: datetime | None = None
 
     description: str | None = None
+
+    unit_plural: str | None = None
+    """What several units of the metric are called, e.g. `tokens`."""
+
+    unit_singular: str | None = None
+    """What one unit of the metric is called, e.g. `token`."""

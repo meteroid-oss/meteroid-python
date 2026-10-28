@@ -234,7 +234,8 @@ class AsyncFeatures(ApiBaseAsync):
     ) -> None:
         """Archive a feature
 
-        Keeps the feature and its entitlements but hides them from resolution."""
+        Turns the feature off and hides it and its entitlements until it is unarchived, and frees its
+        code for a new feature."""
         await self._request(
             ApiRequest(
                 method="post",
@@ -263,7 +264,10 @@ class AsyncFeatures(ApiBaseAsync):
         timeout: Timeout | Unset = UNSET,
         max_retries: int | None = None,
     ) -> None:
-        """Unarchive a feature"""
+        """Unarchive a feature
+
+        Makes the feature active again with all its entitlements. Fails while another feature uses its
+        code."""
         await self._request(
             ApiRequest(
                 method="post",
@@ -491,7 +495,8 @@ class Features(ApiBaseSync):
     ) -> None:
         """Archive a feature
 
-        Keeps the feature and its entitlements but hides them from resolution."""
+        Turns the feature off and hides it and its entitlements until it is unarchived, and frees its
+        code for a new feature."""
         self._request(
             ApiRequest(
                 method="post",
@@ -520,7 +525,10 @@ class Features(ApiBaseSync):
         timeout: Timeout | Unset = UNSET,
         max_retries: int | None = None,
     ) -> None:
-        """Unarchive a feature"""
+        """Unarchive a feature
+
+        Makes the feature active again with all its entitlements. Fails while another feature uses its
+        code."""
         self._request(
             ApiRequest(
                 method="post",

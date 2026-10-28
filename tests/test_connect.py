@@ -21,13 +21,13 @@ class ConnectTest(unittest.TestCase):
         client, requests = mock(
             200,
             "application/json",
-            '{"connection_type":"express","created_at":"2024-03-15T10:30:45.123+02:00","id":"connected_account_id_47","onboarding_mode":"express","platform_organization_id":"organization_id_83","status":"active"}',
+            '{"connection_type":"standard","created_at":"2024-03-15T10:30:45.123+02:00","id":"connected_account_id_67","onboarding_mode":"full","platform_organization_id":"organization_id_23","status":"active","onboarding_link":{"expires_at":"2023-12-31T23:59:59.999-05:30","url":"sample"}}',
         )
         call(
             client.connect.create_connected_account,
             body=decode(
                 CreateConnectedAccountRequest,
-                '{"connected_organization_id":"00000000-0000-0000-0000-000000000000"}',
+                '{"email":"alice@example.com","organization_name":"sample"}',
             ),
         )
         self.assertEqual(requests, ["POST /api/v1/connected-accounts"])

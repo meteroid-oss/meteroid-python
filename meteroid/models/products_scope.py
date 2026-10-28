@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import dataclasses
+import typing as t
 
 from ..serialization import BaseModel
 
@@ -12,3 +13,5 @@ class ProductsScope(BaseModel):
     components, overrides and ad-hoc extras, so a subscription's billed set is matched uniformly."""
 
     product_ids: list[str]
+
+    type: t.Literal["products"] = "products"

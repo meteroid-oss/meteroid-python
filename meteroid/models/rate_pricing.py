@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import dataclasses
+import typing as t
 from decimal import Decimal
 
 from ..serialization import BaseModel
@@ -12,3 +13,5 @@ class RatePricing(BaseModel):
     """The `RatePricing` object."""
 
     rate: Decimal
+
+    type: t.Literal["RATE"] = "RATE"

@@ -11,4 +11,6 @@ from ..serialization import BaseModel
 class JsonConfigValue(BaseModel):
     """A structured (JSON) config value — the "metadata" case, several fields in one entitlement."""
 
+    kind: t.Literal["JSON"] = "JSON"
+
     value: t.Any

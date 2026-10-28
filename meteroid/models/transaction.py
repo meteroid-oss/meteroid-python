@@ -40,6 +40,14 @@ class Transaction(BaseModel):
 
     status: PaymentStatusEnum
 
+    amount_disputed: int | None = None
+    """On a PAYMENT: the part of `amount_reversed` lost to disputes or chargebacks. The invoice
+    stays paid; only the rest of `amount_reversed` (a failed collection) reopens it."""
+
+    amount_reversed_excess: int | None = None
+    """On a PAYMENT: what the provider withdrew above what the payment still held (refunded
+    before). Never applied to the invoice or credit: contest it with the provider."""
+
     credit_note_id: CreditNoteId | None = None
 
     error: str | None = None

@@ -9,6 +9,7 @@ from ..serialization import BaseModel
 
 if t.TYPE_CHECKING:
     from .available_parameters import AvailableParameters
+    from .credit_exhausted_rule import CreditExhaustedRule
     from .currency import Currency
     from .entitlement import Entitlement
     from .minimum_commitment import MinimumCommitment
@@ -56,6 +57,8 @@ class Plan(BaseModel):
     version_id: PlanVersionId
 
     billing_cycles: int | None = None
+
+    credit_exhausted_rule: CreditExhaustedRule | None = None
 
     description: str | None = None
 

@@ -5,6 +5,7 @@ import typing as t
 
 from ..serialization import Discriminator, UnknownVariant
 from .capacity_plan_fee import CapacityPlanFee
+from .credit_plan_fee import CreditPlanFee
 from .extra_recurring_plan_fee import ExtraRecurringPlanFee
 from .one_time_plan_fee import OneTimePlanFee
 from .rate_plan_fee import RatePlanFee
@@ -18,6 +19,7 @@ Fee: t.TypeAlias = t.Annotated[
     | UsagePlanFee
     | ExtraRecurringPlanFee
     | OneTimePlanFee
+    | CreditPlanFee
     | UnknownVariant,
     Discriminator(
         "type",
@@ -28,6 +30,7 @@ Fee: t.TypeAlias = t.Annotated[
             "USAGE": UsagePlanFee,
             "EXTRA_RECURRING": ExtraRecurringPlanFee,
             "ONE_TIME": OneTimePlanFee,
+            "CREDIT": CreditPlanFee,
         },
     ),
 ]

@@ -15,3 +15,5 @@ class MatrixPlanPricing(BaseModel):
     """The `MatrixPlanPricing` object."""
 
     rates: list[MatrixRow]
+
+    type: t.Literal["MATRIX"] = "MATRIX"

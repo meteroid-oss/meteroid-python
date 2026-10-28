@@ -15,3 +15,5 @@ class ExistingProductRef(BaseModel):
     """The `ExistingProductRef` object."""
 
     id: ProductId
+
+    type: t.Literal["EXISTING"] = "EXISTING"

@@ -28,6 +28,10 @@ class InvoiceEventData(BaseModel):
 
     invoice_id: InvoiceId
 
+    settled_by_credit_notes: bool
+    """On `invoice.paid`: true when finalized credit notes, not a payment, settled the invoice's
+    whole total. Nothing was collected, so it books no cash. False on every other event."""
+
     status: InvoiceStatus
 
     tax_amount: int

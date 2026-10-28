@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import dataclasses
+import typing as t
 from decimal import Decimal
 
 from ..serialization import BaseModel
@@ -16,3 +17,5 @@ class CapacityPricing(BaseModel):
     overage_rate: Decimal
 
     rate: Decimal
+
+    type: t.Literal["CAPACITY"] = "CAPACITY"

@@ -15,3 +15,5 @@ class RatePlanFee(BaseModel):
     """Recurring rate fee (e.g., monthly subscription)"""
 
     rates: list[TermRate]
+
+    type: t.Literal["RATE"] = "RATE"

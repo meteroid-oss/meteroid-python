@@ -17,3 +17,5 @@ class DoubleSegmentationMatrix(BaseModel):
     dimension1: MetricDimension
 
     dimension2: MetricDimension
+
+    type: t.Literal["DOUBLE"] = "DOUBLE"

@@ -21,7 +21,8 @@ class UpdateWebhookEndpointRequest(BaseModel):
     """Re-enabling an endpoint also resets its consecutive failure count."""
 
     event_types: list[str] | None | Unset = UNSET
-    """Replaces the subscription list. An empty array subscribes to every event type."""
+    """Replaces the subscription list. An empty array subscribes to every event type except Beta
+    ones, which are sent only to endpoints that list them."""
 
     headers: list[WebhookHeaderInput] | None | Unset = UNSET
     """Replaces the custom header list. An empty array removes every header."""

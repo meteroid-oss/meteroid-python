@@ -8,6 +8,7 @@ from ..serialization import UNSET, BaseModel, Unset
 
 if t.TYPE_CHECKING:
     from .billing_config import BillingConfig
+    from .credit_exhausted_rule import CreditExhaustedRule
     from .entitlement_spec_request import EntitlementSpecRequest
     from .plan_add_on_input import PlanAddOnInput
     from .plan_status_enum import PlanStatusEnum
@@ -36,6 +37,8 @@ class CreatePlanRequest(BaseModel):
     add_ons: list[PlanAddOnInput] | None = None
 
     billing: BillingConfig | None | Unset = UNSET
+
+    credit_exhausted_rule: CreditExhaustedRule | None | Unset = UNSET
 
     description: str | None | Unset = UNSET
 

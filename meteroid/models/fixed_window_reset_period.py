@@ -16,4 +16,6 @@ class FixedWindowResetPeriod(BaseModel):
 
     interval: int
 
+    type: t.Literal["FIXED_WINDOW"] = "FIXED_WINDOW"
+
     unit: CalendarUnit

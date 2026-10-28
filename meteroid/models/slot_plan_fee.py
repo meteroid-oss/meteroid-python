@@ -18,6 +18,8 @@ class SlotPlanFee(BaseModel):
 
     slot_unit_name: str
 
+    type: t.Literal["SLOT"] = "SLOT"
+
     minimum_count: int | None | Unset = UNSET
 
     quota: int | None | Unset = UNSET

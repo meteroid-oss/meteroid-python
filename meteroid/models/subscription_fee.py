@@ -5,6 +5,7 @@ import typing as t
 
 from ..serialization import Discriminator, UnknownVariant
 from .capacity_fee import CapacityFee
+from .credit_fee import CreditFee
 from .one_time_fee import OneTimeFee
 from .rate_fee import RateFee
 from .recurring_fee import RecurringFee
@@ -18,6 +19,7 @@ SubscriptionFee: t.TypeAlias = t.Annotated[
     | CapacityFee
     | SlotFee
     | UsageFee
+    | CreditFee
     | UnknownVariant,
     Discriminator(
         "type",
@@ -28,6 +30,7 @@ SubscriptionFee: t.TypeAlias = t.Annotated[
             "CAPACITY": CapacityFee,
             "SLOT": SlotFee,
             "USAGE": UsageFee,
+            "CREDIT": CreditFee,
         },
     ),
 ]

@@ -14,4 +14,6 @@ if t.TYPE_CHECKING:
 class ConfigResolvedEntitlementValue(BaseModel):
     """The `ConfigResolvedEntitlementValue` object."""
 
+    type: t.Literal["CONFIG"] = "CONFIG"
+
     value: ConfigValue

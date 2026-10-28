@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import dataclasses
+import typing as t
 
 from ..serialization import BaseModel
 
@@ -13,3 +14,5 @@ class FixedDiscount(BaseModel):
     amount: str
 
     currency: str
+
+    type: t.Literal["FIXED"] = "FIXED"

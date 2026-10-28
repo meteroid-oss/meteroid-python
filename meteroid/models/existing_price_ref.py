@@ -15,3 +15,5 @@ class ExistingPriceRef(BaseModel):
     """The `ExistingPriceRef` object."""
 
     id: PriceId
+
+    type: t.Literal["EXISTING"] = "EXISTING"

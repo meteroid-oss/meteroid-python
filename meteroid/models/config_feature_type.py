@@ -14,6 +14,8 @@ if t.TYPE_CHECKING:
 class ConfigFeatureType(BaseModel):
     """A static, typed configuration value. No metric — resolved synchronously."""
 
+    type: t.Literal["CONFIG"] = "CONFIG"
+
     value_type: ConfigValueType
     """The feature's value type, fixed at creation."""
 

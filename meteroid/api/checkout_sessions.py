@@ -112,6 +112,7 @@ class AsyncCheckoutSessions(ApiBaseAsync):
         :param auto_advance_invoices: If false, invoices will stay in Draft until manually reviewed and finalized. Default is true.
         :param cancel_url: Absolute http(s) URL offered to the customer to leave the checkout without paying.
         :param charge_automatically: Automatically try to charge the customer's configured payment method on finalize. Default is true.
+        :param coupon_code: Code of the coupon to apply, used only when `coupon_ids` is empty. It names the coupon with exactly that code, else the only live coupon equal to it ignoring the case of ASCII letters. An unknown or ambiguous code is refused with 400. If the code no longer names a usable coupon when the customer pays, the payment is refused and nothing is charged.
         :param customer_id: Customer ID or alias
         :param expires_in_hours: Session expiry time in hours. Default is 1 hour for self-serve checkout.
         :param success_url: Absolute http(s) URL the customer is sent to after a successful checkout. `checkout_session_id` is appended as a query parameter. Without it the customer stays on the hosted confirmation page."""
@@ -305,6 +306,7 @@ class CheckoutSessions(ApiBaseSync):
         :param auto_advance_invoices: If false, invoices will stay in Draft until manually reviewed and finalized. Default is true.
         :param cancel_url: Absolute http(s) URL offered to the customer to leave the checkout without paying.
         :param charge_automatically: Automatically try to charge the customer's configured payment method on finalize. Default is true.
+        :param coupon_code: Code of the coupon to apply, used only when `coupon_ids` is empty. It names the coupon with exactly that code, else the only live coupon equal to it ignoring the case of ASCII letters. An unknown or ambiguous code is refused with 400. If the code no longer names a usable coupon when the customer pays, the payment is refused and nothing is charged.
         :param customer_id: Customer ID or alias
         :param expires_in_hours: Session expiry time in hours. Default is 1 hour for self-serve checkout.
         :param success_url: Absolute http(s) URL the customer is sent to after a successful checkout. `checkout_session_id` is appended as a query parameter. Without it the customer stays on the hosted confirmation page."""

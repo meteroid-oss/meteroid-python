@@ -26,3 +26,11 @@ class UpdateMetricRequest(BaseModel):
     segmentation_matrix: MetricSegmentationMatrix | None | Unset = UNSET
 
     unit_conversion: UnitConversion | None | Unset = UNSET
+
+    unit_plural: str | None | Unset = UNSET
+    """What several units of the metric are called, e.g. `tokens`. See `unit_singular`."""
+
+    unit_singular: str | None | Unset = UNSET
+    """What one unit of the metric is called, e.g. `token`. Send `unit_singular` and
+    `unit_plural` together; omit both to leave the label unchanged, or send both as empty
+    strings to remove it. Trimmed; at most 32 characters."""

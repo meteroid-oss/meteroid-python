@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import dataclasses
+import typing as t
 from decimal import Decimal
 
 from ..serialization import BaseModel
@@ -12,6 +13,8 @@ class SlotFee(BaseModel):
     """The `SlotFee` object."""
 
     initial_slots: int
+
+    type: t.Literal["SLOT"] = "SLOT"
 
     unit: str
 

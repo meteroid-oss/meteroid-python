@@ -20,3 +20,5 @@ class RecurringFee(BaseModel):
     quantity: int
 
     rate: Decimal
+
+    type: t.Literal["RECURRING"] = "RECURRING"

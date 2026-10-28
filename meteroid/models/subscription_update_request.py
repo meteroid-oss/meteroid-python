@@ -8,6 +8,7 @@ from ..serialization import UNSET, BaseModel, Unset
 
 if t.TYPE_CHECKING:
     from .payment_methods_config import PaymentMethodsConfig
+    from .usage_filter import UsageFilter
 
 
 @dataclasses.dataclass(kw_only=True)
@@ -34,3 +35,5 @@ class SubscriptionUpdateRequest(BaseModel):
 
     purchase_order: str | None | Unset = UNSET
     """Purchase order number"""
+
+    usage_filter: UsageFilter | None | Unset = UNSET

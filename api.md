@@ -10,7 +10,7 @@ A list method returns its first page, such as a `AddOnsListPage`: a subclass of 
 model (`AddOnListResponse`) with the paging members `items`, `has_next_page()`, `get_next_page()`,
 `iter_pages()` and `body`, which iterates every item. The page classes are in `meteroid.api`.
 
-[Add ons](#add-ons) · [Add ons entitlements](#add-ons-entitlements) · [Batch jobs](#batch-jobs) · [Checkout sessions](#checkout-sessions) · [Connect](#connect) · [Coupons](#coupons) · [Credit notes](#credit-notes) · [Custom properties](#custom-properties) · [Customers](#customers) · [Entitlements](#entitlements) · [Events](#events) · [Features](#features) · [Invoices](#invoices) · [Metrics](#metrics) · [Oauth](#oauth) · [Oauth apps](#oauth-apps) · [Plans](#plans) · [Plans versions](#plans-versions) · [Product families](#product-families) · [Products](#products) · [Products entitlements](#products-entitlements) · [Subscriptions](#subscriptions) · [Usage](#usage) · [Webhook endpoints](#webhook-endpoints) · [Webhook endpoints endpoints](#webhook-endpoints-endpoints)
+[Add ons](#add-ons) · [Add ons entitlements](#add-ons-entitlements) · [Batch jobs](#batch-jobs) · [Budgets](#budgets) · [Checkout sessions](#checkout-sessions) · [Checks](#checks) · [Connect](#connect) · [Coupons](#coupons) · [Credit notes](#credit-notes) · [Credit units](#credit-units) · [Credit units prices](#credit-units-prices) · [Credits](#credits) · [Credits grants](#credits-grants) · [Credits wallets](#credits-wallets) · [Custom properties](#custom-properties) · [Customers](#customers) · [Entitlements](#entitlements) · [Events](#events) · [Features](#features) · [Invoices](#invoices) · [Metrics](#metrics) · [Oauth](#oauth) · [Oauth apps](#oauth-apps) · [Plans](#plans) · [Plans versions](#plans-versions) · [Product families](#product-families) · [Products](#products) · [Products entitlements](#products-entitlements) · [Subscriptions](#subscriptions) · [Usage](#usage) · [Usage customer](#usage-customer) · [Usage costs](#usage-costs) · [Usage costs customer](#usage-costs-customer) · [Usage costs subscription](#usage-costs-subscription) · [Webhook endpoints](#webhook-endpoints) · [Webhook endpoints endpoints](#webhook-endpoints-endpoints)
 
 ## Add ons
 
@@ -44,6 +44,17 @@ model (`AddOnListResponse`) with the paging members `items`, `has_next_page()`, 
 | `client.batch_jobs.retrieve(batch_job_id: str) -> BatchJobDetailResponse` | `GET /api/v1/batch-jobs/{batch_job_id}` | [`BatchJobDetailResponse`](meteroid/models/batch_job_detail_response.py) |
 | `client.batch_jobs.list_failures(batch_job_id: str, *, chunk_id=..., limit=..., offset=...) -> BatchJobsListFailuresPage` | `GET /api/v1/batch-jobs/{batch_job_id}/failures` | [`BatchJobFailuresResponse`](meteroid/models/batch_job_failures_response.py) pages of [`BatchJobItemFailureResponse`](meteroid/models/batch_job_item_failure_response.py) |
 
+## Budgets
+
+[`client.budgets`](meteroid/api/budgets.py)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.budgets.list(id_or_alias: str, *, include_archived=..., page=..., per_page=...) -> BudgetsListPage` | `GET /api/v1/customers/{id_or_alias}/budgets` | [`BudgetListResponse`](meteroid/models/budget_list_response.py) pages of [`Budget`](meteroid/models/budget.py) |
+| `client.budgets.create(id_or_alias: str, *, amount: int, idempotency_key: str, behavior=..., credit_unit=..., currency=..., subscription_id=..., thresholds=...) -> Budget` | `POST /api/v1/customers/{id_or_alias}/budgets` | [`Budget`](meteroid/models/budget.py) |
+| `client.budgets.update(id_or_alias: str, budget_id: str, *, expected_version: int, idempotency_key: str, amount=..., behavior=..., thresholds=...) -> Budget` | `PATCH /api/v1/customers/{id_or_alias}/budgets/{budget_id}` | [`Budget`](meteroid/models/budget.py) |
+| `client.budgets.archive(id_or_alias: str, budget_id: str, *, idempotency_key: str) -> Budget` | `POST /api/v1/customers/{id_or_alias}/budgets/{budget_id}/archive` | [`Budget`](meteroid/models/budget.py) |
+
 ## Checkout sessions
 
 [`client.checkout_sessions`](meteroid/api/checkout_sessions.py)
@@ -55,6 +66,14 @@ model (`AddOnListResponse`) with the paging members `items`, `has_next_page()`, 
 | `client.checkout_sessions.retrieve(id: str) -> GetCheckoutSessionResponse` | `GET /api/v1/checkout-sessions/{id}` | [`GetCheckoutSessionResponse`](meteroid/models/get_checkout_session_response.py) |
 | `client.checkout_sessions.cancel(id: str) -> CancelCheckoutSessionResponse` | `POST /api/v1/checkout-sessions/{id}/cancel` | [`CancelCheckoutSessionResponse`](meteroid/models/cancel_checkout_session_response.py) |
 
+## Checks
+
+[`client.checks`](meteroid/api/checks.py)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.checks.check_entitlement(id_or_alias: str, feature_id_or_code: str, *, requested=..., subscription_id=..., group=...) -> EntitlementCheck` | `GET /api/v1/customers/{id_or_alias}/entitlements/{feature_id_or_code}/check` | [`EntitlementCheck`](meteroid/models/entitlement_check.py) |
+
 ## Connect
 
 [`client.connect`](meteroid/api/connect.py)
@@ -62,7 +81,7 @@ model (`AddOnListResponse`) with the paging members `items`, `has_next_page()`, 
 | Method | Request | Returns |
 | --- | --- | --- |
 | `client.connect.list_connected_accounts() -> ConnectedAccountsResponse` | `GET /api/v1/connected-accounts` | [`ConnectedAccountsResponse`](meteroid/models/connected_accounts_response.py) |
-| `client.connect.create_connected_account(*, connected_organization_id: UUID, connection_type=..., metadata=..., platform_customer_id=...) -> ConnectedAccount` | `POST /api/v1/connected-accounts` | [`ConnectedAccount`](meteroid/models/connected_account.py) |
+| `client.connect.create_connected_account(*, email: str, organization_name: str, country=..., metadata=..., mode=..., redirect_url=...) -> CreateConnectedAccountResponse` | `POST /api/v1/connected-accounts` | [`CreateConnectedAccountResponse`](meteroid/models/create_connected_account_response.py) |
 | `client.connect.retrieve_connected_account(id: str) -> ConnectedAccount` | `GET /api/v1/connected-accounts/{id}` | [`ConnectedAccount`](meteroid/models/connected_account.py) |
 | `client.connect.disconnect_account(id: str) -> None` | `DELETE /api/v1/connected-accounts/{id}` | nothing |
 | `client.connect.create_onboarding_link(id: str, *, redirect_url: str) -> OnboardingLinkResponse` | `POST /api/v1/connected-accounts/{id}/onboarding` | [`OnboardingLinkResponse`](meteroid/models/onboarding_link_response.py) |
@@ -93,6 +112,55 @@ model (`AddOnListResponse`) with the paging members `items`, `has_next_page()`, 
 | `client.credit_notes.update_custom_properties(credit_note_id: str, *, custom_properties: t.Any) -> CreditNote` | `PATCH /api/v1/credit-notes/{credit_note_id}/custom-properties` | [`CreditNote`](meteroid/models/credit_note.py) |
 | `client.credit_notes.download(credit_note_id: str) -> bytes` | `GET /api/v1/credit-notes/{credit_note_id}/download` | bytes |
 | `client.credit_notes.download_xml(credit_note_id: str) -> bytes` | `GET /api/v1/credit-notes/{credit_note_id}/xml` | bytes |
+
+## Credit units
+
+[`client.credit_units`](meteroid/api/credit_units.py)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.credit_units.list(*, include_archived=...) -> CreditUnitListResponse` | `GET /api/v1/credit-units` | [`CreditUnitListResponse`](meteroid/models/credit_unit_list_response.py) |
+| `client.credit_units.create(*, code: str, name: str, plural_name: str, precision: int, symbol=...) -> CreditUnit` | `POST /api/v1/credit-units` | [`CreditUnit`](meteroid/models/credit_unit.py) |
+| `client.credit_units.retrieve(id: str) -> CreditUnit` | `GET /api/v1/credit-units/{id}` | [`CreditUnit`](meteroid/models/credit_unit.py) |
+| `client.credit_units.update(id: str, *, archived=..., name=..., plural_name=..., product_id=..., symbol=...) -> CreditUnit` | `PATCH /api/v1/credit-units/{id}` | [`CreditUnit`](meteroid/models/credit_unit.py) |
+
+### Credit units prices
+
+[`client.credit_units.prices`](meteroid/api/credit_units_prices.py)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.credit_units.prices.list(id: str, *, include_archived=...) -> CreditUnitPriceListResponse` | `GET /api/v1/credit-units/{id}/prices` | [`CreditUnitPriceListResponse`](meteroid/models/credit_unit_price_list_response.py) |
+| `client.credit_units.prices.update(id: str, currency: str, *, unit_price: str) -> CreditUnitPrice` | `PUT /api/v1/credit-units/{id}/prices/{currency}` | [`CreditUnitPrice`](meteroid/models/credit_unit_price.py) |
+| `client.credit_units.prices.archive(id: str, currency: str) -> CreditUnitPrice` | `DELETE /api/v1/credit-units/{id}/prices/{currency}` | [`CreditUnitPrice`](meteroid/models/credit_unit_price.py) |
+
+## Credits
+
+[`client.credits`](meteroid/api/credits.py)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.credits.list_customer_credit_ledger(id_or_alias: str, *, currency=..., credit_unit=..., page=..., per_page=...) -> CreditsListCustomerCreditLedgerPage` | `GET /api/v1/customers/{id_or_alias}/credit-ledger` | [`LedgerListResponse`](meteroid/models/ledger_list_response.py) pages of [`LedgerEntry`](meteroid/models/ledger_entry.py) |
+| `client.credits.create_customer_top_up(id_or_alias: str, *, amount: int, idempotency_key: str, collection=..., credit_unit=..., currency=..., expires_at=..., payment_method_id=..., unit_price=...) -> TopUpResponse` | `POST /api/v1/customers/{id_or_alias}/top-ups` | [`TopUpResponse`](meteroid/models/top_up_response.py) |
+
+### Credits grants
+
+[`client.credits.grants`](meteroid/api/credits_grants.py)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.credits.grants.list(id_or_alias: str, *, currency=..., credit_unit=..., status=..., subscription_id=..., usable_by_subscription_id=..., page=..., per_page=...) -> CreditsGrantsListPage` | `GET /api/v1/customers/{id_or_alias}/credit-grants` | [`CreditGrantListResponse`](meteroid/models/credit_grant_list_response.py) pages of [`CreditGrant`](meteroid/models/credit_grant.py) |
+| `client.credits.grants.create(id_or_alias: str, *, amount: int, type: CreditGrantType, idempotency_key: str, applicable_product_ids=..., applies_to=..., cost=..., credit_unit=..., currency=..., expires_at=..., priority=..., reason=..., reference=..., subscription_id=...) -> CreditGrant` | `POST /api/v1/customers/{id_or_alias}/credit-grants` | [`CreditGrant`](meteroid/models/credit_grant.py) |
+
+### Credits wallets
+
+[`client.credits.wallets`](meteroid/api/credits_wallets.py)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.credits.wallets.list(id_or_alias: str, *, subscription_id=...) -> WalletListResponse` | `GET /api/v1/customers/{id_or_alias}/wallets` | [`WalletListResponse`](meteroid/models/wallet_list_response.py) |
+| `client.credits.wallets.check(id_or_alias: str, *, currency=..., credit_unit=..., product_id=..., subscription_id=...) -> WalletCheck` | `GET /api/v1/customers/{id_or_alias}/wallets/check` | [`WalletCheck`](meteroid/models/wallet_check.py) |
+| `client.credits.wallets.update(id_or_alias: str, currency: str, *, idempotency_key: str, auto_top_up=..., low_balance_thresholds=..., unit_price=..., usage_at_zero=...) -> Wallet` | `PATCH /api/v1/customers/{id_or_alias}/wallets/{currency}` | [`Wallet`](meteroid/models/wallet.py) |
 
 ## Custom properties
 
@@ -173,9 +241,9 @@ model (`AddOnListResponse`) with the paging members `items`, `has_next_page()`, 
 | Method | Request | Returns |
 | --- | --- | --- |
 | `client.metrics.list(*, product_family_id=..., search=..., order_by=..., page=..., per_page=...) -> MetricsListPage` | `GET /api/v1/metrics` | [`MetricListResponse`](meteroid/models/metric_list_response.py) pages of [`MetricSummary`](meteroid/models/metric_summary.py) |
-| `client.metrics.create(*, aggregation_type: BillingMetricAggregateEnum, code: str, name: str, product_family_id: ProductFamilyId, aggregation_key=..., description=..., filters=..., product_id=..., segmentation_matrix=..., unit_conversion=..., usage_group_key=...) -> Metric` | `POST /api/v1/metrics` | [`Metric`](meteroid/models/metric.py) |
+| `client.metrics.create(*, aggregation_type: BillingMetricAggregateEnum, code: str, name: str, product_family_id: ProductFamilyId, aggregation_key=..., description=..., filters=..., product_id=..., segmentation_matrix=..., unit_conversion=..., unit_plural=..., unit_singular=..., usage_group_key=...) -> Metric` | `POST /api/v1/metrics` | [`Metric`](meteroid/models/metric.py) |
 | `client.metrics.retrieve(metric_id: str) -> Metric` | `GET /api/v1/metrics/{metric_id}` | [`Metric`](meteroid/models/metric.py) |
-| `client.metrics.update(metric_id: str, *, description=..., filters=..., name=..., segmentation_matrix=..., unit_conversion=...) -> Metric` | `PATCH /api/v1/metrics/{metric_id}` | [`Metric`](meteroid/models/metric.py) |
+| `client.metrics.update(metric_id: str, *, description=..., filters=..., name=..., segmentation_matrix=..., unit_conversion=..., unit_plural=..., unit_singular=...) -> Metric` | `PATCH /api/v1/metrics/{metric_id}` | [`Metric`](meteroid/models/metric.py) |
 | `client.metrics.archive(metric_id: str) -> None` | `POST /api/v1/metrics/{metric_id}/archive` | nothing |
 | `client.metrics.unarchive(metric_id: str) -> None` | `POST /api/v1/metrics/{metric_id}/unarchive` | nothing |
 
@@ -210,9 +278,9 @@ model (`AddOnListResponse`) with the paging members `items`, `has_next_page()`, 
 | `client.plans.list_plan_version_entitlements(plan_version_id: str) -> ResolvedEntitlementListResponse` | `GET /api/v1/plan-versions/{plan_version_id}/entitlements` | [`ResolvedEntitlementListResponse`](meteroid/models/resolved_entitlement_list_response.py) |
 | `client.plans.create_plan_version_entitlement(plan_version_id: str, *, entitlements: list[EntitlementSpecRequest]) -> EntitlementListResponse` | `POST /api/v1/plan-versions/{plan_version_id}/entitlements` | [`EntitlementListResponse`](meteroid/models/entitlement_list_response.py) |
 | `client.plans.list(*, product_family_id=..., search=..., status=..., plan_type=..., order_by=..., page=..., per_page=...) -> PlansListPage` | `GET /api/v1/plans` | [`PlanListResponse`](meteroid/models/plan_list_response.py) pages of [`Plan`](meteroid/models/plan.py) |
-| `client.plans.create(*, components: list[PriceComponentInput], currency: str, name: str, plan_type: PlanTypeEnum, product_family_id: ProductFamilyId, status: PlanStatusEnum, add_ons=..., billing=..., description=..., entitlements=..., self_service_rank=..., tax_inclusive=..., trial=...) -> Plan` | `POST /api/v1/plans` | [`Plan`](meteroid/models/plan.py) |
+| `client.plans.create(*, components: list[PriceComponentInput], currency: str, name: str, plan_type: PlanTypeEnum, product_family_id: ProductFamilyId, status: PlanStatusEnum, add_ons=..., billing=..., credit_exhausted_rule=..., description=..., entitlements=..., self_service_rank=..., tax_inclusive=..., trial=...) -> Plan` | `POST /api/v1/plans` | [`Plan`](meteroid/models/plan.py) |
 | `client.plans.retrieve(plan_id: str, *, version=...) -> Plan` | `GET /api/v1/plans/{plan_id}` | [`Plan`](meteroid/models/plan.py) |
-| `client.plans.replace(plan_id: str, *, components: list[PriceComponentInput], currency: str, name: str, add_ons=..., billing=..., description=..., entitlements=..., minimum_commitment=..., status=..., tax_inclusive=..., trial=...) -> Plan` | `PUT /api/v1/plans/{plan_id}` | [`Plan`](meteroid/models/plan.py) |
+| `client.plans.replace(plan_id: str, *, components: list[PriceComponentInput], currency: str, name: str, add_ons=..., billing=..., credit_exhausted_rule=..., description=..., entitlements=..., minimum_commitment=..., status=..., tax_inclusive=..., trial=...) -> Plan` | `PUT /api/v1/plans/{plan_id}` | [`Plan`](meteroid/models/plan.py) |
 | `client.plans.update(plan_id: str, *, description=..., name=..., self_service_rank=...) -> Plan` | `PATCH /api/v1/plans/{plan_id}` | [`Plan`](meteroid/models/plan.py) |
 | `client.plans.archive(plan_id: str) -> None` | `POST /api/v1/plans/{plan_id}/archive` | nothing |
 | `client.plans.publish(plan_id: str) -> Plan` | `POST /api/v1/plans/{plan_id}/publish` | [`Plan`](meteroid/models/plan.py) |
@@ -267,9 +335,9 @@ model (`AddOnListResponse`) with the paging members `items`, `has_next_page()`, 
 | Method | Request | Returns |
 | --- | --- | --- |
 | `client.subscriptions.list(*, customer_id=..., plan_id=..., statuses=..., order_by=..., page=..., per_page=...) -> SubscriptionsListPage` | `GET /api/v1/subscriptions` | [`SubscriptionListResponse`](meteroid/models/subscription_list_response.py) pages of [`Subscription`](meteroid/models/subscription.py) |
-| `client.subscriptions.create(*, activation_condition: SubscriptionActivationConditionEnum, customer_id_or_alias: str, plan_id: PlanId, start_date: date, add_ons=..., auto_advance_invoices=..., backdate_invoices=..., billing_day_anchor=..., charge_automatically=..., coupon_codes=..., custom_properties=..., end_date=..., invoice_memo=..., net_terms=..., payment_methods_config=..., price_components=..., purchase_order=..., skip_past_invoices=..., trial_days=..., version=...) -> SubscriptionDetails` | `POST /api/v1/subscriptions` | [`SubscriptionDetails`](meteroid/models/subscription_details.py) |
+| `client.subscriptions.create(*, activation_condition: SubscriptionActivationConditionEnum, customer_id_or_alias: str, plan_id: PlanId, start_date: date, add_ons=..., auto_advance_invoices=..., backdate_invoices=..., billing_day_anchor=..., charge_automatically=..., coupon_codes=..., custom_properties=..., end_date=..., invoice_memo=..., net_terms=..., payment_methods_config=..., price_components=..., purchase_order=..., skip_past_invoices=..., trial_days=..., usage_filter=..., version=...) -> SubscriptionDetails` | `POST /api/v1/subscriptions` | [`SubscriptionDetails`](meteroid/models/subscription_details.py) |
 | `client.subscriptions.retrieve(subscription_id: str) -> SubscriptionDetails` | `GET /api/v1/subscriptions/{subscription_id}` | [`SubscriptionDetails`](meteroid/models/subscription_details.py) |
-| `client.subscriptions.update(subscription_id: str, *, auto_advance_invoices=..., charge_automatically=..., custom_properties=..., invoice_memo=..., net_terms=..., payment_methods_config=..., purchase_order=...) -> SubscriptionUpdateResponse` | `PATCH /api/v1/subscriptions/{subscription_id}` | [`SubscriptionUpdateResponse`](meteroid/models/subscription_update_response.py) |
+| `client.subscriptions.update(subscription_id: str, *, auto_advance_invoices=..., charge_automatically=..., custom_properties=..., invoice_memo=..., net_terms=..., payment_methods_config=..., purchase_order=..., usage_filter=...) -> SubscriptionUpdateResponse` | `PATCH /api/v1/subscriptions/{subscription_id}` | [`SubscriptionUpdateResponse`](meteroid/models/subscription_update_response.py) |
 | `client.subscriptions.cancel(subscription_id: str, *, effective_date=..., reason=...) -> CancelSubscriptionResponse` | `POST /api/v1/subscriptions/{subscription_id}/cancel` | [`CancelSubscriptionResponse`](meteroid/models/cancel_subscription_response.py) |
 | `client.subscriptions.list_entitlements(subscription_id: str) -> EffectiveEntitlementListResponse` | `GET /api/v1/subscriptions/{subscription_id}/entitlements` | [`EffectiveEntitlementListResponse`](meteroid/models/effective_entitlement_list_response.py) |
 | `client.subscriptions.retrieve_summary(subscription_id: str) -> Subscription` | `GET /api/v1/subscriptions/{subscription_id}/summary` | [`Subscription`](meteroid/models/subscription.py) |
@@ -280,9 +348,42 @@ model (`AddOnListResponse`) with the paging members `items`, `has_next_page()`, 
 
 | Method | Request | Returns |
 | --- | --- | --- |
-| `client.usage.retrieve_customer(customer_id: str, *, start_date: date, end_date: date, metric_id=...) -> UsageResponse` | `GET /api/v1/usage/customer/{customer_id}` | [`UsageResponse`](meteroid/models/usage_response.py) |
 | `client.usage.retrieve_subscription(subscription_id: str, *, start_date=..., end_date=..., metric_id=...) -> UsageResponse` | `GET /api/v1/usage/subscription/{subscription_id}` | [`UsageResponse`](meteroid/models/usage_response.py) |
 | `client.usage.retrieve_summary(*, start_date: date, end_date: date, metric_id=...) -> UsageResponse` | `GET /api/v1/usage/summary` | [`UsageResponse`](meteroid/models/usage_response.py) |
+
+### Usage customer
+
+[`client.usage.customer`](meteroid/api/usage_customer.py)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.usage.customer.retrieve(customer_id: str, *, start_date: date, end_date: date, metric_id=...) -> UsageResponse` | `GET /api/v1/usage/customer/{customer_id}` | [`UsageResponse`](meteroid/models/usage_response.py) |
+| `client.usage.customer.retrieve_unattributed(customer_id: str, *, start_date=..., end_date=...) -> UnattributedUsageResponse` | `GET /api/v1/usage/customer/{customer_id}/unattributed` | [`UnattributedUsageResponse`](meteroid/models/unattributed_usage_response.py) |
+
+## Usage costs
+
+[`client.usage_costs`](meteroid/api/usage_costs.py)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+
+### Usage costs customer
+
+[`client.usage_costs.customer`](meteroid/api/usage_costs_customer.py)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.usage_costs.customer.list_costs(customer_id: str, *, metric: str, granularity: ListCustomerUsageCostsGranularity, from_: datetime, to: datetime, group_by=...) -> UsageCostListResponse` | `GET /api/v1/usage/customer/{customer_id}/costs` | [`UsageCostListResponse`](meteroid/models/usage_cost_list_response.py) |
+| `client.usage_costs.customer.list_events(customer_id: str, *, metric: str, from_: datetime, to: datetime, cursor=..., limit=...) -> UsageEventListResponse` | `GET /api/v1/usage/customer/{customer_id}/events` | [`UsageEventListResponse`](meteroid/models/usage_event_list_response.py) |
+
+### Usage costs subscription
+
+[`client.usage_costs.subscription`](meteroid/api/usage_costs_subscription.py)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.usage_costs.subscription.list_costs(subscription_id: str, *, metric: str, granularity: ListSubscriptionUsageCostsGranularity, from_: datetime, to: datetime, group_by=...) -> UsageCostListResponse` | `GET /api/v1/usage/subscription/{subscription_id}/costs` | [`UsageCostListResponse`](meteroid/models/usage_cost_list_response.py) |
+| `client.usage_costs.subscription.list_events(subscription_id: str, *, metric: str, from_: datetime, to: datetime, cursor=..., limit=...) -> UsageEventListResponse` | `GET /api/v1/usage/subscription/{subscription_id}/events` | [`UsageEventListResponse`](meteroid/models/usage_event_list_response.py) |
 
 ## Webhook endpoints
 

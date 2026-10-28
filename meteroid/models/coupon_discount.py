@@ -4,16 +4,18 @@ from __future__ import annotations
 import typing as t
 
 from ..serialization import Discriminator, UnknownVariant
+from .credit_discount import CreditDiscount
 from .fixed_discount import FixedDiscount
 from .percentage_discount import PercentageDiscount
 
 CouponDiscount: t.TypeAlias = t.Annotated[
-    PercentageDiscount | FixedDiscount | UnknownVariant,
+    PercentageDiscount | FixedDiscount | CreditDiscount | UnknownVariant,
     Discriminator(
         "type",
         {
             "PERCENTAGE": PercentageDiscount,
             "FIXED": FixedDiscount,
+            "CREDIT": CreditDiscount,
         },
     ),
 ]

@@ -13,9 +13,10 @@ class ProductFeeTypeEnum(StrEnum):
     USAGE = "USAGE"
     EXTRA_RECURRING = "EXTRA_RECURRING"
     ONE_TIME = "ONE_TIME"
+    CREDIT = "CREDIT"
 
 
 ProductFeeTypeEnumLiteral: t.TypeAlias = t.Literal[
-    "RATE", "SLOT", "CAPACITY", "USAGE", "EXTRA_RECURRING", "ONE_TIME"
+    "RATE", "SLOT", "CAPACITY", "USAGE", "EXTRA_RECURRING", "ONE_TIME", "CREDIT"
 ]
 """The values of :class:`ProductFeeTypeEnum`, which arguments take as plain strings too."""

@@ -47,4 +47,10 @@ class Metric(BaseModel):
 
     unit_conversion: UnitConversion | None = None
 
+    unit_plural: str | None = None
+    """What several units of the metric are called, e.g. `tokens`."""
+
+    unit_singular: str | None = None
+    """What one unit of the metric is called, e.g. `token`. Set together with `unit_plural`."""
+
     usage_group_key: str | None = None

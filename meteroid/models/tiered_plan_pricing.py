@@ -16,4 +16,6 @@ class TieredPlanPricing(BaseModel):
 
     tiers: list[TierRow]
 
+    type: t.Literal["TIERED"] = "TIERED"
+
     block_size: int | None | Unset = UNSET
