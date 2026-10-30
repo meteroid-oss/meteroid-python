@@ -281,11 +281,26 @@ if t.TYPE_CHECKING:
     from .invoice_status import InvoiceStatus, InvoiceStatusLiteral
     from .invoice_type import InvoiceType, InvoiceTypeLiteral
     from .invoicing_entity_id import InvoicingEntityId
+    from .issue_license_request import IssueLicenseRequest
+    from .issue_license_response import IssueLicenseResponse
+    from .issue_offline_license_request import IssueOfflineLicenseRequest
     from .json_config_value import JsonConfigValue
     from .ledger_entry import LedgerEntry
     from .ledger_entry_id import LedgerEntryId
     from .ledger_entry_type import LedgerEntryType, LedgerEntryTypeLiteral
     from .ledger_list_response import LedgerListResponse
+    from .license import License
+    from .license_activation_code import LicenseActivationCode
+    from .license_id import LicenseId
+    from .license_list_response import LicenseListResponse
+    from .license_signing_key import LicenseSigningKey
+    from .license_signing_key_status import (
+        LicenseSigningKeyStatus,
+        LicenseSigningKeyStatusLiteral,
+    )
+    from .license_signing_keys_response import LicenseSigningKeysResponse
+    from .license_status import LicenseStatus, LicenseStatusLiteral
+    from .licensing_endpoints import LicensingEndpoints
     from .linked_segmentation_matrix import LinkedSegmentationMatrix
     from .list_checkout_sessions_response import ListCheckoutSessionsResponse
     from .list_customer_usage_costs_granularity import (
@@ -332,6 +347,7 @@ if t.TYPE_CHECKING:
     from .o_auth_apps_response import OAuthAppsResponse
     from .o_auth_error_code import OAuthErrorCode, OAuthErrorCodeLiteral
     from .o_auth_error_response import OAuthErrorResponse
+    from .offline_license import OfflineLicense
     from .onboarding_link_response import OnboardingLinkResponse
     from .onboarding_mode import OnboardingMode, OnboardingModeLiteral
     from .one_time_fee import OneTimeFee
@@ -413,6 +429,7 @@ if t.TYPE_CHECKING:
     from .rest_error_response import RestErrorResponse
     from .reversal_kind import ReversalKind, ReversalKindLiteral
     from .revocation_request import RevocationRequest
+    from .revoke_license_request import RevokeLicenseRequest
     from .rotated_secret import RotatedSecret
     from .select_option import SelectOption
     from .shipping_address import ShippingAddress
@@ -829,12 +846,26 @@ _MODULES: dict[str, str] = {
     "InvoiceType": "invoice_type",
     "InvoiceTypeLiteral": "invoice_type",
     "InvoicingEntityId": "invoicing_entity_id",
+    "IssueLicenseRequest": "issue_license_request",
+    "IssueLicenseResponse": "issue_license_response",
+    "IssueOfflineLicenseRequest": "issue_offline_license_request",
     "JsonConfigValue": "json_config_value",
     "LedgerEntry": "ledger_entry",
     "LedgerEntryId": "ledger_entry_id",
     "LedgerEntryType": "ledger_entry_type",
     "LedgerEntryTypeLiteral": "ledger_entry_type",
     "LedgerListResponse": "ledger_list_response",
+    "License": "license",
+    "LicenseActivationCode": "license_activation_code",
+    "LicenseId": "license_id",
+    "LicenseListResponse": "license_list_response",
+    "LicenseSigningKey": "license_signing_key",
+    "LicenseSigningKeyStatus": "license_signing_key_status",
+    "LicenseSigningKeyStatusLiteral": "license_signing_key_status",
+    "LicenseSigningKeysResponse": "license_signing_keys_response",
+    "LicenseStatus": "license_status",
+    "LicenseStatusLiteral": "license_status",
+    "LicensingEndpoints": "licensing_endpoints",
     "LinkedSegmentationMatrix": "linked_segmentation_matrix",
     "ListCheckoutSessionsResponse": "list_checkout_sessions_response",
     "ListCustomerUsageCostsGranularity": "list_customer_usage_costs_granularity",
@@ -876,6 +907,7 @@ _MODULES: dict[str, str] = {
     "OAuthErrorCode": "o_auth_error_code",
     "OAuthErrorCodeLiteral": "o_auth_error_code",
     "OAuthErrorResponse": "o_auth_error_response",
+    "OfflineLicense": "offline_license",
     "OnboardingLinkResponse": "onboarding_link_response",
     "OnboardingMode": "onboarding_mode",
     "OnboardingModeLiteral": "onboarding_mode",
@@ -963,6 +995,7 @@ _MODULES: dict[str, str] = {
     "ReversalKind": "reversal_kind",
     "ReversalKindLiteral": "reversal_kind",
     "RevocationRequest": "revocation_request",
+    "RevokeLicenseRequest": "revoke_license_request",
     "RotatedSecret": "rotated_secret",
     "SelectOption": "select_option",
     "ShippingAddress": "shipping_address",
@@ -1385,12 +1418,26 @@ __all__ = [
     "InvoiceType",
     "InvoiceTypeLiteral",
     "InvoicingEntityId",
+    "IssueLicenseRequest",
+    "IssueLicenseResponse",
+    "IssueOfflineLicenseRequest",
     "JsonConfigValue",
     "LedgerEntry",
     "LedgerEntryId",
     "LedgerEntryType",
     "LedgerEntryTypeLiteral",
     "LedgerListResponse",
+    "License",
+    "LicenseActivationCode",
+    "LicenseId",
+    "LicenseListResponse",
+    "LicenseSigningKey",
+    "LicenseSigningKeyStatus",
+    "LicenseSigningKeyStatusLiteral",
+    "LicenseSigningKeysResponse",
+    "LicenseStatus",
+    "LicenseStatusLiteral",
+    "LicensingEndpoints",
     "LinkedSegmentationMatrix",
     "ListCheckoutSessionsResponse",
     "ListCustomerUsageCostsGranularity",
@@ -1432,6 +1479,7 @@ __all__ = [
     "OAuthErrorCode",
     "OAuthErrorCodeLiteral",
     "OAuthErrorResponse",
+    "OfflineLicense",
     "OnboardingLinkResponse",
     "OnboardingMode",
     "OnboardingModeLiteral",
@@ -1519,6 +1567,7 @@ __all__ = [
     "ReversalKind",
     "ReversalKindLiteral",
     "RevocationRequest",
+    "RevokeLicenseRequest",
     "RotatedSecret",
     "SelectOption",
     "ShippingAddress",

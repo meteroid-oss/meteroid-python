@@ -10,7 +10,7 @@ A list method returns its first page, such as a `AddOnsListPage`: a subclass of 
 model (`AddOnListResponse`) with the paging members `items`, `has_next_page()`, `get_next_page()`,
 `iter_pages()` and `body`, which iterates every item. The page classes are in `meteroid.api`.
 
-[Add ons](#add-ons) · [Add ons entitlements](#add-ons-entitlements) · [Batch jobs](#batch-jobs) · [Budgets](#budgets) · [Checkout sessions](#checkout-sessions) · [Checks](#checks) · [Connect](#connect) · [Coupons](#coupons) · [Credit notes](#credit-notes) · [Credit units](#credit-units) · [Credit units prices](#credit-units-prices) · [Credits](#credits) · [Credits grants](#credits-grants) · [Credits wallets](#credits-wallets) · [Custom properties](#custom-properties) · [Customers](#customers) · [Entitlements](#entitlements) · [Events](#events) · [Features](#features) · [Invoices](#invoices) · [Metrics](#metrics) · [Oauth](#oauth) · [Oauth apps](#oauth-apps) · [Plans](#plans) · [Plans versions](#plans-versions) · [Product families](#product-families) · [Products](#products) · [Products entitlements](#products-entitlements) · [Subscriptions](#subscriptions) · [Usage](#usage) · [Usage customer](#usage-customer) · [Usage costs](#usage-costs) · [Usage costs customer](#usage-costs-customer) · [Usage costs subscription](#usage-costs-subscription) · [Webhook endpoints](#webhook-endpoints) · [Webhook endpoints endpoints](#webhook-endpoints-endpoints)
+[Add ons](#add-ons) · [Add ons entitlements](#add-ons-entitlements) · [Batch jobs](#batch-jobs) · [Budgets](#budgets) · [Checkout sessions](#checkout-sessions) · [Checks](#checks) · [Connect](#connect) · [Coupons](#coupons) · [Credit notes](#credit-notes) · [Credit units](#credit-units) · [Credit units prices](#credit-units-prices) · [Credits](#credits) · [Credits grants](#credits-grants) · [Credits wallets](#credits-wallets) · [Custom properties](#custom-properties) · [Customers](#customers) · [Entitlements](#entitlements) · [Events](#events) · [Features](#features) · [Invoices](#invoices) · [Licenses](#licenses) · [Metrics](#metrics) · [Oauth](#oauth) · [Oauth apps](#oauth-apps) · [Plans](#plans) · [Plans versions](#plans-versions) · [Product families](#product-families) · [Products](#products) · [Products entitlements](#products-entitlements) · [Subscriptions](#subscriptions) · [Usage](#usage) · [Usage customer](#usage-customer) · [Usage costs](#usage-costs) · [Usage costs customer](#usage-costs-customer) · [Usage costs subscription](#usage-costs-subscription) · [Webhook endpoints](#webhook-endpoints) · [Webhook endpoints endpoints](#webhook-endpoints-endpoints)
 
 ## Add ons
 
@@ -233,6 +233,20 @@ model (`AddOnListResponse`) with the paging members `items`, `has_next_page()`, 
 | `client.invoices.download(invoice_id: str) -> bytes` | `GET /api/v1/invoices/{invoice_id}/download` | bytes |
 | `client.invoices.refresh(invoice_id: str) -> Invoice` | `POST /api/v1/invoices/{invoice_id}/refresh` | [`Invoice`](meteroid/models/invoice.py) |
 | `client.invoices.download_xml(invoice_id: str) -> bytes` | `GET /api/v1/invoices/{invoice_id}/xml` | bytes |
+
+## Licenses
+
+[`client.licenses`](meteroid/api/licenses.py)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.licenses.list(*, customer_id=..., subscription_id=..., include_revoked=...) -> LicenseListResponse` | `GET /api/v1/licenses` | [`LicenseListResponse`](meteroid/models/license_list_response.py) |
+| `client.licenses.create(*, customer_id: str, instance_id=..., offline=..., subscription_id=..., validity_days=...) -> IssueLicenseResponse` | `POST /api/v1/licenses` | [`IssueLicenseResponse`](meteroid/models/issue_license_response.py) |
+| `client.licenses.retrieve(license_id: str) -> License` | `GET /api/v1/licenses/{license_id}` | [`License`](meteroid/models/license.py) |
+| `client.licenses.retrieve_activation_code(license_id: str) -> LicenseActivationCode` | `GET /api/v1/licenses/{license_id}/activation-code` | [`LicenseActivationCode`](meteroid/models/license_activation_code.py) |
+| `client.licenses.offline(license_id: str, *, valid_days: int, instance_id=...) -> OfflineLicense` | `POST /api/v1/licenses/{license_id}/offline` | [`OfflineLicense`](meteroid/models/offline_license.py) |
+| `client.licenses.revoke(license_id: str, *, immediately=...) -> License` | `POST /api/v1/licenses/{license_id}/revoke` | [`License`](meteroid/models/license.py) |
+| `client.licenses.list_licensing_signing_keys() -> LicenseSigningKeysResponse` | `GET /api/v1/licensing/signing-keys` | [`LicenseSigningKeysResponse`](meteroid/models/license_signing_keys_response.py) |
 
 ## Metrics
 

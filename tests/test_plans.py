@@ -46,7 +46,7 @@ class PlansTest(unittest.TestCase):
         client, requests = mock(
             200,
             "application/json",
-            '{"data":[{"available_parameters":{},"created_at":"2024-03-15T10:30:45.123+02:00","currency":"TMT","id":"plan_id_25","name":"sample","net_terms":-2147483648,"plan_type":"CUSTOM","price_components":[{"id":"price_component_id_8","name":"sample"}],"product_family":{"id":"product_family_id_2","name":"sample"},"status":"DRAFT","tax_inclusive":false,"version":123456789,"version_id":"plan_version_id_3"}],"pagination_meta":{"page":-123456789,"per_page":-123456789,"total_items":-9007199254740993,"total_pages":123456789}}',
+            '{"data":[{"available_parameters":{},"created_at":"2024-03-15T10:30:45.123+02:00","currency":"TMT","id":"plan_id_25","name":"sample","net_terms":-2147483648,"plan_type":"STANDARD","price_components":[{"id":"price_component_id_2","name":"sample"}],"product_family":{"id":"product_family_id_19","name":"sample"},"status":"ARCHIVED","tax_inclusive":false,"version":-2147483648,"version_id":"plan_version_id_67"}],"pagination_meta":{"page":-123456789,"per_page":-123456789,"total_items":-9007199254740993,"total_pages":123456789}}',
         )
         call(client.plans.list)
         self.assertEqual(requests, ["GET /api/v1/plans"])
@@ -55,7 +55,7 @@ class PlansTest(unittest.TestCase):
         client, requests = mock(
             200,
             "application/json",
-            '{"available_parameters":{},"created_at":"2023-12-31T23:59:59.999-05:30","currency":"MMK","id":"plan_id_40","name":"sample","net_terms":-123456789,"plan_type":"STANDARD","price_components":[{"id":"price_component_id_88","name":"sample"}],"product_family":{"id":"product_family_id_15","name":"sample"},"status":"ACTIVE","tax_inclusive":true,"version":123456789,"version_id":"plan_version_id_79"}',
+            '{"available_parameters":{},"created_at":"2023-12-31T23:59:59.999-05:30","currency":"MMK","id":"plan_id_40","name":"sample","net_terms":2147483647,"plan_type":"STANDARD","price_components":[{"id":"price_component_id_40","name":"sample"}],"product_family":{"id":"product_family_id_5","name":"sample"},"status":"INACTIVE","tax_inclusive":true,"version":-2147483648,"version_id":"plan_version_id_81"}',
         )
         call(
             client.plans.create,
@@ -70,7 +70,7 @@ class PlansTest(unittest.TestCase):
         client, requests = mock(
             200,
             "application/json",
-            '{"available_parameters":{},"created_at":"2023-12-31T23:59:59.999-05:30","currency":"MMK","id":"plan_id_40","name":"sample","net_terms":-123456789,"plan_type":"STANDARD","price_components":[{"id":"price_component_id_88","name":"sample"}],"product_family":{"id":"product_family_id_15","name":"sample"},"status":"ACTIVE","tax_inclusive":true,"version":123456789,"version_id":"plan_version_id_79"}',
+            '{"available_parameters":{},"created_at":"2023-12-31T23:59:59.999-05:30","currency":"MMK","id":"plan_id_40","name":"sample","net_terms":2147483647,"plan_type":"STANDARD","price_components":[{"id":"price_component_id_40","name":"sample"}],"product_family":{"id":"product_family_id_5","name":"sample"},"status":"INACTIVE","tax_inclusive":true,"version":-2147483648,"version_id":"plan_version_id_81"}',
         )
         call(client.plans.retrieve, "plan_id")
         self.assertEqual(requests, ["GET /api/v1/plans/plan_id"])
@@ -79,7 +79,7 @@ class PlansTest(unittest.TestCase):
         client, requests = mock(
             200,
             "application/json",
-            '{"available_parameters":{},"created_at":"2023-12-31T23:59:59.999-05:30","currency":"MMK","id":"plan_id_40","name":"sample","net_terms":-123456789,"plan_type":"STANDARD","price_components":[{"id":"price_component_id_88","name":"sample"}],"product_family":{"id":"product_family_id_15","name":"sample"},"status":"ACTIVE","tax_inclusive":true,"version":123456789,"version_id":"plan_version_id_79"}',
+            '{"available_parameters":{},"created_at":"2023-12-31T23:59:59.999-05:30","currency":"MMK","id":"plan_id_40","name":"sample","net_terms":2147483647,"plan_type":"STANDARD","price_components":[{"id":"price_component_id_40","name":"sample"}],"product_family":{"id":"product_family_id_5","name":"sample"},"status":"INACTIVE","tax_inclusive":true,"version":-2147483648,"version_id":"plan_version_id_81"}',
         )
         call(
             client.plans.replace,
@@ -95,7 +95,7 @@ class PlansTest(unittest.TestCase):
         client, requests = mock(
             200,
             "application/json",
-            '{"available_parameters":{},"created_at":"2023-12-31T23:59:59.999-05:30","currency":"MMK","id":"plan_id_40","name":"sample","net_terms":-123456789,"plan_type":"STANDARD","price_components":[{"id":"price_component_id_88","name":"sample"}],"product_family":{"id":"product_family_id_15","name":"sample"},"status":"ACTIVE","tax_inclusive":true,"version":123456789,"version_id":"plan_version_id_79"}',
+            '{"available_parameters":{},"created_at":"2023-12-31T23:59:59.999-05:30","currency":"MMK","id":"plan_id_40","name":"sample","net_terms":2147483647,"plan_type":"STANDARD","price_components":[{"id":"price_component_id_40","name":"sample"}],"product_family":{"id":"product_family_id_5","name":"sample"},"status":"INACTIVE","tax_inclusive":true,"version":-2147483648,"version_id":"plan_version_id_81"}',
         )
         call(client.plans.update, "plan_id", body=decode(PatchPlanRequest, "{}"))
         self.assertEqual(requests, ["PATCH /api/v1/plans/plan_id"])
@@ -109,7 +109,7 @@ class PlansTest(unittest.TestCase):
         client, requests = mock(
             200,
             "application/json",
-            '{"available_parameters":{},"created_at":"2023-12-31T23:59:59.999-05:30","currency":"MMK","id":"plan_id_40","name":"sample","net_terms":-123456789,"plan_type":"STANDARD","price_components":[{"id":"price_component_id_88","name":"sample"}],"product_family":{"id":"product_family_id_15","name":"sample"},"status":"ACTIVE","tax_inclusive":true,"version":123456789,"version_id":"plan_version_id_79"}',
+            '{"available_parameters":{},"created_at":"2023-12-31T23:59:59.999-05:30","currency":"MMK","id":"plan_id_40","name":"sample","net_terms":2147483647,"plan_type":"STANDARD","price_components":[{"id":"price_component_id_40","name":"sample"}],"product_family":{"id":"product_family_id_5","name":"sample"},"status":"INACTIVE","tax_inclusive":true,"version":-2147483648,"version_id":"plan_version_id_81"}',
         )
         call(client.plans.publish, "plan_id")
         self.assertEqual(requests, ["POST /api/v1/plans/plan_id/publish"])

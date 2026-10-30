@@ -64,6 +64,9 @@ class Plan(BaseModel):
 
     entitlements: list[Entitlement] | None = None
 
+    issues_license: bool | None = None
+    """Subscriptions to this plan are issued a software license automatically."""
+
     minimum_commitment: MinimumCommitment | None = None
 
     period_start_day: int | None = None

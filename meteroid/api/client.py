@@ -113,6 +113,12 @@ if t.TYPE_CHECKING:
         Invoices,
         InvoicesWithRawResponse,
     )
+    from .licenses import (
+        AsyncLicenses,
+        AsyncLicensesWithRawResponse,
+        Licenses,
+        LicensesWithRawResponse,
+    )
     from .metrics import (
         AsyncMetrics,
         AsyncMetricsWithRawResponse,
@@ -433,6 +439,13 @@ class Meteroid:
         return Invoices(self._cfg, self._httpx_client)
 
     @functools.cached_property
+    def licenses(self) -> Licenses:
+        """The licenses API."""
+        from .licenses import Licenses
+
+        return Licenses(self._cfg, self._httpx_client)
+
+    @functools.cached_property
     def metrics(self) -> Metrics:
         """The metrics API."""
         from .metrics import Metrics
@@ -620,6 +633,13 @@ class MeteroidWithRawResponse:
         from .invoices import InvoicesWithRawResponse
 
         return InvoicesWithRawResponse(self._client.invoices)
+
+    @property
+    def licenses(self) -> LicensesWithRawResponse:
+        """The licenses API."""
+        from .licenses import LicensesWithRawResponse
+
+        return LicensesWithRawResponse(self._client.licenses)
 
     @property
     def metrics(self) -> MetricsWithRawResponse:
@@ -911,6 +931,13 @@ class AsyncMeteroid:
         return AsyncInvoices(self._cfg, self._httpx_client)
 
     @functools.cached_property
+    def licenses(self) -> AsyncLicenses:
+        """The licenses API."""
+        from .licenses import AsyncLicenses
+
+        return AsyncLicenses(self._cfg, self._httpx_client)
+
+    @functools.cached_property
     def metrics(self) -> AsyncMetrics:
         """The metrics API."""
         from .metrics import AsyncMetrics
@@ -1098,6 +1125,13 @@ class AsyncMeteroidWithRawResponse:
         from .invoices import AsyncInvoicesWithRawResponse
 
         return AsyncInvoicesWithRawResponse(self._client.invoices)
+
+    @property
+    def licenses(self) -> AsyncLicensesWithRawResponse:
+        """The licenses API."""
+        from .licenses import AsyncLicensesWithRawResponse
+
+        return AsyncLicensesWithRawResponse(self._client.licenses)
 
     @property
     def metrics(self) -> AsyncMetricsWithRawResponse:
