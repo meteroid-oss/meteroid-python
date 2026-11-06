@@ -24,4 +24,4 @@ class CustomerPortalTokenResponse(BaseModel):
     """Base URL of the customer portal"""
 
     token: str
-    """JWT token for portal access"""
+    """Opaque token for portal access"""
