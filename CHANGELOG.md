@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.31.2](https://github.com/meteroid-oss/meteroid-python/compare/v0.31.1...v0.31.2) (2026-11-06)
+
+
+### Features
+
+* **api:** update `GET /api/v1/usage/customer/{customer_id}/costs`, `GET /api/v1/usage/customer/{customer_id}/events`, `GET /api/v1/usage/subscription/{subscription_id}/costs`, `GET /api/v1/usage/subscription/{subscription_id}/events`, `POST webhook:payment.failed` and 5 more ([112944d](https://github.com/meteroid-oss/meteroid-python/commit/112944debd9336e74a1c0158e84c77125d2e170e))
+* **api:** update SDKs to meteroid 0.1.0 ([#19](https://github.com/meteroid-oss/meteroid-python/issues/19)) ([112944d](https://github.com/meteroid-oss/meteroid-python/commit/112944debd9336e74a1c0158e84c77125d2e170e))
+
 ## [0.31.1](https://github.com/meteroid-oss/meteroid-python/compare/v0.31.0...v0.31.1) (2026-10-30)
 
 
