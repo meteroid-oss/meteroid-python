@@ -479,7 +479,8 @@ class AsyncCustomers(ApiBaseAsync):
     ) -> CustomerPortalTokenResponse:
         """Generate a portal token for a customer
 
-        Generates a JWT token that grants access to the customer portal.
+        Generates an opaque token that grants access to the customer portal. A call may return the
+        token of an earlier call with the same scopes, with up to 10% less lifetime: rely on `expires_at`.
         The token can be used to access invoices, payment methods, and other portal features.
 
         :param expires_in_seconds: Token lifetime in seconds. Defaults to 86400 (24 hours). Must be between 60 and 2592000 (30 days).
@@ -989,7 +990,8 @@ class Customers(ApiBaseSync):
     ) -> CustomerPortalTokenResponse:
         """Generate a portal token for a customer
 
-        Generates a JWT token that grants access to the customer portal.
+        Generates an opaque token that grants access to the customer portal. A call may return the
+        token of an earlier call with the same scopes, with up to 10% less lifetime: rely on `expires_at`.
         The token can be used to access invoices, payment methods, and other portal features.
 
         :param expires_in_seconds: Token lifetime in seconds. Defaults to 86400 (24 hours). Must be between 60 and 2592000 (30 days).
