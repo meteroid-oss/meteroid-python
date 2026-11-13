@@ -17,7 +17,8 @@ class IssueLicenseResponse(BaseModel):
     license: License
 
     activation_code: str | None = None
-    """Online: one-time code the customer enters in their installation to activate the license."""
+    """Online: one-time code the customer enters in their installation to activate the license.
+    Ephemeral: the reusable code, e.g. a CI secret."""
 
     offline_license: str | None = None
     """Offline: the signed license (a JWT) to install in the installation."""

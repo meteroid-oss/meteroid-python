@@ -241,7 +241,7 @@ model (`AddOnListResponse`) with the paging members `items`, `has_next_page()`, 
 | Method | Request | Returns |
 | --- | --- | --- |
 | `client.licenses.list(*, customer_id=..., subscription_id=..., include_revoked=...) -> LicenseListResponse` | `GET /api/v1/licenses` | [`LicenseListResponse`](meteroid/models/license_list_response.py) |
-| `client.licenses.create(*, customer_id: str, instance_id=..., offline=..., subscription_id=..., validity_days=...) -> IssueLicenseResponse` | `POST /api/v1/licenses` | [`IssueLicenseResponse`](meteroid/models/issue_license_response.py) |
+| `client.licenses.create(*, customer_id: str, ephemeral_hours=..., instance_id=..., offline=..., subscription_id=..., validity_days=...) -> IssueLicenseResponse` | `POST /api/v1/licenses` | [`IssueLicenseResponse`](meteroid/models/issue_license_response.py) |
 | `client.licenses.retrieve(license_id: str) -> License` | `GET /api/v1/licenses/{license_id}` | [`License`](meteroid/models/license.py) |
 | `client.licenses.retrieve_activation_code(license_id: str) -> LicenseActivationCode` | `GET /api/v1/licenses/{license_id}/activation-code` | [`LicenseActivationCode`](meteroid/models/license_activation_code.py) |
 | `client.licenses.offline(license_id: str, *, valid_days: int, instance_id=...) -> OfflineLicense` | `POST /api/v1/licenses/{license_id}/offline` | [`OfflineLicense`](meteroid/models/offline_license.py) |

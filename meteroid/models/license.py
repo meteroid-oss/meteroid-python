@@ -45,6 +45,9 @@ class License(BaseModel):
     """Lifetime of each license token the installation receives on refresh; for an offline
     license, the lifetime it was issued with."""
 
+    ephemeral_hours: int | None = None
+    """Ephemeral: each activation of the reusable code gets a license of this many hours."""
+
     instance_id: str | None = None
     """The installation the license is bound to, once activated."""
 

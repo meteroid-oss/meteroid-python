@@ -80,6 +80,7 @@ class AsyncLicenses(ApiBaseAsync):
         self,
         *,
         customer_id: str,
+        ephemeral_hours: int | None | Unset = UNSET,
         instance_id: str | None | Unset = UNSET,
         offline: bool | None = None,
         subscription_id: str | None | Unset = UNSET,
@@ -97,6 +98,7 @@ class AsyncLicenses(ApiBaseAsync):
         Offline, it is returned signed at once, for an installation that can't reach the server.
 
         :param customer_id: Customer ID or alias
+        :param ephemeral_hours: Ephemeral, for CI and other short-lived installations: the activation code can be used any number of times, each activation gets a license of this many hours (1 to 24) for the installation activating, and nothing is refreshed. Not with `offline` or `validity_days`.
         :param instance_id: Offline only. The installation's id as it reports it, up to 255 characters without spaces: the license names it (`aud`) and stays bound to it. Without one, the license is not tied to an installation.
         :param offline: Delivers the license at once as a signed offline license, for an installation that can't reach the license server: no activation code, no refresh. Default: false.
         :param subscription_id: Ties the license to this subscription of the customer: it is renewed while the subscription is paid, and carries its plan's entitlements.
@@ -108,6 +110,7 @@ class AsyncLicenses(ApiBaseAsync):
                 json_body=to_json_value(
                     IssueLicenseRequest(
                         customer_id=customer_id,
+                        ephemeral_hours=ephemeral_hours,
                         instance_id=instance_id,
                         offline=offline,
                         subscription_id=subscription_id,
@@ -169,7 +172,7 @@ class AsyncLicenses(ApiBaseAsync):
     ) -> LicenseActivationCode:
         """Get a license's activation code
 
-        Available until the license is activated or revoked."""
+        Available until the license is activated or revoked; for an ephemeral license, until revoked."""
         response = await self._request(
             ApiRequest(
                 method="get",
@@ -370,6 +373,7 @@ class Licenses(ApiBaseSync):
         self,
         *,
         customer_id: str,
+        ephemeral_hours: int | None | Unset = UNSET,
         instance_id: str | None | Unset = UNSET,
         offline: bool | None = None,
         subscription_id: str | None | Unset = UNSET,
@@ -387,6 +391,7 @@ class Licenses(ApiBaseSync):
         Offline, it is returned signed at once, for an installation that can't reach the server.
 
         :param customer_id: Customer ID or alias
+        :param ephemeral_hours: Ephemeral, for CI and other short-lived installations: the activation code can be used any number of times, each activation gets a license of this many hours (1 to 24) for the installation activating, and nothing is refreshed. Not with `offline` or `validity_days`.
         :param instance_id: Offline only. The installation's id as it reports it, up to 255 characters without spaces: the license names it (`aud`) and stays bound to it. Without one, the license is not tied to an installation.
         :param offline: Delivers the license at once as a signed offline license, for an installation that can't reach the license server: no activation code, no refresh. Default: false.
         :param subscription_id: Ties the license to this subscription of the customer: it is renewed while the subscription is paid, and carries its plan's entitlements.
@@ -398,6 +403,7 @@ class Licenses(ApiBaseSync):
                 json_body=to_json_value(
                     IssueLicenseRequest(
                         customer_id=customer_id,
+                        ephemeral_hours=ephemeral_hours,
                         instance_id=instance_id,
                         offline=offline,
                         subscription_id=subscription_id,
@@ -459,7 +465,7 @@ class Licenses(ApiBaseSync):
     ) -> LicenseActivationCode:
         """Get a license's activation code
 
-        Available until the license is activated or revoked."""
+        Available until the license is activated or revoked; for an ephemeral license, until revoked."""
         response = self._request(
             ApiRequest(
                 method="get",
