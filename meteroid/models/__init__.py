@@ -376,6 +376,7 @@ if t.TYPE_CHECKING:
     from .payment_status_enum import PaymentStatusEnum, PaymentStatusEnumLiteral
     from .payment_transaction_id import PaymentTransactionId
     from .payment_type_enum import PaymentTypeEnum, PaymentTypeEnumLiteral
+    from .pending_scheduled_event import PendingScheduledEvent
     from .per_unit_plan_pricing import PerUnitPlanPricing
     from .per_unit_pricing import PerUnitPricing
     from .percentage_discount import PercentageDiscount
@@ -435,6 +436,8 @@ if t.TYPE_CHECKING:
     from .revocation_request import RevocationRequest
     from .revoke_license_request import RevokeLicenseRequest
     from .rotated_secret import RotatedSecret
+    from .scheduled_event_id import ScheduledEventId
+    from .scheduled_event_type import ScheduledEventType, ScheduledEventTypeLiteral
     from .select_option import SelectOption
     from .shipping_address import ShippingAddress
     from .sliding_window_reset_period import SlidingWindowResetPeriod
@@ -941,6 +944,7 @@ _MODULES: dict[str, str] = {
     "PaymentTransactionId": "payment_transaction_id",
     "PaymentTypeEnum": "payment_type_enum",
     "PaymentTypeEnumLiteral": "payment_type_enum",
+    "PendingScheduledEvent": "pending_scheduled_event",
     "PerUnitPlanPricing": "per_unit_plan_pricing",
     "PerUnitPricing": "per_unit_pricing",
     "PercentageDiscount": "percentage_discount",
@@ -1005,6 +1009,9 @@ _MODULES: dict[str, str] = {
     "RevocationRequest": "revocation_request",
     "RevokeLicenseRequest": "revoke_license_request",
     "RotatedSecret": "rotated_secret",
+    "ScheduledEventId": "scheduled_event_id",
+    "ScheduledEventType": "scheduled_event_type",
+    "ScheduledEventTypeLiteral": "scheduled_event_type",
     "SelectOption": "select_option",
     "ShippingAddress": "shipping_address",
     "SlidingWindowResetPeriod": "sliding_window_reset_period",
@@ -1517,6 +1524,7 @@ __all__ = [
     "PaymentTransactionId",
     "PaymentTypeEnum",
     "PaymentTypeEnumLiteral",
+    "PendingScheduledEvent",
     "PerUnitPlanPricing",
     "PerUnitPricing",
     "PercentageDiscount",
@@ -1581,6 +1589,9 @@ __all__ = [
     "RevocationRequest",
     "RevokeLicenseRequest",
     "RotatedSecret",
+    "ScheduledEventId",
+    "ScheduledEventType",
+    "ScheduledEventTypeLiteral",
     "SelectOption",
     "ShippingAddress",
     "SlidingWindowResetPeriod",
