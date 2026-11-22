@@ -50,4 +50,6 @@ class MetricEventData(BaseModel):
     unit_singular: str | None = None
     """What one unit of the metric is called, e.g. `token`."""
 
+    usage_breakdown_key: str | None = None
+
     usage_group_key: str | None = None

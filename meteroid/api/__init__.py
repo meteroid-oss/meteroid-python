@@ -98,6 +98,7 @@ if t.TYPE_CHECKING:
     from .events import AsyncEvents, Events
     from .features import AsyncFeatures, Features
     from .invoices import AsyncInvoices, Invoices
+    from .invoices_payments import AsyncInvoicesPayments, InvoicesPayments
     from .licenses import AsyncLicenses, Licenses
     from .metrics import AsyncMetrics, Metrics
     from .oauth import AsyncOauth, Oauth
@@ -164,6 +165,8 @@ _MODULES: dict[str, str] = {
     "Features": "features",
     "AsyncInvoices": "invoices",
     "Invoices": "invoices",
+    "AsyncInvoicesPayments": "invoices_payments",
+    "InvoicesPayments": "invoices_payments",
     "AsyncLicenses": "licenses",
     "Licenses": "licenses",
     "AsyncMetrics": "metrics",
@@ -320,6 +323,8 @@ __all__ = [
     "Features",
     "AsyncInvoices",
     "Invoices",
+    "AsyncInvoicesPayments",
+    "InvoicesPayments",
     "AsyncLicenses",
     "Licenses",
     "AsyncMetrics",

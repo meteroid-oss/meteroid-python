@@ -4,7 +4,9 @@
 from __future__ import annotations
 
 import builtins
+import functools
 import typing as t
+from datetime import datetime
 
 from .. import models as _models
 from ..models import (
@@ -13,7 +15,9 @@ from ..models import (
     InvoiceCustomPropertiesRequest,
     InvoiceListResponse,
     InvoiceStatus,
+    RecordInvoicePaymentRequest,
     SubscriptionId,
+    Transaction,
 )
 from ..serialization import UNSET, Unset, to_json_value
 from ._pages import (
@@ -32,7 +36,14 @@ from .common import (
     ApiRequest,
     Timeout,
     decode_response,
+    header_value,
     serialize_query_params,
+)
+from .invoices_payments import (
+    AsyncInvoicesPayments,
+    AsyncInvoicesPaymentsWithRawResponse,
+    InvoicesPayments,
+    InvoicesPaymentsWithRawResponse,
 )
 
 
@@ -43,6 +54,11 @@ class AsyncInvoices(ApiBaseAsync):
     def with_raw_response(self) -> AsyncInvoicesWithRawResponse:
         """These methods, returning an :class:`APIResponse` with the status and headers."""
         return AsyncInvoicesWithRawResponse(self)
+
+    @functools.cached_property
+    def payments(self) -> AsyncInvoicesPayments:
+        """The payments API."""
+        return AsyncInvoicesPayments(self._cfg, self._httpx_client)
 
     def list(
         self,
@@ -211,6 +227,93 @@ class AsyncInvoices(ApiBaseAsync):
         )
         return response.content
 
+    async def mark_paid(
+        self,
+        invoice_id: str,
+        *,
+        amount: int,
+        idempotency_key: str,
+        paid_at: datetime | None | Unset = UNSET,
+        reference: str | None | Unset = UNSET,
+        extra_headers: t.Mapping[str, str] | None = None,
+        extra_query: t.Mapping[str, object] | None = None,
+        extra_body: t.Mapping[str, object] | None = None,
+        timeout: Timeout | Unset = UNSET,
+        max_retries: int | None = None,
+    ) -> Transaction:
+        """Mark an invoice as paid
+
+        Record an external payment for the entire remaining balance of a finalized invoice. The amount
+        must match the remaining balance.
+
+        :param amount: The positive amount received, in minor units of the invoice currency (e.g. cents).
+        :param paid_at: When the payment was received, at most a day ahead. Defaults to the current time.
+        :param reference: Reference for the external payment, such as a bank transfer ID."""
+        response = await self._request(
+            ApiRequest(
+                method="post",
+                path="/api/v1/invoices/{invoice_id}/mark-paid",
+                path_params={
+                    "invoice_id": invoice_id,
+                },
+                header_params={
+                    "Idempotency-Key": header_value(idempotency_key),
+                },
+                json_body=to_json_value(
+                    RecordInvoicePaymentRequest(
+                        amount=amount,
+                        paid_at=paid_at,
+                        reference=reference,
+                    ),
+                    RecordInvoicePaymentRequest,
+                ),
+                error_types={
+                    "default": _models.RestErrorResponse,
+                },
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                max_retries=max_retries,
+            )
+        )
+        return decode_response(response, Transaction)
+
+    async def mark_uncollectible(
+        self,
+        invoice_id: str,
+        *,
+        idempotency_key: str,
+        extra_headers: t.Mapping[str, str] | None = None,
+        extra_query: t.Mapping[str, object] | None = None,
+        extra_body: t.Mapping[str, object] | None = None,
+        timeout: Timeout | Unset = UNSET,
+        max_retries: int | None = None,
+    ) -> None:
+        """Mark an invoice as uncollectible
+
+        Transition a finalized invoice to uncollectible and stop its payment reminders."""
+        await self._request(
+            ApiRequest(
+                method="post",
+                path="/api/v1/invoices/{invoice_id}/mark-uncollectible",
+                path_params={
+                    "invoice_id": invoice_id,
+                },
+                header_params={
+                    "Idempotency-Key": header_value(idempotency_key),
+                },
+                error_types={
+                    "default": _models.RestErrorResponse,
+                },
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                max_retries=max_retries,
+            )
+        )
+
     async def refresh(
         self,
         invoice_id: str,
@@ -284,14 +387,24 @@ class AsyncInvoicesWithRawResponse:
     """The methods of :class:`AsyncInvoices`, returning an :class:`APIResponse`."""
 
     def __init__(self, resource: AsyncInvoices) -> None:
+        self._resource = resource
         self.list = async_to_raw_response_wrapper(resource.list)
         self.retrieve = async_to_raw_response_wrapper(resource.retrieve)
         self.update_custom_properties = async_to_raw_response_wrapper(
             resource.update_custom_properties
         )
         self.download = async_to_raw_response_wrapper(resource.download)
+        self.mark_paid = async_to_raw_response_wrapper(resource.mark_paid)
+        self.mark_uncollectible = async_to_raw_response_wrapper(
+            resource.mark_uncollectible
+        )
         self.refresh = async_to_raw_response_wrapper(resource.refresh)
         self.download_xml = async_to_raw_response_wrapper(resource.download_xml)
+
+    @property
+    def payments(self) -> AsyncInvoicesPaymentsWithRawResponse:
+        """The payments API."""
+        return AsyncInvoicesPaymentsWithRawResponse(self._resource.payments)
 
 
 class Invoices(ApiBaseSync):
@@ -301,6 +414,11 @@ class Invoices(ApiBaseSync):
     def with_raw_response(self) -> InvoicesWithRawResponse:
         """These methods, returning an :class:`APIResponse` with the status and headers."""
         return InvoicesWithRawResponse(self)
+
+    @functools.cached_property
+    def payments(self) -> InvoicesPayments:
+        """The payments API."""
+        return InvoicesPayments(self._cfg, self._httpx_client)
 
     def list(
         self,
@@ -469,6 +587,93 @@ class Invoices(ApiBaseSync):
         )
         return response.content
 
+    def mark_paid(
+        self,
+        invoice_id: str,
+        *,
+        amount: int,
+        idempotency_key: str,
+        paid_at: datetime | None | Unset = UNSET,
+        reference: str | None | Unset = UNSET,
+        extra_headers: t.Mapping[str, str] | None = None,
+        extra_query: t.Mapping[str, object] | None = None,
+        extra_body: t.Mapping[str, object] | None = None,
+        timeout: Timeout | Unset = UNSET,
+        max_retries: int | None = None,
+    ) -> Transaction:
+        """Mark an invoice as paid
+
+        Record an external payment for the entire remaining balance of a finalized invoice. The amount
+        must match the remaining balance.
+
+        :param amount: The positive amount received, in minor units of the invoice currency (e.g. cents).
+        :param paid_at: When the payment was received, at most a day ahead. Defaults to the current time.
+        :param reference: Reference for the external payment, such as a bank transfer ID."""
+        response = self._request(
+            ApiRequest(
+                method="post",
+                path="/api/v1/invoices/{invoice_id}/mark-paid",
+                path_params={
+                    "invoice_id": invoice_id,
+                },
+                header_params={
+                    "Idempotency-Key": header_value(idempotency_key),
+                },
+                json_body=to_json_value(
+                    RecordInvoicePaymentRequest(
+                        amount=amount,
+                        paid_at=paid_at,
+                        reference=reference,
+                    ),
+                    RecordInvoicePaymentRequest,
+                ),
+                error_types={
+                    "default": _models.RestErrorResponse,
+                },
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                max_retries=max_retries,
+            )
+        )
+        return decode_response(response, Transaction)
+
+    def mark_uncollectible(
+        self,
+        invoice_id: str,
+        *,
+        idempotency_key: str,
+        extra_headers: t.Mapping[str, str] | None = None,
+        extra_query: t.Mapping[str, object] | None = None,
+        extra_body: t.Mapping[str, object] | None = None,
+        timeout: Timeout | Unset = UNSET,
+        max_retries: int | None = None,
+    ) -> None:
+        """Mark an invoice as uncollectible
+
+        Transition a finalized invoice to uncollectible and stop its payment reminders."""
+        self._request(
+            ApiRequest(
+                method="post",
+                path="/api/v1/invoices/{invoice_id}/mark-uncollectible",
+                path_params={
+                    "invoice_id": invoice_id,
+                },
+                header_params={
+                    "Idempotency-Key": header_value(idempotency_key),
+                },
+                error_types={
+                    "default": _models.RestErrorResponse,
+                },
+                extra_headers=extra_headers,
+                extra_query=extra_query,
+                extra_body=extra_body,
+                timeout=timeout,
+                max_retries=max_retries,
+            )
+        )
+
     def refresh(
         self,
         invoice_id: str,
@@ -542,11 +747,19 @@ class InvoicesWithRawResponse:
     """The methods of :class:`Invoices`, returning an :class:`APIResponse`."""
 
     def __init__(self, resource: Invoices) -> None:
+        self._resource = resource
         self.list = to_raw_response_wrapper(resource.list)
         self.retrieve = to_raw_response_wrapper(resource.retrieve)
         self.update_custom_properties = to_raw_response_wrapper(
             resource.update_custom_properties
         )
         self.download = to_raw_response_wrapper(resource.download)
+        self.mark_paid = to_raw_response_wrapper(resource.mark_paid)
+        self.mark_uncollectible = to_raw_response_wrapper(resource.mark_uncollectible)
         self.refresh = to_raw_response_wrapper(resource.refresh)
         self.download_xml = to_raw_response_wrapper(resource.download_xml)
+
+    @property
+    def payments(self) -> InvoicesPaymentsWithRawResponse:
+        """The payments API."""
+        return InvoicesPaymentsWithRawResponse(self._resource.payments)

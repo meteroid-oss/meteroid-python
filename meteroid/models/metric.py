@@ -53,4 +53,10 @@ class Metric(BaseModel):
     unit_singular: str | None = None
     """What one unit of the metric is called, e.g. `token`. Set together with `unit_plural`."""
 
+    usage_breakdown_key: str | None = None
+    """Event property, e.g. `project_id`, that breaks each invoice line down by value. The line is
+    still priced on its total usage, and each value shows its quantity and share of the amount."""
+
     usage_group_key: str | None = None
+    """Event property, e.g. `cluster_id`, whose values are billed as separate invoice lines, each
+    priced on its own usage."""

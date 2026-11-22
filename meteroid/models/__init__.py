@@ -273,6 +273,8 @@ if t.TYPE_CHECKING:
     from .invoice_id import InvoiceId
     from .invoice_line_credit_unit import InvoiceLineCreditUnit
     from .invoice_line_item import InvoiceLineItem
+    from .invoice_line_usage_breakdown import InvoiceLineUsageBreakdown
+    from .invoice_line_usage_breakdown_item import InvoiceLineUsageBreakdownItem
     from .invoice_list_response import InvoiceListResponse
     from .invoice_payment_status import (
         InvoicePaymentStatus,
@@ -418,6 +420,7 @@ if t.TYPE_CHECKING:
     from .rate_fee_structure import RateFeeStructure
     from .rate_plan_fee import RatePlanFee
     from .rate_pricing import RatePricing
+    from .record_invoice_payment_request import RecordInvoicePaymentRequest
     from .recurring_fee import RecurringFee
     from .refund_event_data import RefundEventData
     from .refund_mode import RefundMode, RefundModeLiteral
@@ -428,6 +431,7 @@ if t.TYPE_CHECKING:
     from .resolved_entitlement_value import ResolvedEntitlementValue
     from .rest_error_response import RestErrorResponse
     from .reversal_kind import ReversalKind, ReversalKindLiteral
+    from .reverse_invoice_payment_request import ReverseInvoicePaymentRequest
     from .revocation_request import RevocationRequest
     from .revoke_license_request import RevokeLicenseRequest
     from .rotated_secret import RotatedSecret
@@ -838,6 +842,8 @@ _MODULES: dict[str, str] = {
     "InvoiceId": "invoice_id",
     "InvoiceLineCreditUnit": "invoice_line_credit_unit",
     "InvoiceLineItem": "invoice_line_item",
+    "InvoiceLineUsageBreakdown": "invoice_line_usage_breakdown",
+    "InvoiceLineUsageBreakdownItem": "invoice_line_usage_breakdown_item",
     "InvoiceListResponse": "invoice_list_response",
     "InvoicePaymentStatus": "invoice_payment_status",
     "InvoicePaymentStatusLiteral": "invoice_payment_status",
@@ -982,6 +988,7 @@ _MODULES: dict[str, str] = {
     "RateFeeStructure": "rate_fee_structure",
     "RatePlanFee": "rate_plan_fee",
     "RatePricing": "rate_pricing",
+    "RecordInvoicePaymentRequest": "record_invoice_payment_request",
     "RecurringFee": "recurring_fee",
     "RefundEventData": "refund_event_data",
     "RefundMode": "refund_mode",
@@ -994,6 +1001,7 @@ _MODULES: dict[str, str] = {
     "RestErrorResponse": "rest_error_response",
     "ReversalKind": "reversal_kind",
     "ReversalKindLiteral": "reversal_kind",
+    "ReverseInvoicePaymentRequest": "reverse_invoice_payment_request",
     "RevocationRequest": "revocation_request",
     "RevokeLicenseRequest": "revoke_license_request",
     "RotatedSecret": "rotated_secret",
@@ -1410,6 +1418,8 @@ __all__ = [
     "InvoiceId",
     "InvoiceLineCreditUnit",
     "InvoiceLineItem",
+    "InvoiceLineUsageBreakdown",
+    "InvoiceLineUsageBreakdownItem",
     "InvoiceListResponse",
     "InvoicePaymentStatus",
     "InvoicePaymentStatusLiteral",
@@ -1554,6 +1564,7 @@ __all__ = [
     "RateFeeStructure",
     "RatePlanFee",
     "RatePricing",
+    "RecordInvoicePaymentRequest",
     "RecurringFee",
     "RefundEventData",
     "RefundMode",
@@ -1566,6 +1577,7 @@ __all__ = [
     "RestErrorResponse",
     "ReversalKind",
     "ReversalKindLiteral",
+    "ReverseInvoicePaymentRequest",
     "RevocationRequest",
     "RevokeLicenseRequest",
     "RotatedSecret",
