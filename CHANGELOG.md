@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.31.5](https://github.com/meteroid-oss/meteroid-python/compare/v0.31.4...v0.31.5) (2026-11-22)
+
+
+### Features
+
+* **api:** update `GET /api/v1/subscriptions/{subscription_id}`, `PATCH /api/v1/subscriptions/{subscription_id}`, `POST /api/v1/subscriptions`, `POST /api/v1/subscriptions/{subscription_id}/cancel` ([7d74328](https://github.com/meteroid-oss/meteroid-python/commit/7d743286cbe721d26aec3df2fb544faf66bf010b))
+* **api:** update SDKs to meteroid 0.1.0 ([#25](https://github.com/meteroid-oss/meteroid-python/issues/25)) ([7d74328](https://github.com/meteroid-oss/meteroid-python/commit/7d743286cbe721d26aec3df2fb544faf66bf010b))
+
 ## [0.31.4](https://github.com/meteroid-oss/meteroid-python/compare/v0.31.3...v0.31.4) (2026-11-22)
 
 
