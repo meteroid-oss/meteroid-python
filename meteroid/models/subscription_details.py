@@ -15,6 +15,7 @@ if t.TYPE_CHECKING:
     from .entitlement import Entitlement
     from .minimum_commitment import MinimumCommitment
     from .payment_methods_config import PaymentMethodsConfig
+    from .pending_scheduled_event import PendingScheduledEvent
     from .plan_id import PlanId
     from .plan_version_id import PlanVersionId
     from .subscription_add_on import SubscriptionAddOn
@@ -107,7 +108,14 @@ class SubscriptionDetails(BaseModel):
 
     payment_methods_config: PaymentMethodsConfig | None = None
 
+    pending_events: list[PendingScheduledEvent] | None = None
+    """Changes scheduled to apply later: cancellation, plan change or amendment."""
+
     purchase_order: str | None = None
+
+    scheduled_cancellation_date: date | None = None
+    """Date the subscription ends at the start of, when a cancellation is scheduled: its first
+    day without service. `end_date` is not affected by a scheduled cancellation."""
 
     trial_duration: int | None = None
     """Trial duration in days"""
