@@ -5,7 +5,8 @@ from ..serialization import StrEnum
 
 
 class SubscriptionStatusEnum(StrEnum):
-    """The values of `SubscriptionStatusEnum`; others are kept as received."""
+    """`PendingCharge`, `Paused`, `Suspended`, `Superseded` and `Errored` stay in the published
+    schema; no subscription holds them any more, and a filter on them lists none."""
 
     PENDING_ACTIVATION = "PENDING_ACTIVATION"
     PENDING_CHARGE = "PENDING_CHARGE"

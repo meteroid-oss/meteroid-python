@@ -122,6 +122,7 @@ class AsyncMetrics(ApiBaseAsync):
         unit_conversion: UnitConversion | None | Unset = UNSET,
         unit_plural: str | None | Unset = UNSET,
         unit_singular: str | None | Unset = UNSET,
+        usage_breakdown_key: str | None | Unset = UNSET,
         usage_group_key: str | None | Unset = UNSET,
         extra_headers: t.Mapping[str, str] | None = None,
         extra_query: t.Mapping[str, object] | None = None,
@@ -133,7 +134,9 @@ class AsyncMetrics(ApiBaseAsync):
 
         :param filters: Pre-aggregation property filters. Optional and backward-compatible; omit for none.
         :param unit_plural: What several units of the metric are called, e.g. `tokens`. Set together with `unit_singular`. Trimmed; at most 32 characters.
-        :param unit_singular: What one unit of the metric is called, e.g. `token`, used to label quantities and prices ("$12.00 per 1M tokens"). Set both `unit_singular` and `unit_plural`, or neither. Trimmed; at most 32 characters."""
+        :param unit_singular: What one unit of the metric is called, e.g. `token`, used to label quantities and prices ("$12.00 per 1M tokens"). Set both `unit_singular` and `unit_plural`, or neither. Trimmed; at most 32 characters.
+        :param usage_breakdown_key: Event property, e.g. `project_id`, that breaks each invoice line down by value. The line is still priced on its total usage, and each value shows its quantity and share of the amount.
+        :param usage_group_key: Event property, e.g. `cluster_id`, whose values are billed as separate invoice lines, each priced on its own usage."""
         response = await self._request(
             ApiRequest(
                 method="post",
@@ -154,6 +157,7 @@ class AsyncMetrics(ApiBaseAsync):
                         unit_conversion=unit_conversion,
                         unit_plural=unit_plural,
                         unit_singular=unit_singular,
+                        usage_breakdown_key=usage_breakdown_key,
                         usage_group_key=usage_group_key,
                     ),
                     CreateMetricRequest,
@@ -211,6 +215,7 @@ class AsyncMetrics(ApiBaseAsync):
         unit_conversion: UnitConversion | None | Unset = UNSET,
         unit_plural: str | None | Unset = UNSET,
         unit_singular: str | None | Unset = UNSET,
+        usage_breakdown_key: str | None | Unset = UNSET,
         extra_headers: t.Mapping[str, str] | None = None,
         extra_query: t.Mapping[str, object] | None = None,
         extra_body: t.Mapping[str, object] | None = None,
@@ -223,7 +228,8 @@ class AsyncMetrics(ApiBaseAsync):
 
         :param filters: Absent = leave filters untouched; present (even empty) = replace them.
         :param unit_plural: What several units of the metric are called, e.g. `tokens`. See `unit_singular`.
-        :param unit_singular: What one unit of the metric is called, e.g. `token`. Send `unit_singular` and `unit_plural` together; omit both to leave the label unchanged, or send both as empty strings to remove it. Trimmed; at most 32 characters."""
+        :param unit_singular: What one unit of the metric is called, e.g. `token`. Send `unit_singular` and `unit_plural` together; omit both to leave the label unchanged, or send both as empty strings to remove it. Trimmed; at most 32 characters.
+        :param usage_breakdown_key: Omit to leave the breakdown key unchanged; send `null` to remove it."""
         response = await self._request(
             ApiRequest(
                 method="patch",
@@ -240,6 +246,7 @@ class AsyncMetrics(ApiBaseAsync):
                         unit_conversion=unit_conversion,
                         unit_plural=unit_plural,
                         unit_singular=unit_singular,
+                        usage_breakdown_key=usage_breakdown_key,
                     ),
                     UpdateMetricRequest,
                 ),
@@ -406,6 +413,7 @@ class Metrics(ApiBaseSync):
         unit_conversion: UnitConversion | None | Unset = UNSET,
         unit_plural: str | None | Unset = UNSET,
         unit_singular: str | None | Unset = UNSET,
+        usage_breakdown_key: str | None | Unset = UNSET,
         usage_group_key: str | None | Unset = UNSET,
         extra_headers: t.Mapping[str, str] | None = None,
         extra_query: t.Mapping[str, object] | None = None,
@@ -417,7 +425,9 @@ class Metrics(ApiBaseSync):
 
         :param filters: Pre-aggregation property filters. Optional and backward-compatible; omit for none.
         :param unit_plural: What several units of the metric are called, e.g. `tokens`. Set together with `unit_singular`. Trimmed; at most 32 characters.
-        :param unit_singular: What one unit of the metric is called, e.g. `token`, used to label quantities and prices ("$12.00 per 1M tokens"). Set both `unit_singular` and `unit_plural`, or neither. Trimmed; at most 32 characters."""
+        :param unit_singular: What one unit of the metric is called, e.g. `token`, used to label quantities and prices ("$12.00 per 1M tokens"). Set both `unit_singular` and `unit_plural`, or neither. Trimmed; at most 32 characters.
+        :param usage_breakdown_key: Event property, e.g. `project_id`, that breaks each invoice line down by value. The line is still priced on its total usage, and each value shows its quantity and share of the amount.
+        :param usage_group_key: Event property, e.g. `cluster_id`, whose values are billed as separate invoice lines, each priced on its own usage."""
         response = self._request(
             ApiRequest(
                 method="post",
@@ -438,6 +448,7 @@ class Metrics(ApiBaseSync):
                         unit_conversion=unit_conversion,
                         unit_plural=unit_plural,
                         unit_singular=unit_singular,
+                        usage_breakdown_key=usage_breakdown_key,
                         usage_group_key=usage_group_key,
                     ),
                     CreateMetricRequest,
@@ -495,6 +506,7 @@ class Metrics(ApiBaseSync):
         unit_conversion: UnitConversion | None | Unset = UNSET,
         unit_plural: str | None | Unset = UNSET,
         unit_singular: str | None | Unset = UNSET,
+        usage_breakdown_key: str | None | Unset = UNSET,
         extra_headers: t.Mapping[str, str] | None = None,
         extra_query: t.Mapping[str, object] | None = None,
         extra_body: t.Mapping[str, object] | None = None,
@@ -507,7 +519,8 @@ class Metrics(ApiBaseSync):
 
         :param filters: Absent = leave filters untouched; present (even empty) = replace them.
         :param unit_plural: What several units of the metric are called, e.g. `tokens`. See `unit_singular`.
-        :param unit_singular: What one unit of the metric is called, e.g. `token`. Send `unit_singular` and `unit_plural` together; omit both to leave the label unchanged, or send both as empty strings to remove it. Trimmed; at most 32 characters."""
+        :param unit_singular: What one unit of the metric is called, e.g. `token`. Send `unit_singular` and `unit_plural` together; omit both to leave the label unchanged, or send both as empty strings to remove it. Trimmed; at most 32 characters.
+        :param usage_breakdown_key: Omit to leave the breakdown key unchanged; send `null` to remove it."""
         response = self._request(
             ApiRequest(
                 method="patch",
@@ -524,6 +537,7 @@ class Metrics(ApiBaseSync):
                         unit_conversion=unit_conversion,
                         unit_plural=unit_plural,
                         unit_singular=unit_singular,
+                        usage_breakdown_key=usage_breakdown_key,
                     ),
                     UpdateMetricRequest,
                 ),

@@ -49,4 +49,10 @@ class CreateMetricRequest(BaseModel):
     prices ("$12.00 per 1M tokens"). Set both `unit_singular` and `unit_plural`, or neither.
     Trimmed; at most 32 characters."""
 
+    usage_breakdown_key: str | None | Unset = UNSET
+    """Event property, e.g. `project_id`, that breaks each invoice line down by value. The line is
+    still priced on its total usage, and each value shows its quantity and share of the amount."""
+
     usage_group_key: str | None | Unset = UNSET
+    """Event property, e.g. `cluster_id`, whose values are billed as separate invoice lines, each
+    priced on its own usage."""

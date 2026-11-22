@@ -34,3 +34,6 @@ class UpdateMetricRequest(BaseModel):
     """What one unit of the metric is called, e.g. `token`. Send `unit_singular` and
     `unit_plural` together; omit both to leave the label unchanged, or send both as empty
     strings to remove it. Trimmed; at most 32 characters."""
+
+    usage_breakdown_key: str | None | Unset = UNSET
+    """Omit to leave the breakdown key unchanged; send `null` to remove it."""

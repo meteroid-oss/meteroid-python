@@ -10,7 +10,7 @@ A list method returns its first page, such as a `AddOnsListPage`: a subclass of 
 model (`AddOnListResponse`) with the paging members `items`, `has_next_page()`, `get_next_page()`,
 `iter_pages()` and `body`, which iterates every item. The page classes are in `meteroid.api`.
 
-[Add ons](#add-ons) · [Add ons entitlements](#add-ons-entitlements) · [Batch jobs](#batch-jobs) · [Budgets](#budgets) · [Checkout sessions](#checkout-sessions) · [Checks](#checks) · [Connect](#connect) · [Coupons](#coupons) · [Credit notes](#credit-notes) · [Credit units](#credit-units) · [Credit units prices](#credit-units-prices) · [Credits](#credits) · [Credits grants](#credits-grants) · [Credits wallets](#credits-wallets) · [Custom properties](#custom-properties) · [Customers](#customers) · [Entitlements](#entitlements) · [Events](#events) · [Features](#features) · [Invoices](#invoices) · [Licenses](#licenses) · [Metrics](#metrics) · [Oauth](#oauth) · [Oauth apps](#oauth-apps) · [Plans](#plans) · [Plans versions](#plans-versions) · [Product families](#product-families) · [Products](#products) · [Products entitlements](#products-entitlements) · [Subscriptions](#subscriptions) · [Usage](#usage) · [Usage customer](#usage-customer) · [Usage costs](#usage-costs) · [Usage costs customer](#usage-costs-customer) · [Usage costs subscription](#usage-costs-subscription) · [Webhook endpoints](#webhook-endpoints) · [Webhook endpoints endpoints](#webhook-endpoints-endpoints)
+[Add ons](#add-ons) · [Add ons entitlements](#add-ons-entitlements) · [Batch jobs](#batch-jobs) · [Budgets](#budgets) · [Checkout sessions](#checkout-sessions) · [Checks](#checks) · [Connect](#connect) · [Coupons](#coupons) · [Credit notes](#credit-notes) · [Credit units](#credit-units) · [Credit units prices](#credit-units-prices) · [Credits](#credits) · [Credits grants](#credits-grants) · [Credits wallets](#credits-wallets) · [Custom properties](#custom-properties) · [Customers](#customers) · [Entitlements](#entitlements) · [Events](#events) · [Features](#features) · [Invoices](#invoices) · [Invoices payments](#invoices-payments) · [Licenses](#licenses) · [Metrics](#metrics) · [Oauth](#oauth) · [Oauth apps](#oauth-apps) · [Plans](#plans) · [Plans versions](#plans-versions) · [Product families](#product-families) · [Products](#products) · [Products entitlements](#products-entitlements) · [Subscriptions](#subscriptions) · [Usage](#usage) · [Usage customer](#usage-customer) · [Usage costs](#usage-costs) · [Usage costs customer](#usage-costs-customer) · [Usage costs subscription](#usage-costs-subscription) · [Webhook endpoints](#webhook-endpoints) · [Webhook endpoints endpoints](#webhook-endpoints-endpoints)
 
 ## Add ons
 
@@ -231,8 +231,19 @@ model (`AddOnListResponse`) with the paging members `items`, `has_next_page()`, 
 | `client.invoices.retrieve(invoice_id: str) -> Invoice` | `GET /api/v1/invoices/{invoice_id}` | [`Invoice`](meteroid/models/invoice.py) |
 | `client.invoices.update_custom_properties(invoice_id: str, *, custom_properties: t.Any) -> Invoice` | `PATCH /api/v1/invoices/{invoice_id}/custom-properties` | [`Invoice`](meteroid/models/invoice.py) |
 | `client.invoices.download(invoice_id: str) -> bytes` | `GET /api/v1/invoices/{invoice_id}/download` | bytes |
+| `client.invoices.mark_paid(invoice_id: str, *, amount: int, idempotency_key: str, paid_at=..., reference=...) -> Transaction` | `POST /api/v1/invoices/{invoice_id}/mark-paid` | [`Transaction`](meteroid/models/transaction.py) |
+| `client.invoices.mark_uncollectible(invoice_id: str, *, idempotency_key: str) -> None` | `POST /api/v1/invoices/{invoice_id}/mark-uncollectible` | nothing |
 | `client.invoices.refresh(invoice_id: str) -> Invoice` | `POST /api/v1/invoices/{invoice_id}/refresh` | [`Invoice`](meteroid/models/invoice.py) |
 | `client.invoices.download_xml(invoice_id: str) -> bytes` | `GET /api/v1/invoices/{invoice_id}/xml` | bytes |
+
+### Invoices payments
+
+[`client.invoices.payments`](meteroid/api/invoices_payments.py)
+
+| Method | Request | Returns |
+| --- | --- | --- |
+| `client.invoices.payments.create(invoice_id: str, *, amount: int, idempotency_key: str, paid_at=..., reference=...) -> Transaction` | `POST /api/v1/invoices/{invoice_id}/payments` | [`Transaction`](meteroid/models/transaction.py) |
+| `client.invoices.payments.reverse(invoice_id: str, transaction_id: str, *, kind: ReversalKind, idempotency_key: str, reason=..., reversed_at=...) -> Transaction` | `POST /api/v1/invoices/{invoice_id}/payments/{transaction_id}/reverse` | [`Transaction`](meteroid/models/transaction.py) |
 
 ## Licenses
 
@@ -255,9 +266,9 @@ model (`AddOnListResponse`) with the paging members `items`, `has_next_page()`, 
 | Method | Request | Returns |
 | --- | --- | --- |
 | `client.metrics.list(*, product_family_id=..., search=..., order_by=..., page=..., per_page=...) -> MetricsListPage` | `GET /api/v1/metrics` | [`MetricListResponse`](meteroid/models/metric_list_response.py) pages of [`MetricSummary`](meteroid/models/metric_summary.py) |
-| `client.metrics.create(*, aggregation_type: BillingMetricAggregateEnum, code: str, name: str, product_family_id: ProductFamilyId, aggregation_key=..., description=..., filters=..., product_id=..., segmentation_matrix=..., unit_conversion=..., unit_plural=..., unit_singular=..., usage_group_key=...) -> Metric` | `POST /api/v1/metrics` | [`Metric`](meteroid/models/metric.py) |
+| `client.metrics.create(*, aggregation_type: BillingMetricAggregateEnum, code: str, name: str, product_family_id: ProductFamilyId, aggregation_key=..., description=..., filters=..., product_id=..., segmentation_matrix=..., unit_conversion=..., unit_plural=..., unit_singular=..., usage_breakdown_key=..., usage_group_key=...) -> Metric` | `POST /api/v1/metrics` | [`Metric`](meteroid/models/metric.py) |
 | `client.metrics.retrieve(metric_id: str) -> Metric` | `GET /api/v1/metrics/{metric_id}` | [`Metric`](meteroid/models/metric.py) |
-| `client.metrics.update(metric_id: str, *, description=..., filters=..., name=..., segmentation_matrix=..., unit_conversion=..., unit_plural=..., unit_singular=...) -> Metric` | `PATCH /api/v1/metrics/{metric_id}` | [`Metric`](meteroid/models/metric.py) |
+| `client.metrics.update(metric_id: str, *, description=..., filters=..., name=..., segmentation_matrix=..., unit_conversion=..., unit_plural=..., unit_singular=..., usage_breakdown_key=...) -> Metric` | `PATCH /api/v1/metrics/{metric_id}` | [`Metric`](meteroid/models/metric.py) |
 | `client.metrics.archive(metric_id: str) -> None` | `POST /api/v1/metrics/{metric_id}/archive` | nothing |
 | `client.metrics.unarchive(metric_id: str) -> None` | `POST /api/v1/metrics/{metric_id}/unarchive` | nothing |
 

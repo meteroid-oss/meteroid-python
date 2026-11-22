@@ -10,6 +10,7 @@ from ..serialization import BaseModel
 
 if t.TYPE_CHECKING:
     from .invoice_line_credit_unit import InvoiceLineCreditUnit
+    from .invoice_line_usage_breakdown import InvoiceLineUsageBreakdown
     from .sub_line_item import SubLineItem
 
 
@@ -40,3 +41,5 @@ class InvoiceLineItem(BaseModel):
     tax-inclusive prices. `unit_price` is its net counterpart."""
 
     unit_price: Decimal | None = None
+
+    usage_breakdown: InvoiceLineUsageBreakdown | None = None

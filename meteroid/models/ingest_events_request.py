@@ -18,7 +18,7 @@ class IngestEventsRequest(BaseModel):
     """1–100 events per request."""
 
     allow_backfilling: bool | None | Unset = UNSET
-    """Allow events with timestamps more than 1 day in the past. Defaults to `false`."""
+    """Allow events with timestamps more than 1 day in the past, up to 13 months. Defaults to `false`."""
 
     allow_partial_failures: bool | None | Unset = UNSET
     """Accept the batch even if some events fail validation. Defaults to `false`.
