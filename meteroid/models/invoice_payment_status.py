@@ -12,9 +12,10 @@ class InvoicePaymentStatus(StrEnum):
     PAID = "PAID"
     ERRORED = "ERRORED"
     PROCESSING = "PROCESSING"
+    CARRIED = "CARRIED"
 
 
 InvoicePaymentStatusLiteral: t.TypeAlias = t.Literal[
-    "UNPAID", "PARTIALLY_PAID", "PAID", "ERRORED", "PROCESSING"
+    "UNPAID", "PARTIALLY_PAID", "PAID", "ERRORED", "PROCESSING", "CARRIED"
 ]
 """The values of :class:`InvoicePaymentStatus`, which arguments take as plain strings too."""

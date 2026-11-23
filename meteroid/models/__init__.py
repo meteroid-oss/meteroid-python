@@ -21,6 +21,7 @@ if t.TYPE_CHECKING:
     from .add_on_list_response import AddOnListResponse
     from .address import Address
     from .all_components_scope import AllComponentsScope
+    from .amend_event_request import AmendEventRequest
     from .applied_coupon import AppliedCoupon
     from .applied_coupon_detailed import AppliedCouponDetailed
     from .applied_coupon_id import AppliedCouponId
@@ -235,6 +236,7 @@ if t.TYPE_CHECKING:
     from .entitlement_value import EntitlementValue
     from .error_code import ErrorCode, ErrorCodeLiteral
     from .event import Event
+    from .event_change_response import EventChangeResponse
     from .event_id import EventId
     from .event_type import EventType, EventTypeLiteral
     from .existing_price_ref import ExistingPriceRef
@@ -534,6 +536,7 @@ if t.TYPE_CHECKING:
     from .usage_pricing import UsagePricing
     from .usage_pricing_model import UsagePricingModel
     from .usage_response import UsageResponse
+    from .void_event_request import VoidEventRequest
     from .volume_plan_pricing import VolumePlanPricing
     from .volume_pricing import VolumePricing
     from .wallet import Wallet
@@ -582,6 +585,7 @@ _MODULES: dict[str, str] = {
     "AddOnListResponse": "add_on_list_response",
     "Address": "address",
     "AllComponentsScope": "all_components_scope",
+    "AmendEventRequest": "amend_event_request",
     "AppliedCoupon": "applied_coupon",
     "AppliedCouponDetailed": "applied_coupon_detailed",
     "AppliedCouponId": "applied_coupon_id",
@@ -807,6 +811,7 @@ _MODULES: dict[str, str] = {
     "ErrorCode": "error_code",
     "ErrorCodeLiteral": "error_code",
     "Event": "event",
+    "EventChangeResponse": "event_change_response",
     "EventId": "event_id",
     "EventType": "event_type",
     "EventTypeLiteral": "event_type",
@@ -1100,6 +1105,7 @@ _MODULES: dict[str, str] = {
     "UsagePricing": "usage_pricing",
     "UsagePricingModel": "usage_pricing_model",
     "UsageResponse": "usage_response",
+    "VoidEventRequest": "void_event_request",
     "VolumePlanPricing": "volume_plan_pricing",
     "VolumePricing": "volume_pricing",
     "Wallet": "wallet",
@@ -1162,6 +1168,7 @@ __all__ = [
     "AddOnListResponse",
     "Address",
     "AllComponentsScope",
+    "AmendEventRequest",
     "AppliedCoupon",
     "AppliedCouponDetailed",
     "AppliedCouponId",
@@ -1387,6 +1394,7 @@ __all__ = [
     "ErrorCode",
     "ErrorCodeLiteral",
     "Event",
+    "EventChangeResponse",
     "EventId",
     "EventType",
     "EventTypeLiteral",
@@ -1680,6 +1688,7 @@ __all__ = [
     "UsagePricing",
     "UsagePricingModel",
     "UsageResponse",
+    "VoidEventRequest",
     "VolumePlanPricing",
     "VolumePricing",
     "Wallet",

@@ -87,6 +87,12 @@ class Invoice(BaseModel):
     own date for manual/one-off. Stable and always present, distinct from `invoice_date` (the
     emission date). Shown as "Invoice date"."""
 
+    carried_balance: int | None = None
+    """Debts carried in from earlier invoices (amounts due below the payment providers' minimum
+    charge, never collected on their own) less the one this invoice carried to a later
+    invoice, in minor units. Included in `amount_due`:
+    `amount_due = total + carried_balance - applied_credits - paid`."""
+
     child_invoice_id: InvoiceId | None = None
 
     due_date: date | None = None

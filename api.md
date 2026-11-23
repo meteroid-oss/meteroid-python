@@ -207,6 +207,8 @@ model (`AddOnListResponse`) with the paging members `items`, `has_next_page()`, 
 | Method | Request | Returns |
 | --- | --- | --- |
 | `client.events.ingest(*, events: list[Event], allow_backfilling=..., allow_partial_failures=...) -> IngestEventsResponse` | `POST /api/v1/events/ingest` | [`IngestEventsResponse`](meteroid/models/ingest_events_response.py) |
+| `client.events.amend(event_id: str, *, properties: dict[str, str], timestamp: datetime, allow_backfilling=..., customer_alias=..., customer_id=...) -> EventChangeResponse` | `POST /api/v1/events/{event_id}/amend` | [`EventChangeResponse`](meteroid/models/event_change_response.py) |
+| `client.events.void(event_id: str, *, customer_alias=..., customer_id=...) -> EventChangeResponse` | `POST /api/v1/events/{event_id}/void` | [`EventChangeResponse`](meteroid/models/event_change_response.py) |
 
 ## Features
 
