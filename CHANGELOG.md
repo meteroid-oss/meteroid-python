@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.31.6](https://github.com/meteroid-oss/meteroid-python/compare/v0.31.5...v0.31.6) (2026-11-23)
+
+
+### Features
+
+* **api:** add `POST /api/v1/events/{event_id}/amend`, `POST /api/v1/events/{event_id}/void` ([eda5fa5](https://github.com/meteroid-oss/meteroid-python/commit/eda5fa5561b86ba559358d26f6f5e94c579ca2a5))
+* **api:** update `GET /api/v1/invoices`, `GET /api/v1/invoices/{invoice_id}`, `PATCH /api/v1/invoices/{invoice_id}/custom-properties`, `POST /api/v1/invoices/{invoice_id}/refresh` ([eda5fa5](https://github.com/meteroid-oss/meteroid-python/commit/eda5fa5561b86ba559358d26f6f5e94c579ca2a5))
+* **api:** update SDKs to meteroid 0.1.0 ([#27](https://github.com/meteroid-oss/meteroid-python/issues/27)) ([eda5fa5](https://github.com/meteroid-oss/meteroid-python/commit/eda5fa5561b86ba559358d26f6f5e94c579ca2a5))
+
 ## [0.31.5](https://github.com/meteroid-oss/meteroid-python/compare/v0.31.4...v0.31.5) (2026-11-22)
 
 
