@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.31.7](https://github.com/meteroid-oss/meteroid-python/compare/v0.31.6...v0.31.7) (2026-11-25)
+
+
+### Features
+
+* **api:** update `GET /api/v1/licenses`, `GET /api/v1/licenses/{license_id}`, `POST /api/v1/licenses`, `POST /api/v1/licenses/{license_id}/revoke` ([9776c8e](https://github.com/meteroid-oss/meteroid-python/commit/9776c8ebed3408d2bc74357efe512eef30f8f5d9))
+* **api:** update SDKs to meteroid 0.1.0 ([#29](https://github.com/meteroid-oss/meteroid-python/issues/29)) ([9776c8e](https://github.com/meteroid-oss/meteroid-python/commit/9776c8ebed3408d2bc74357efe512eef30f8f5d9))
+
 ## [0.31.6](https://github.com/meteroid-oss/meteroid-python/compare/v0.31.5...v0.31.6) (2026-11-23)
 
 
