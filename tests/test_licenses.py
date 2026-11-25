@@ -16,7 +16,7 @@ class LicensesTest(unittest.TestCase):
         client, requests = mock(
             200,
             "application/json",
-            '{"data":[{"auto_issued":false,"created_at":"2023-12-31T23:59:59.999-05:30","customer_id":"customer_id_2","customer_name":"sample","has_activation_code":true,"id":"license_id_78","offline":false,"revoked_immediately":false,"status":"PENDING","validity_days":2147483647}]}',
+            '{"data":[{"auto_issued":false,"created_at":"2023-12-31T23:59:59.999-05:30","customer_id":"customer_id_2","customer_name":"sample","has_activation_code":true,"id":"license_id_78","metadata":{"alpha":"sample"},"offline":false,"revoked_immediately":false,"status":"REVOKED","validity_days":123456789}]}',
         )
         call(client.licenses.list)
         self.assertEqual(requests, ["GET /api/v1/licenses"])
@@ -25,7 +25,7 @@ class LicensesTest(unittest.TestCase):
         client, requests = mock(
             200,
             "application/json",
-            '{"license":{"auto_issued":false,"created_at":"2023-12-31T23:59:59.999-05:30","customer_id":"customer_id_37","customer_name":"sample","has_activation_code":true,"id":"license_id_32","offline":true,"revoked_immediately":false,"status":"REVOKED","validity_days":2147483647}}',
+            '{"license":{"auto_issued":false,"created_at":"2023-12-31T23:59:59.999-05:30","customer_id":"customer_id_37","customer_name":"sample","has_activation_code":true,"id":"license_id_32","metadata":{"alpha":"sample"},"offline":false,"revoked_immediately":false,"status":"ACTIVE","validity_days":123456789}}',
         )
         call(
             client.licenses.create,
@@ -37,7 +37,7 @@ class LicensesTest(unittest.TestCase):
         client, requests = mock(
             200,
             "application/json",
-            '{"auto_issued":false,"created_at":"2024-03-15T10:30:45.123+02:00","customer_id":"customer_id_79","customer_name":"sample","has_activation_code":true,"id":"license_id_13","offline":true,"revoked_immediately":false,"status":"PENDING","validity_days":-2147483648}',
+            '{"auto_issued":false,"created_at":"2024-03-15T10:30:45.123+02:00","customer_id":"customer_id_79","customer_name":"sample","has_activation_code":true,"id":"license_id_13","metadata":{"alpha":"sample"},"offline":false,"revoked_immediately":false,"status":"REVOKED","validity_days":-123456789}',
         )
         call(client.licenses.retrieve, "license_id")
         self.assertEqual(requests, ["GET /api/v1/licenses/license_id"])
@@ -60,7 +60,7 @@ class LicensesTest(unittest.TestCase):
         client, requests = mock(
             200,
             "application/json",
-            '{"auto_issued":false,"created_at":"2024-03-15T10:30:45.123+02:00","customer_id":"customer_id_79","customer_name":"sample","has_activation_code":true,"id":"license_id_13","offline":true,"revoked_immediately":false,"status":"PENDING","validity_days":-2147483648}',
+            '{"auto_issued":false,"created_at":"2024-03-15T10:30:45.123+02:00","customer_id":"customer_id_79","customer_name":"sample","has_activation_code":true,"id":"license_id_13","metadata":{"alpha":"sample"},"offline":false,"revoked_immediately":false,"status":"REVOKED","validity_days":-123456789}',
         )
         call(
             client.licenses.revoke,

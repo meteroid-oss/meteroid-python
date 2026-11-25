@@ -82,6 +82,7 @@ class AsyncLicenses(ApiBaseAsync):
         customer_id: str,
         ephemeral_hours: int | None | Unset = UNSET,
         instance_id: str | None | Unset = UNSET,
+        metadata: dict[str, str] | None = None,
         offline: bool | None = None,
         subscription_id: str | None | Unset = UNSET,
         validity_days: int | None | Unset = UNSET,
@@ -98,8 +99,9 @@ class AsyncLicenses(ApiBaseAsync):
         Offline, it is returned signed at once, for an installation that can't reach the server.
 
         :param customer_id: Customer ID or alias
-        :param ephemeral_hours: Ephemeral, for CI and other short-lived installations: the activation code can be used any number of times, each activation gets a license of this many hours (1 to 24) for the installation activating, and nothing is refreshed. Not with `offline` or `validity_days`.
+        :param ephemeral_hours: Ephemeral, for CI and other short-lived installations: the activation code can be used by any number of installations, each gets one license of this many hours (1 to 24), never renewed. Not with `offline` or `validity_days`.
         :param instance_id: Offline only. The installation's id as it reports it, up to 255 characters without spaces: the license names it (`aud`) and stays bound to it. Without one, the license is not tied to an installation.
+        :param metadata: Signed into the license as is, for the licensed software to read: at most 20 entries, keys of 1 to 64 characters among `a-z`, `0-9`, `_`, `.` and `-`, values up to 256 characters. Reserved: `environment` only takes `non_production`.
         :param offline: Delivers the license at once as a signed offline license, for an installation that can't reach the license server: no activation code, no refresh. Default: false.
         :param subscription_id: Ties the license to this subscription of the customer: it is renewed while the subscription is paid, and carries its plan's entitlements.
         :param validity_days: Online: lifetime of each license token the installation refreshes, 1 to 31 days. Default: 7. Offline: lifetime of the signed license, 1 to 400 days. Default: 365."""
@@ -112,6 +114,7 @@ class AsyncLicenses(ApiBaseAsync):
                         customer_id=customer_id,
                         ephemeral_hours=ephemeral_hours,
                         instance_id=instance_id,
+                        metadata=metadata,
                         offline=offline,
                         subscription_id=subscription_id,
                         validity_days=validity_days,
@@ -375,6 +378,7 @@ class Licenses(ApiBaseSync):
         customer_id: str,
         ephemeral_hours: int | None | Unset = UNSET,
         instance_id: str | None | Unset = UNSET,
+        metadata: dict[str, str] | None = None,
         offline: bool | None = None,
         subscription_id: str | None | Unset = UNSET,
         validity_days: int | None | Unset = UNSET,
@@ -391,8 +395,9 @@ class Licenses(ApiBaseSync):
         Offline, it is returned signed at once, for an installation that can't reach the server.
 
         :param customer_id: Customer ID or alias
-        :param ephemeral_hours: Ephemeral, for CI and other short-lived installations: the activation code can be used any number of times, each activation gets a license of this many hours (1 to 24) for the installation activating, and nothing is refreshed. Not with `offline` or `validity_days`.
+        :param ephemeral_hours: Ephemeral, for CI and other short-lived installations: the activation code can be used by any number of installations, each gets one license of this many hours (1 to 24), never renewed. Not with `offline` or `validity_days`.
         :param instance_id: Offline only. The installation's id as it reports it, up to 255 characters without spaces: the license names it (`aud`) and stays bound to it. Without one, the license is not tied to an installation.
+        :param metadata: Signed into the license as is, for the licensed software to read: at most 20 entries, keys of 1 to 64 characters among `a-z`, `0-9`, `_`, `.` and `-`, values up to 256 characters. Reserved: `environment` only takes `non_production`.
         :param offline: Delivers the license at once as a signed offline license, for an installation that can't reach the license server: no activation code, no refresh. Default: false.
         :param subscription_id: Ties the license to this subscription of the customer: it is renewed while the subscription is paid, and carries its plan's entitlements.
         :param validity_days: Online: lifetime of each license token the installation refreshes, 1 to 31 days. Default: 7. Offline: lifetime of the signed license, 1 to 400 days. Default: 365."""
@@ -405,6 +410,7 @@ class Licenses(ApiBaseSync):
                         customer_id=customer_id,
                         ephemeral_hours=ephemeral_hours,
                         instance_id=instance_id,
+                        metadata=metadata,
                         offline=offline,
                         subscription_id=subscription_id,
                         validity_days=validity_days,

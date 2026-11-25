@@ -15,13 +15,18 @@ class IssueLicenseRequest(BaseModel):
 
     ephemeral_hours: int | None | Unset = UNSET
     """Ephemeral, for CI and other short-lived installations: the activation code can be used
-    any number of times, each activation gets a license of this many hours (1 to 24) for the
-    installation activating, and nothing is refreshed. Not with `offline` or `validity_days`."""
+    by any number of installations, each gets one license of this many hours (1 to 24), never
+    renewed. Not with `offline` or `validity_days`."""
 
     instance_id: str | None | Unset = UNSET
     """Offline only. The installation's id as it reports it, up to 255 characters without
     spaces: the license names it (`aud`) and stays bound to it. Without one, the license is
     not tied to an installation."""
+
+    metadata: dict[str, str] | None = None
+    """Signed into the license as is, for the licensed software to read: at most 20 entries,
+    keys of 1 to 64 characters among `a-z`, `0-9`, `_`, `.` and `-`, values up to 256
+    characters. Reserved: `environment` only takes `non_production`."""
 
     offline: bool | None = None
     """Delivers the license at once as a signed offline license, for an installation that
