@@ -32,6 +32,9 @@ class License(BaseModel):
 
     id: LicenseId
 
+    metadata: dict[str, str]
+    """Signed into the license as is."""
+
     offline: bool
     """Issued as a signed offline license: never activated nor refreshed."""
 
